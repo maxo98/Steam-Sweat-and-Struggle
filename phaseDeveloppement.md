@@ -29,4 +29,11 @@ wall jump
 
 ## Etape III 
 
-systeme de combat de base : tir autorisé + mort 
+### systeme de combat
+
+tir de base 
+jump sur la tete 
+
+## Etape IV
+
+### 
