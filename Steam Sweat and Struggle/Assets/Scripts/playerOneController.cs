@@ -7,26 +7,30 @@ public class playerOneController : MonoBehaviour
 
     //speed and jumpSpeed 
     [SerializeField]
-    private float speed = 1.0f;
+    private float speed = 30.0f;
     [SerializeField]
-    private float jumpForce = 10.0f;
+    private float jumpForce = 110.0f;
 
     //inputs
     private float HInput;
+    private bool JInput;
 
     //jump condition
     private bool isGrounded = false;
-    private float fallMultiplier = 1.0f;
-    private float lowJumpMultiplier = 2.5f;
-    private float rememberGroundedFor = 0.2f;
     private float lastTimeGrounded;
+    [SerializeField]
+    private float fallMultiplier = 20.0f;
+    [SerializeField]
+    private float lowJumpMultiplier = 40f;
+    [SerializeField]
+    private float rememberGroundedFor = 0f;
 
     //hitbox components
     private Rigidbody2D body;
     [SerializeField]
     private Transform groundChecker;
     [SerializeField]
-    private float groundCheckerRadius = 0.5f;
+    private float groundCheckerRadius = 1f;
     [SerializeField]
     private LayerMask groundLayer;
 
@@ -61,7 +65,7 @@ public class playerOneController : MonoBehaviour
     //Jump methode
     private void Jump()
     {
-
+        JInput = Input.GetButton("JumpPlayerOne");
         if (Input.GetButton("JumpPlayerOne") && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
         {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
@@ -71,13 +75,11 @@ public class playerOneController : MonoBehaviour
 
     private void BetterJump()
     {
-        if(body.velocity.y < 0)
-        {
-            body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (body.velocity.y > 0 && !Input.GetButton("JumpPlayerOne"))
+        if (body.velocity.y > -4 && !Input.GetButton("JumpPlayerOne"))
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
+        } else {
+            body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
         }
 
     }
