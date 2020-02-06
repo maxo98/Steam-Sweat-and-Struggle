@@ -17,17 +17,16 @@ public class teleportation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		Debug.Log(camera.aspect);
-        if (transform.position.x < -camera.orthographicSize/camera.aspect)
-			transform.position = new Vector3(camera.orthographicSize*camera.aspect-decalage, transform.position.y, 0);
+        if (transform.position.x < camera.transform.position.x-camera.orthographicSize*camera.aspect)
+			transform.position = new Vector3(camera.transform.position.x+camera.orthographicSize*camera.aspect-decalage, transform.position.y, 0);
 
-		if (transform.position.x > camera.orthographicSize/camera.aspect)
-			transform.position = new Vector3(-camera.orthographicSize*camera.aspect+decalage, transform.position.y, 0);
+		if (transform.position.x > camera.transform.position.x+camera.orthographicSize*camera.aspect)
+			transform.position = new Vector3(camera.transform.position.x-camera.orthographicSize*camera.aspect+decalage, transform.position.y, 0);
 
-		if (transform.position.y < -camera.orthographicSize)
-			transform.position = new Vector3(transform.position.x, camera.orthographicSize-decalage, 0);
+		if (transform.position.y < camera.transform.position.y-camera.orthographicSize)
+			transform.position = new Vector3(transform.position.x, camera.transform.position.y+camera.orthographicSize-decalage, 0);
 
-		if (transform.position.y > camera.orthographicSize)
-			transform.position = new Vector3(transform.position.x, -camera.orthographicSize + decalage, 0);
+		if (transform.position.y > camera.transform.position.y+camera.orthographicSize)
+			transform.position = new Vector3(transform.position.x, camera.transform.position.y-camera.orthographicSize + decalage, 0);
 	}
 }
