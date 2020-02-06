@@ -582,7 +582,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.58
+    width: 0.61
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -611,7 +611,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392046964}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 55, z: -20}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
@@ -1934,6 +1934,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1225320786882101008, guid: 0cc5c9298698a708ca32fced7a3c2d4c,
+        type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 1925421383955953965, guid: 105cab8e2c10eab628599e75a6b36ae7,
+        type: 3}
+    - target: {fileID: 1225320786882101008, guid: 0cc5c9298698a708ca32fced7a3c2d4c,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 392046966}
+    - target: {fileID: 1225320786882101008, guid: 0cc5c9298698a708ca32fced7a3c2d4c,
+        type: 3}
+      propertyPath: fireRate
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1225320786882101015, guid: 0cc5c9298698a708ca32fced7a3c2d4c,
         type: 3}

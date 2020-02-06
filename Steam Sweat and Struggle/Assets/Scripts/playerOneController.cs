@@ -5,6 +5,9 @@ using UnityEngine;
 public class playerOneController : MonoBehaviour
 {
 
+    [SerializeField]
+    private Camera camera;
+
     //speed and jumpSpeed 
     [SerializeField]
     private float speed = 30.0f;
@@ -24,6 +27,11 @@ public class playerOneController : MonoBehaviour
     private float lowJumpMultiplier = 40f;
     [SerializeField]
     private float rememberGroundedFor = 0f;
+    [SerializeField]
+    private float fireRate = 1f;
+
+    [SerializeField]
+    private float nextFire;
 
     //hitbox components
     private Rigidbody2D body;
@@ -34,18 +42,31 @@ public class playerOneController : MonoBehaviour
     [SerializeField]
     private LayerMask groundLayer;
 
+	[SerializeField]
+	private GameObject projectilePrefab;
+	private float directionRegard = 1;
+
+
+	private float dirLancerX = 0;
+	private float dirLancerY = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
-
+        nextFire = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
+		if (HInput < -0.01)
+			directionRegard = -1;
+		if (HInput > 0.01)
+			directionRegard = 1;
         Move();
+        Lancer();
         CheckIfGrounded();
         BetterJump();
         Jump();
@@ -102,6 +123,27 @@ public class playerOneController : MonoBehaviour
         }
     }
 
+    private void Lancer()
+	{
 
-
+		if (HInput < -0.01)
+			dirLancerX = -1;
+		if (HInput > 0.01)
+			dirLancerX = 1;
+        
+		if (Input.GetButton("FirePlayerOne") && Time.time>nextFire)
+		{
+			
+            nextFire = Time.time + fireRate;
+            Shoot();
+		}
+	}
+    private void Shoot()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, new Vector3(transform.position.x + dirLancerX * 5, transform.position.y, 0), projectilePrefab.transform.rotation);
+        DeplacementProjectile scriptProjectile = projectile.GetComponent<DeplacementProjectile>();
+        scriptProjectile.SetLancer(dirLancerX);
+        teleportation scriptTel = projectile.GetComponent<teleportation>();
+        scriptTel.SetCamera(camera);
+    }
 }

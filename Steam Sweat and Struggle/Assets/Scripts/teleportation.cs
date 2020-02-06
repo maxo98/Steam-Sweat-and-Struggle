@@ -29,4 +29,9 @@ public class teleportation : MonoBehaviour
 		if (transform.position.y > camera.transform.position.y+camera.orthographicSize)
 			transform.position = new Vector3(transform.position.x, camera.transform.position.y-camera.orthographicSize + decalage, 0);
 	}
+
+	public void SetCamera(Camera c)
+	{
+		camera = c;
+	}
 }

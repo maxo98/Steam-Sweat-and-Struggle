@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeplacementProjectile : MonoBehaviour
 {
 	[SerializeField]
-	private float poussee;
+	private float poussee = 2500;
 
 	[SerializeField]
 	private float direction = 1;
