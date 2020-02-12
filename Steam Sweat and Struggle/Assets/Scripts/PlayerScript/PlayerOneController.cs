@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerOneController : MonoBehaviour
+public class PlayerOneController : MonoBehaviour
 {
-
-    [SerializeField]
-    private Camera camera;
 
     //speed and jumpSpeed 
     [SerializeField]
     private float speed = 30.0f;
     [SerializeField]
     private float jumpForce = 110.0f;
+    [SerializeField]
+    private float fallSpeed = -70.0f;
 
     //inputs
     private float HInput;
@@ -44,11 +43,11 @@ public class playerOneController : MonoBehaviour
 
 	[SerializeField]
 	private GameObject projectilePrefab;
-	private float directionRegard = 1;
+	private float Look = 1;
 
 
-	private float dirLancerX = 0;
-	private float dirLancerY = 0;
+	private float throwDirectionX = 0;
+	private float throwDirectionY = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -62,11 +61,11 @@ public class playerOneController : MonoBehaviour
     void Update()
     {
 		if (HInput < -0.01)
-			directionRegard = -1;
+			Look = -1;
 		if (HInput > 0.01)
-			directionRegard = 1;
+			Look = 1;
         Move();
-        Lancer();
+        Throw();
         CheckIfGrounded();
         BetterJump();
         Jump();
@@ -81,6 +80,11 @@ public class playerOneController : MonoBehaviour
 
         //moving the character on the X axis
         body.velocity = new Vector2(HInput * speed, body.velocity.y);
+
+        if (body.velocity.y < fallSpeed)
+        {
+            body.velocity = new Vector2(body.velocity.x,fallSpeed);
+        }
     }
 
     //Jump methode
@@ -123,13 +127,13 @@ public class playerOneController : MonoBehaviour
         }
     }
 
-    private void Lancer()
+    private void Throw()
 	{
 
 		if (HInput < -0.01)
-			dirLancerX = -1;
+			throwDirectionX = -1;
 		if (HInput > 0.01)
-			dirLancerX = 1;
+			throwDirectionX = 1;
         
 		if (Input.GetButton("FirePlayerOne") && Time.time>nextFire)
 		{
@@ -140,10 +144,9 @@ public class playerOneController : MonoBehaviour
 	}
     private void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, new Vector3(transform.position.x + dirLancerX * 5, transform.position.y, 0), projectilePrefab.transform.rotation);
-        DeplacementProjectile scriptProjectile = projectile.GetComponent<DeplacementProjectile>();
-        scriptProjectile.SetLancer(dirLancerX);
-        teleportation scriptTel = projectile.GetComponent<teleportation>();
-        scriptTel.SetCamera(camera);
+        GameObject projectile = Instantiate(projectilePrefab, new Vector3(transform.position.x + throwDirectionX * 5, transform.position.y, 0), projectilePrefab.transform.rotation);
+        ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
+        scriptProjectile.setThrowDirection(throwDirectionX);
+        Teleportation scriptTel = projectile.GetComponent<Teleportation>();
     }
 }

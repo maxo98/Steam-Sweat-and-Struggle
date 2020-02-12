@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeplacementProjectile : MonoBehaviour
+public class ProjectileMovements : MonoBehaviour
 {
 	[SerializeField]
-	private float poussee = 2500;
+	private float speed = 2500;
 
 	[SerializeField]
 	private float direction = 1;
@@ -18,7 +18,7 @@ public class DeplacementProjectile : MonoBehaviour
     {
 		body = GetComponent<Rigidbody2D>();
 		collider2d = GetComponent<Collider2D>();
-		body.AddForce(transform.right * poussee * direction);
+		body.AddForce(transform.right * speed * direction);
 	}
 
     // Update is called once per frame
@@ -28,9 +28,9 @@ public class DeplacementProjectile : MonoBehaviour
 		//transform.Translate(direction * Time.deltaTime * speed * body.velocity.x, body.velocity.y, 0);
 	}
 
-	public void SetLancer(float directionLancer)
+	public void setThrowDirection(float throwDirection)
 	{
-		direction = directionLancer;
+		direction = throwDirection;
 	}
 
 	private void OnTriggerEnter(Collider other)
