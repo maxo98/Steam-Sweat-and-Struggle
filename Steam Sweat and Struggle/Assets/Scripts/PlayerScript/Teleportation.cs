@@ -5,7 +5,8 @@ using UnityEngine;
 public class Teleportation : MonoBehaviour
 {
 	[SerializeField]
-	GameObject mapData;
+	private GameObject mapData;
+
 	private float offset = 1f;
 	private MapSettings mapSettings;
 
@@ -26,6 +27,16 @@ public class Teleportation : MonoBehaviour
 			transform.position = new Vector3(transform.position.x, mapSettings.Bottom + offset, 0);
 		if (transform.position.y < mapSettings.Bottom)
 			transform.position = new Vector3(transform.position.x, mapSettings.Top - offset, 0);
+	}
+
+	public GameObject GetMapData()
+	{
+		return mapData;
+	}
+
+	public void SetMapData(GameObject mapData)
+	{
+		this.mapData = mapData;
 	}
 
 	

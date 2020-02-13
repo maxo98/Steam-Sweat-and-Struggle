@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileMovements : MonoBehaviour
 {
 	[SerializeField]
-	private float speed = 2500;
+	private float speed = 500;
 
 	[SerializeField]
 	private float direction = 1;
@@ -18,14 +18,14 @@ public class ProjectileMovements : MonoBehaviour
     {
 		body = GetComponent<Rigidbody2D>();
 		collider2d = GetComponent<Collider2D>();
-		body.AddForce(transform.right * speed * direction);
+		body.AddForce(transform.right * speed * direction, ForceMode2D.Impulse);
 	}
 
     // Update is called once per frame
     void Update()
     {
 		
-		//transform.Translate(direction * Time.deltaTime * speed * body.velocity.x, body.velocity.y, 0);
+		
 	}
 
 	public void setThrowDirection(float throwDirection)
@@ -33,9 +33,12 @@ public class ProjectileMovements : MonoBehaviour
 		direction = throwDirection;
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter2D(Collider2D other)
 	{
-		body.velocity = new Vector2(0, 0);
+		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "platforms" || other.gameObject.tag == "Characters")
+		{
+			Destroy(gameObject);
+		}
 	}
 	
 }

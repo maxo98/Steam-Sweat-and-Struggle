@@ -15,7 +15,7 @@ public class MapSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        objects = GameObject.FindGameObjectsWithTag("Wall");
+        objects = GameObject.FindGameObjectsWithTag("Positions");
         Top = Bottom = objects[0].transform.position.y;
         Left = Right = objects[0].transform.position.x;
         foreach (GameObject g in objects)
@@ -37,8 +37,6 @@ public class MapSettings : MonoBehaviour
                 Right = g.transform.position.x;
             }
         }
-
-        Debug.Log(Top + " " + Bottom + " " + Left + " " + Right);
     }
 
     // Update is called once per frame

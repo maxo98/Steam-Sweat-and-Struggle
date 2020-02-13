@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Saw
   - Wall
+  - Positions
+  - platforms
+  - Characters
   layers:
   - Default
   - TransparentFX

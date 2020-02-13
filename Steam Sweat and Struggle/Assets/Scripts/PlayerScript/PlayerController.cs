@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerOneController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
 
     //speed and jumpSpeed 
@@ -12,6 +12,8 @@ public class PlayerOneController : MonoBehaviour
     private float jumpForce = 110.0f;
     [SerializeField]
     private float fallSpeed = -70.0f;
+    [SerializeField]
+    private float offsetProjectile = 5.0f;
 
     //inputs
     private float HInput;
@@ -43,7 +45,7 @@ public class PlayerOneController : MonoBehaviour
 
 	[SerializeField]
 	private GameObject projectilePrefab;
-	private float Look = 1;
+	private float look = 1;
 
 
 	private float throwDirectionX = 0;
@@ -61,9 +63,9 @@ public class PlayerOneController : MonoBehaviour
     void Update()
     {
 		if (HInput < -0.01)
-			Look = -1;
+			look = -1;
 		if (HInput > 0.01)
-			Look = 1;
+			look = 1;
         Move();
         Throw();
         CheckIfGrounded();
@@ -144,7 +146,8 @@ public class PlayerOneController : MonoBehaviour
 	}
     private void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, new Vector3(transform.position.x + throwDirectionX * 5, transform.position.y, 0), projectilePrefab.transform.rotation);
+        GameObject projectile = Instantiate(projectilePrefab, new Vector3(transform.position.x + throwDirectionX * offsetProjectile, transform.position.y, 0), projectilePrefab.transform.rotation);
+        projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
         ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
         scriptProjectile.setThrowDirection(throwDirectionX);
         Teleportation scriptTel = projectile.GetComponent<Teleportation>();
