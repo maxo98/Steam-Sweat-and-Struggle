@@ -1263,6 +1263,16 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: dashSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: dashRate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4398442044822706378, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}
       propertyPath: m_TagString

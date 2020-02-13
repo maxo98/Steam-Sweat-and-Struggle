@@ -129,12 +129,10 @@ MonoBehaviour:
   speed: 30
   jumpForce: 110
   fallSpeed: -70
-  throwSpeed: 5
+  dashSpeed: 500
   fallMultiplier: 20
   lowJumpMultiplier: 40
   rememberGroundedFor: 0
-  fireRate: 1
-  nextFire: 0
   groundChecker: {fileID: 5391240805286782411}
   groundCheckerRadius: 1
   groundLayer:
@@ -142,6 +140,12 @@ MonoBehaviour:
     m_Bits: 256
   projectilePrefab: {fileID: 1925421383955953965, guid: 105cab8e2c10eab628599e75a6b36ae7,
     type: 3}
+  offsetProjectileX: 5
+  offsetProjectileY: 6.5
+  fireRate: 1
+  nextFire: 0
+  dashRate: 1
+  nextDash: 0
 --- !u!114 &5648709717810752015
 MonoBehaviour:
   m_ObjectHideFlags: 0
