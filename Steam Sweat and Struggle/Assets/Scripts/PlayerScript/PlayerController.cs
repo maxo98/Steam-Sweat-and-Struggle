@@ -152,4 +152,10 @@ public class PlayerController : MonoBehaviour
         scriptProjectile.setThrowDirection(throwDirectionX);
         Teleportation scriptTel = projectile.GetComponent<Teleportation>();
     }
+
+    public bool GetIsGrounded()
+    {
+        return isGrounded;
+    }
+
 }

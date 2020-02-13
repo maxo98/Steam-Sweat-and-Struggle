@@ -10,20 +10,13 @@ public class anim : MonoBehaviour
     private float HInput;
     private bool JInput;
 
-    [SerializeField]
-    private Transform groundChecker;
-    [SerializeField]
-    private float groundCheckerRadius = 1f;
-    [SerializeField]
-    private LayerMask groundLayer;
-
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetFloat("look", 1f);
-        PlayerController control = gameObject.GetComponent<PlayerController>();
+        
     }
 
     // Update is called once per frame
@@ -47,15 +40,5 @@ public class anim : MonoBehaviour
         animator.SetFloat("speed", System.Math.Abs(body.velocity.x));
         animator.SetBool("isGrounded", control.GetIsGrounded());
 
-        /*Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
-
-        if (collider != null)
-        {
-            animator.SetBool("isGrounded", true);
-        }
-        else
-        {
-            animator.SetBool("isGrounded", false);
-        }*/
     }
 }
