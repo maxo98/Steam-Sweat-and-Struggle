@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    [SerializeField]
+    private int playerNumber;
+
     //speed and jumpSpeed 
     [SerializeField]
     private float speed = 50.0f;
@@ -20,8 +23,7 @@ public class PlayerController : MonoBehaviour
     private float offsetProjectile = 5.0f;
 
     //inputs
-    private float HInput;
-    private bool JInput;
+    private PlayerInput inputs;
 
     //jump condition
     [SerializeField]
@@ -75,15 +77,17 @@ public class PlayerController : MonoBehaviour
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
+        inputs = GetComponent<PlayerInput>();
+        inputs.SetInputs(1);
         nextFire = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-		if (HInput < -0.01)
+		if (inputs.GetHorizontalMovement() < -0.01)
 			look = -1;
-		if (HInput > 0.01)
+		if (inputs.GetHorizontalMovement() > 0.01)
 			look = 1;
         Move();
         Throw();
@@ -97,19 +101,15 @@ public class PlayerController : MonoBehaviour
     //movement methode
     private void Move()
     {
-        HInput = Input.GetAxis("HorizontalPlayerOne");
-
         //moving the character on the X axis
-        float fSpd = (Input.GetAxis("VerticalPlayerOne")<0)?fastFallSpeed:fallSpeed;
-        body.velocity = new Vector2(body.velocity.x*3/4 + (HInput * speed)*1/4, Mathf.Max(body.velocity.y, fSpd));
-
+        float fSpd = (inputs.GetVerticalMovement()<0)?fastFallSpeed:fallSpeed;
+        body.velocity = new Vector2(body.velocity.x*3/4 + (inputs.GetHorizontalMovement() * speed)*1/4, Mathf.Max(body.velocity.y, fSpd));
     }
 
     //Jump methode
     private void Jump()
     {
-        JInput = Input.GetButton("JumpPlayerOne");
-        if (JInput) {
+        if (inputs.GetJumpPressed()) {
             if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4 && !Input.GetButton("JumpPlayerOne"))
+        if (body.velocity.y > -4 && !inputs.GetJump())
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -188,12 +188,12 @@ public class PlayerController : MonoBehaviour
     private void Throw()
 	{
 
-		if (HInput < -0.01)
+		if (inputs.GetHorizontalMovement() < -0.01)
 			throwDirectionX = -1;
-		if (HInput > 0.01)
+		if (inputs.GetHorizontalMovement() > 0.01)
 			throwDirectionX = 1;
         
-		if (Input.GetButton("FirePlayerOne") && Time.time>nextFire)
+		if (inputs.GetFire() && Time.time>nextFire)
 		{
 			
             nextFire = Time.time + fireRate;

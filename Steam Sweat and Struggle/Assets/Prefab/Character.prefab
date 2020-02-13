@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 5648709717810752015}
   - component: {fileID: 3280055261261386098}
   - component: {fileID: 388022540097613456}
+  - component: {fileID: 7441057732037345796}
   m_Layer: 0
   m_Name: Character
   m_TagString: Characters
@@ -228,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce6b0ea139a69649911995c09d58910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 0
   speed: 50
   wallJumpForce: 20
   jumpForce: 110
@@ -313,3 +315,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 8}
   m_EdgeRadius: 0
+--- !u!114 &7441057732037345796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611065138166159548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
