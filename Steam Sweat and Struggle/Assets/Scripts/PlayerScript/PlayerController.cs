@@ -24,8 +24,11 @@ public class PlayerController : MonoBehaviour
     private bool JInput;
 
     //jump condition
+    [SerializeField]
     private bool isGrounded = false;
+    [SerializeField]
     private bool isOnLeftWall = false;
+    [SerializeField]
     private bool isOnRightWall = false;
     private float lastTimeGrounded;
     private float lastTimeOnWall;

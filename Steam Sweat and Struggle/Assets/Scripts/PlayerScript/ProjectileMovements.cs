@@ -37,6 +37,10 @@ public class ProjectileMovements : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "platforms" || other.gameObject.tag == "Characters")
 		{
+			if (other.gameObject.tag == "Characters") {
+				//Character dies
+				Destroy(other.gameObject);
+			}
 			Destroy(gameObject);
 		}
 	}
