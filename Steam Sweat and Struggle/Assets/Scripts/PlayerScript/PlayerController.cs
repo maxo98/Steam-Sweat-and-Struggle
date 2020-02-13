@@ -7,11 +7,15 @@ public class PlayerController : MonoBehaviour
 
     //speed and jumpSpeed 
     [SerializeField]
-    private float speed = 30.0f;
+    private float speed = 50.0f;
+    [SerializeField]
+    private float wallJumpForce = 20.0f;
     [SerializeField]
     private float jumpForce = 110.0f;
     [SerializeField]
     private float fallSpeed = -70.0f;
+    [SerializeField]
+    private float fastFallSpeed = -140.0f;
     [SerializeField]
     private float offsetProjectile = 5.0f;
 
@@ -21,13 +25,18 @@ public class PlayerController : MonoBehaviour
 
     //jump condition
     private bool isGrounded = false;
+    private bool isOnLeftWall = false;
+    private bool isOnRightWall = false;
     private float lastTimeGrounded;
+    private float lastTimeOnWall;
     [SerializeField]
     private float fallMultiplier = 20.0f;
     [SerializeField]
     private float lowJumpMultiplier = 40f;
     [SerializeField]
-    private float rememberGroundedFor = 0f;
+    private float rememberOnWallFor = 0.5f;
+    [SerializeField]
+    private float rememberGroundedFor = 0.5f;
     [SerializeField]
     private float fireRate = 1f;
 
@@ -37,11 +46,18 @@ public class PlayerController : MonoBehaviour
     //hitbox components
     private Rigidbody2D body;
     [SerializeField]
-    private Transform groundChecker;
-    [SerializeField]
     private float groundCheckerRadius = 1f;
     [SerializeField]
     private LayerMask groundLayer;
+
+    [SerializeField]
+    private Transform groundChecker;
+    [SerializeField]
+    private Transform leftWallChecker;
+    [SerializeField]
+    private Transform rightWallChecker;
+    [SerializeField]
+    private float wallCheckerRadius = 2f;
 
 	[SerializeField]
 	private GameObject projectilePrefab;
@@ -69,10 +85,10 @@ public class PlayerController : MonoBehaviour
         Move();
         Throw();
         CheckIfGrounded();
+        CheckIfOnWall();
         BetterJump();
         Jump();
-        
-        
+    
     }
 
     //movement methode
@@ -81,21 +97,27 @@ public class PlayerController : MonoBehaviour
         HInput = Input.GetAxis("HorizontalPlayerOne");
 
         //moving the character on the X axis
-        body.velocity = new Vector2(HInput * speed, body.velocity.y);
+        float fSpd = (Input.GetAxis("VerticalPlayerOne")<0)?fastFallSpeed:fallSpeed;
+        body.velocity = new Vector2(body.velocity.x*3/4 + (HInput * speed)*1/4, Mathf.Max(body.velocity.y, fSpd));
 
-        if (body.velocity.y < fallSpeed)
-        {
-            body.velocity = new Vector2(body.velocity.x,fallSpeed);
-        }
     }
 
     //Jump methode
     private void Jump()
     {
         JInput = Input.GetButton("JumpPlayerOne");
-        if (Input.GetButton("JumpPlayerOne") && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
-        {
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
+        if (JInput) {
+            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+            {
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+            }else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+                
+                body.velocity = new Vector2(wallJumpForce*5, jumpForce);
+            }else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+                body.velocity = new Vector2(-wallJumpForce*5, jumpForce);
+            }
         }
         
     }
@@ -126,6 +148,37 @@ public class PlayerController : MonoBehaviour
                 lastTimeGrounded = Time.time;
             }
             isGrounded = false;
+        }
+    }
+
+    private void CheckIfOnWall()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(leftWallChecker.position, wallCheckerRadius, groundLayer);
+        if (collider != null)
+        {
+            isOnLeftWall = true;
+        }
+        else
+        {
+            if (isOnLeftWall)
+            {
+                lastTimeOnWall = Time.time;
+            }
+            isOnLeftWall = false;
+        }
+        
+        collider = Physics2D.OverlapCircle(rightWallChecker.position, wallCheckerRadius, groundLayer);
+        if (collider != null)
+        {
+            isOnRightWall = true;
+        }
+        else
+        {
+            if (isOnRightWall)
+            {
+                lastTimeOnWall = Time.time;
+            }
+            isOnRightWall = false;
         }
     }
 
