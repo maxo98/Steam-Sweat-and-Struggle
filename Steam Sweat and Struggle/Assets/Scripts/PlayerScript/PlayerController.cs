@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    [SerializeField]
+    private int playerNumber;
+
     //speed and jumpSpeed 
     [SerializeField]
     private float speed = 30.0f;
@@ -16,8 +19,7 @@ public class PlayerController : MonoBehaviour
     private float offsetProjectile = 5.0f;
 
     //inputs
-    private float HInput;
-    private bool JInput;
+    private PlayerInput inputs;
 
     //jump condition
     private bool isGrounded = false;
@@ -56,15 +58,17 @@ public class PlayerController : MonoBehaviour
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
+        inputs = GetComponent<PlayerInput>();
+        inputs.SetInputs(1);
         nextFire = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-		if (HInput < -0.01)
+		if (inputs.GetHorizontalMovement() < -0.01)
 			look = -1;
-		if (HInput > 0.01)
+		if (inputs.GetHorizontalMovement() > 0.01)
 			look = 1;
         Move();
         Throw();
@@ -78,10 +82,8 @@ public class PlayerController : MonoBehaviour
     //movement methode
     private void Move()
     {
-        HInput = Input.GetAxis("HorizontalPlayerOne");
-
         //moving the character on the X axis
-        body.velocity = new Vector2(HInput * speed, body.velocity.y);
+        body.velocity = new Vector2(inputs.GetHorizontalMovement() * speed, body.velocity.y);
 
         if (body.velocity.y < fallSpeed)
         {
@@ -92,8 +94,8 @@ public class PlayerController : MonoBehaviour
     //Jump methode
     private void Jump()
     {
-        JInput = Input.GetButton("JumpPlayerOne");
-        if (Input.GetButton("JumpPlayerOne") && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
+        JInput = Input.GetButton("Jump1");
+        if (Input.GetButton("Jump1") && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
         {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
         }
@@ -102,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4 && !Input.GetButton("JumpPlayerOne"))
+        if (body.velocity.y > -4 && !Input.GetButton("Jump1"))
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -137,7 +139,7 @@ public class PlayerController : MonoBehaviour
 		if (HInput > 0.01)
 			throwDirectionX = 1;
         
-		if (Input.GetButton("FirePlayerOne") && Time.time>nextFire)
+		if (Input.GetButton("Fire1") && Time.time>nextFire)
 		{
 			
             nextFire = Time.time + fireRate;
