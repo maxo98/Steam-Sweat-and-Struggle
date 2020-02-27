@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField]
-    private int playerNumber;
+    private int idPlayer;
 
     //speed and jumpSpeed 
     [SerializeField]
@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour
     private float offsetProjectile = 5.0f;
 
     //inputs
-    private PlayerInput inputs;
+    private InputManager inputs;
+    private MapSettings mapSettings;
 
     //jump condition
     [SerializeField]
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
-        inputs = GetComponent<PlayerInput>();
+        inputs = GetComponent<InputManager>();
         inputs.SetInputs(1);
         nextFire = Time.time;
     }
@@ -109,7 +110,7 @@ public class PlayerController : MonoBehaviour
     //Jump methode
     private void Jump()
     {
-        if (inputs.GetJumpPressed()) {
+        if (inputs.GetAPressed()) {
             if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
@@ -127,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4 && !inputs.GetJump())
+        if (body.velocity.y > -4 && !inputs.GetA())
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -193,7 +194,7 @@ public class PlayerController : MonoBehaviour
 		if (inputs.GetHorizontalMovement() > 0.01)
 			throwDirectionX = 1;
         
-		if (inputs.GetFire() && Time.time>nextFire)
+		if (inputs.GetX() && Time.time>nextFire)
 		{
 			
             nextFire = Time.time + fireRate;

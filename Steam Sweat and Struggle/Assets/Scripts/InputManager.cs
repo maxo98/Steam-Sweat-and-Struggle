@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    private int playerNumber;
+    private int idController;
 
     //axis names
     private string horizontalMovementAxis;
@@ -13,21 +13,21 @@ public class PlayerInput : MonoBehaviour
     private string verticalLookAxis;
 
     //action buttons
-    private string jump;
-    private string fire;
-    private string dash;
+    private string A;
+    private string X;
+    private string LB;
 
     public void SetInputs(int number)
     {
-        playerNumber = number;
-        horizontalMovementAxis = "HorizontalMovement" + playerNumber;
-        verticalMovementAxis = "VerticalMovement" + playerNumber;
-        horizontalLookAxis = "HorizontalLook" + playerNumber;
-        verticalLookAxis = "VerticalLook" + playerNumber;
+        idController = number;
+        horizontalMovementAxis = "HorizontalMovement" + idController;
+        verticalMovementAxis = "VerticalMovement" + idController;
+        horizontalLookAxis = "HorizontalLook" + idController;
+        verticalLookAxis = "VerticalLook" + idController;
 
-        jump = "Jump" + playerNumber;
-        fire = "Fire" + playerNumber;
-        dash = "Dash" + playerNumber;
+        A = "A" + idController;
+        X = "X" + idController;
+        LB = "LB" + idController;
     }
 
 
@@ -63,31 +63,31 @@ public class PlayerInput : MonoBehaviour
         return Input.GetAxis(verticalLookAxis);
     }
 
-    public bool GetJumpPressed()
+    public bool GetAPressed()
     {
-        return Input.GetButtonDown(jump);
+        return Input.GetButtonDown(A);
     }
 
-    public bool GetJump()
+    public bool GetA()
     {
-        return Input.GetButton(jump);
+        return Input.GetButton(A);
     }
 
 
 
-    public bool GetFirePressed()
+    public bool GetXPressed()
     {
-        return Input.GetButtonDown(fire);
+        return Input.GetButtonDown(X);
     }
 
-    public bool GetFire()
+    public bool GetX()
     {
-        return Input.GetButton(fire);
+        return Input.GetButton(X);
     }
 
-    public bool GetDash()
+    public bool GetLB()
     {
-        return Input.GetButton(dash);
+        return Input.GetButton(LB);
     }
 
 
