@@ -5,41 +5,60 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-	//speed and jumpSpeed 
-	[SerializeField]
-	private float speed = 30.0f;
-	[SerializeField]
-	private float jumpForce = 110.0f;
-	[SerializeField]
-	private float fallSpeed = -70.0f;
-	//[SerializeField]
-	private float dashSpeed = /*110f;*/ 500f;
+    [SerializeField]
+    private int idPlayer;
 
-	//inputs
-	private float HInput;
-	private float VInput;
-	private bool JInput;
-	private float VGazeInput;
-	private float HGazeInput;
+    //speed and jumpSpeed 
+    [SerializeField]
+    private float speed = 50.0f;
+    [SerializeField]
+    private float wallJumpForce = 20.0f;
+    [SerializeField]
+    private float jumpForce = 110.0f;
+    [SerializeField]
+    private float fallSpeed = -70.0f;
+    [SerializeField]
+    private float fastFallSpeed = -140.0f;
+    [SerializeField]
+    private float offsetProjectile = 5.0f;
 
-	//jump condition
-	private bool isGrounded = false;
-	private float lastTimeGrounded;
-	[SerializeField]
-	private float fallMultiplier = 20.0f;
-	[SerializeField]
-	private float lowJumpMultiplier = 40f;
-	[SerializeField]
-	private float rememberGroundedFor = 0f;
+    //inputs
+    private InputManager inputs;
+    private MapSettings mapSettings;
 
-	//hitbox components
-	private Rigidbody2D body;
-	[SerializeField]
-	private Transform groundChecker;
-	[SerializeField]
-	private float groundCheckerRadius = 1f;
-	[SerializeField]
-	private LayerMask groundLayer;
+    //jump condition
+    [SerializeField]
+    private bool isGrounded = false;
+    [SerializeField]
+    private bool isOnLeftWall = false;
+    [SerializeField]
+    private bool isOnRightWall = false;
+    private float lastTimeGrounded;
+    private float lastTimeOnWall;
+    [SerializeField]
+    private float fallMultiplier = 20.0f;
+    [SerializeField]
+    private float lowJumpMultiplier = 40f;
+    [SerializeField]
+    private float rememberOnWallFor = 0.5f;
+    [SerializeField]
+    private float rememberGroundedFor = 0.5f;
+
+    //hitbox components
+    private Rigidbody2D body;
+    [SerializeField]
+    private float groundCheckerRadius = 1f;
+    [SerializeField]
+    private LayerMask groundLayer;
+
+    [SerializeField]
+    private Transform groundChecker;
+    [SerializeField]
+    private Transform leftWallChecker;
+    [SerializeField]
+    private Transform rightWallChecker;
+    [SerializeField]
+    private float wallCheckerRadius = 2f;
 
 	//projectile & dash components
 	[SerializeField]
@@ -63,149 +82,178 @@ public class PlayerController : MonoBehaviour
 	private float gazeDirectionY = 0;
 	private float gazeDirectionX = 1;
 
+    private float dashSpeed = 500;
+
 
 	bool dashing = false;
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		//get the components
-		body = GetComponent<Rigidbody2D>();
-		nextFire = Time.time;
-	}
+    // Start is called before the first frame update
+    void Start()
+    {
+        //get the components
+        body = GetComponent<Rigidbody2D>();
+        inputs = GetComponent<InputManager>();
+        inputs.SetInputs(1);
+        nextFire = Time.time;
+    }
 
-	// Update is called once per frame
-	void Update()
-	{
-		Move();
-		CheckIfGrounded();
-		BetterJump();
-		Jump();
-		Throw();
-		
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        Move();
+        CheckIfGrounded();
+        CheckIfOnWall();
+        BetterJump();
+        Jump();
+        Throw();
+    
+    }
 
-	//movement method
-	private void Move()
-	{
-		HInput = Input.GetAxis("HorizontalPlayerOne");
+    //movement methode
+    private void Move()
+    {
+        //moving the character on the X axis
+        float fSpd = (inputs.GetVerticalMovement()<0)?fastFallSpeed:fallSpeed;
+        body.velocity = new Vector2(body.velocity.x*3/4 + (inputs.GetHorizontalMovement() * speed)*1/4, Mathf.Max(body.velocity.y, fSpd));
+    }
 
-		//moving the character on the X axis
-		body.velocity = new Vector2(HInput * speed, body.velocity.y);
+    //Jump methode
+    private void Jump()
+    {
+        if (inputs.GetAPressed()) {
+            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+            {
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+            }else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+                
+                body.velocity = new Vector2(wallJumpForce*5, jumpForce);
+            }else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+                body.velocity = new Vector2(-wallJumpForce*5, jumpForce);
+            }
+        }
+        
+    }
 
-		if (body.velocity.y < fallSpeed)
-		{
-			body.velocity = new Vector2(body.velocity.x, fallSpeed);
-		}
-	}
+    private void BetterJump()
+    {
+        if (body.velocity.y > -4 && !inputs.GetA())
+        {
+            body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
+        } else {
+            body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
+        }
 
-	//Jump method
-	private void Jump()
-	{
-		JInput = Input.GetButton("JumpPlayerOne");
-		if (Input.GetButton("JumpPlayerOne") && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
-		{
-			body.velocity = new Vector2(body.velocity.x, jumpForce);
-		}
+    }
 
-	}
+    private void CheckIfGrounded()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
 
-	private void BetterJump()
-	{
-		if (body.velocity.y > -4 && !Input.GetButton("JumpPlayerOne"))
-		{
-			body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
-		}
-		else
-		{
-			body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
-		}
+        if (collider != null)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                lastTimeGrounded = Time.time;
+            }
+            isGrounded = false;
+        }
+    }
 
-	}
-
-	private void CheckIfGrounded()
-	{
-		Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
-
-		if (collider != null)
-		{
-			isGrounded = true;
-		}
-		else
-		{
-			if (isGrounded)
-			{
-				lastTimeGrounded = Time.time;
-			}
-			isGrounded = false;
-		}
-	}
+    private void CheckIfOnWall()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(leftWallChecker.position, wallCheckerRadius, groundLayer);
+        if (collider != null)
+        {
+            isOnLeftWall = true;
+        }
+        else
+        {
+            if (isOnLeftWall)
+            {
+                lastTimeOnWall = Time.time;
+            }
+            isOnLeftWall = false;
+        }
+        
+        collider = Physics2D.OverlapCircle(rightWallChecker.position, wallCheckerRadius, groundLayer);
+        if (collider != null)
+        {
+            isOnRightWall = true;
+        }
+        else
+        {
+            if (isOnRightWall)
+            {
+                lastTimeOnWall = Time.time;
+            }
+            isOnRightWall = false;
+        }
+    }
 
 	private void Throw()
 	{
 		//throw inputs : 
 		//vertical
-		float VGazeInput = Input.GetAxis("VerticalGazePlayerOne");
+		float VGazeInput = inputs.GetHorizontalLook();
 		//horizontal
-		float HGazeInput = Input.GetAxis("HorizontalGazePlayerOne");
+		float HGazeInput = inputs.GetVerticalLook();
 
 
 		float throwDirectionTmp = gazeDirectionX;
 
-		if (!Input.GetButton("HorizontalGazePlayerOne"))
-			gazeDirectionX = 0;
-		else if (HGazeInput < -0.01)
+		if (HGazeInput < -0.1)
 			gazeDirectionX = -1;
-		else if (HGazeInput > 0.01)
+		else if (HGazeInput > 0.1)
 			gazeDirectionX = 1;
 
-		if (!Input.GetButton("VerticalGazePlayerOne"))
-			gazeDirectionY = 0;
-		else if (VGazeInput < -0.01)
+		if (VGazeInput < -0.1)
 			gazeDirectionY = -1;
-		else if (VGazeInput > 0.01)
+		else if (VGazeInput > 0.1)
 			gazeDirectionY = 1;
 
 		if (gazeDirectionX == 0 && gazeDirectionY == 0)
 		{
 			gazeDirectionX = throwDirectionTmp;
-			if (HInput < -0.01)
+			if (inputs.GetHorizontalMovement() < -0.1)
 				gazeDirectionX = -1;
-			else if (HInput > 0.01)
+			else if (inputs.GetHorizontalMovement() > 0.1)
 				gazeDirectionX = 1;
 		}
 
 		SetGazeAngle();
 
-		if (Input.GetButton("FirePlayerOne") && Time.time > nextFire)
+		if (inputs.GetLT() && Time.time > nextFire)
 		{
 			nextFire = Time.time + fireRate;
 			Shoot();
 		}
 
-		if (Input.GetButton("DashPlayerOne") && Time.time > nextDash)
+		if (inputs.GetRT() && Time.time > nextDash)
 		{
 			nextDash = Time.time + dashRate;
 			Dash();
 		}
 	}
 
-	private void Shoot()
+    private void Shoot()
 	{
 		//instanciate the projectile
 		GameObject projectile = Instantiate(
 						projectilePrefab,
 						new Vector3(transform.position.x + gazeDirectionX + offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
 						projectilePrefab.transform.rotation);
-
 		projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
 		ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
 		scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
-		Teleportation scriptTel = projectile.GetComponent<Teleportation>();
 
 	}
 
-	
 	private void Dash()
 	{
 		body.velocity = (new Vector2(0, 0));
@@ -222,12 +270,11 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-
 	//sets the character's gaze direction angle in radians
 	public void SetGazeAngle()
 	{
 		switch (gazeDirectionY)
-		{
+        {
 			case 0:
 				switch (gazeDirectionX)
 				{
