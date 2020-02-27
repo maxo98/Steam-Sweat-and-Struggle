@@ -65,7 +65,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool GetJumpPressed()
     {
-        return Input.GetButton(jump);
+        return Input.GetButtonDown(jump);
     }
 
     public bool GetJump()
