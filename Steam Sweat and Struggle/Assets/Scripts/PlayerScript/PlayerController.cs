@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float offsetProjectileY = 6.5f;
 	[SerializeField]
-	private float fireRate = 1f;
+	private float fireRate = 0.2f;
 	[SerializeField]
 	private float nextFire;
 	//[SerializeField]
@@ -79,8 +79,8 @@ public class PlayerController : MonoBehaviour
 
 	//where the character is looking
 	private float gazeDirectionAngle;
-	private float gazeDirectionY = 0;
-	private float gazeDirectionX = 1;
+	private int gazeDirectionY = 0;
+	private int gazeDirectionX = 1;
 
     private float dashSpeed = 500;
 
@@ -212,22 +212,26 @@ public class PlayerController : MonoBehaviour
 	{
 		//throw inputs : 
 		//vertical
-		float VGazeInput = inputs.GetHorizontalLook();
+		float HGazeInput = inputs.GetHorizontalLook();
 		//horizontal
-		float HGazeInput = inputs.GetVerticalLook();
+		float VGazeInput = inputs.GetVerticalLook();
 
 
-		float throwDirectionTmp = gazeDirectionX;
+		int throwDirectionTmp = gazeDirectionX;
 
-		if (HGazeInput < -0.1)
+		if (HGazeInput < -0.5)
 			gazeDirectionX = -1;
-		else if (HGazeInput > 0.1)
+		else if (HGazeInput > 0.5)
 			gazeDirectionX = 1;
+        else
+            gazeDirectionX = 0;
 
-		if (VGazeInput < -0.1)
+		if (VGazeInput > 0.5)
 			gazeDirectionY = -1;
-		else if (VGazeInput > 0.1)
+		else if (VGazeInput < -0.5)
 			gazeDirectionY = 1;
+        else
+            gazeDirectionY = 0;
 
 		if (gazeDirectionX == 0 && gazeDirectionY == 0)
 		{
@@ -236,8 +240,10 @@ public class PlayerController : MonoBehaviour
 				gazeDirectionX = -1;
 			else if (inputs.GetHorizontalMovement() > 0.1)
 				gazeDirectionX = 1;
+            else if (gazeDirectionX==0)
+				gazeDirectionX = 1;
 		}
-
+        Debug.Log(gazeDirectionX);
 		SetGazeAngle();
 
 		if (inputs.GetRT() && Time.time > nextFire)
@@ -257,7 +263,7 @@ public class PlayerController : MonoBehaviour
 	{
 		//instanciate the projectile
 		GameObject projectile = Instantiate(projectilePrefab,
-						new Vector3(transform.position.x + gazeDirectionX + offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
+						new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
 						projectilePrefab.transform.rotation);
 		projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
 		ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
