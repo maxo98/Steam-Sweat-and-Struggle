@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
 
 	bool dashing = false;
+    bool lastJumped = false;
 
     // Start is called before the first frame update
     void Start()
@@ -120,25 +121,36 @@ public class PlayerController : MonoBehaviour
     //Jump methode
     private void Jump()
     {
-        if (inputs.GetAPressed()) {
-            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
-            {
-                body.velocity = new Vector2(body.velocity.x, jumpForce);
-            }else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
-            {
-                
-                body.velocity = new Vector2(wallJumpForce*5, jumpForce);
-            }else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
-            {
-                body.velocity = new Vector2(-wallJumpForce*5, jumpForce);
+
+        if (inputs.GetLT())
+        {
+            if (!lastJumped) { 
+                if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+                {
+                    body.velocity = new Vector2(body.velocity.x, jumpForce);
+                }
+                else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+                {
+
+                    body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
+                }
+                else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+                {
+                    body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
+                }
             }
+            lastJumped = true;
+            
+        } else
+        {
+            lastJumped = false;
         }
         
     }
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4 && !inputs.GetA())
+        if (body.velocity.y > -4 && !inputs.GetLT())
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -228,13 +240,13 @@ public class PlayerController : MonoBehaviour
 
 		SetGazeAngle();
 
-		if (inputs.GetLT() && Time.time > nextFire)
+		if (inputs.GetRT() && Time.time > nextFire)
 		{
 			nextFire = Time.time + fireRate;
 			Shoot();
 		}
 
-		if (inputs.GetRT() && Time.time > nextDash)
+		if (inputs.GetRBPressed() && Time.time > nextDash)
 		{
 			nextDash = Time.time + dashRate;
 			Dash();
@@ -244,8 +256,7 @@ public class PlayerController : MonoBehaviour
     private void Shoot()
 	{
 		//instanciate the projectile
-		GameObject projectile = Instantiate(
-						projectilePrefab,
+		GameObject projectile = Instantiate(projectilePrefab,
 						new Vector3(transform.position.x + gazeDirectionX + offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
 						projectilePrefab.transform.rotation);
 		projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());

@@ -17,6 +17,8 @@ public class InputManager : MonoBehaviour
     private string B;
     private string LT;
     private string RT;
+    private string LB;
+    private string RB;
 
     public void SetInputs(int number)
     {
@@ -30,6 +32,8 @@ public class InputManager : MonoBehaviour
         B = "B" + idController;
         LT = "LT" + idController;
         RT = "RT" + idController;
+        LB = "LB" + idController;
+        RB = "RB" + idController;
     }
 
 
@@ -87,14 +91,22 @@ public class InputManager : MonoBehaviour
 
     public bool GetLT()
     {
-        return Input.GetButton(LT);
+        return Input.GetAxis(LT) > 0.1;
     }
 
     public bool GetRT()
     {
-        return Input.GetButton(RT);
+        return Input.GetAxis(RT) > 0.1;
     }
 
+    public bool GetLBPressed()
+    {
+        return Input.GetButtonDown(LB);
+    }
 
+    public bool GetRBPressed()
+    {
+        return Input.GetButtonDown(RB);
+    }
 
 }
