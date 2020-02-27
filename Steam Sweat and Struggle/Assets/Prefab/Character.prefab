@@ -129,7 +129,6 @@ MonoBehaviour:
   speed: 30
   jumpForce: 110
   fallSpeed: -70
-  dashSpeed: 500
   fallMultiplier: 20
   lowJumpMultiplier: 40
   rememberGroundedFor: 0
@@ -146,6 +145,7 @@ MonoBehaviour:
   nextFire: 0
   dashRate: 1
   nextDash: 0
+  dashDistance: 15
 --- !u!114 &5648709717810752015
 MonoBehaviour:
   m_ObjectHideFlags: 0

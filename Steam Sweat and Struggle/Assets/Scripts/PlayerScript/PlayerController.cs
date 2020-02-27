@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
 	private float jumpForce = 110.0f;
 	[SerializeField]
 	private float fallSpeed = -70.0f;
-	[SerializeField]
-	private float dashSpeed = 400f;
+	//[SerializeField]
+	private float dashSpeed = /*110f;*/ 500f;
 
 	//inputs
 	private float HInput;
@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
 	private float lowJumpMultiplier = 40f;
 	[SerializeField]
 	private float rememberGroundedFor = 0f;
-
 
 	//hitbox components
 	private Rigidbody2D body;
@@ -53,10 +52,11 @@ public class PlayerController : MonoBehaviour
 	private float fireRate = 1f;
 	[SerializeField]
 	private float nextFire;
-	[SerializeField]
-	public float dashRate = 2f;
-	[SerializeField]
-	public float nextDash;
+	//[SerializeField]
+	private float dashRate = 2f;
+	//[SerializeField]
+	private float nextDash;
+	private float dashDistance = 15f;
 
 	//where the character is looking
 	private float gazeDirectionAngle;
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 	private float gazeDirectionX = 1;
 
 
-
+	bool dashing = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -78,10 +78,11 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		Move();
-		Throw();
 		CheckIfGrounded();
 		BetterJump();
 		Jump();
+		Throw();
+		
 	}
 
 	//movement method
@@ -194,7 +195,7 @@ public class PlayerController : MonoBehaviour
 		//instanciate the projectile
 		GameObject projectile = Instantiate(
 						projectilePrefab,
-						new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
+						new Vector3(transform.position.x + gazeDirectionX + offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
 						projectilePrefab.transform.rotation);
 
 		projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
@@ -204,13 +205,21 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-	/** pas super au point **/
+	
 	private void Dash()
 	{
 		body.velocity = (new Vector2(0, 0));
 
 		//we use cos(angle) and sin(angle) to normalize speed in every direction
-		body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
+		//body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
+
+		//transform.position = Vector2.Lerp(
+		//				new Vector2(transform.position.x, transform.position.y),
+		//				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
+		//				dashSpeed * Time.deltaTime);
+
+		body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+
 	}
 
 
