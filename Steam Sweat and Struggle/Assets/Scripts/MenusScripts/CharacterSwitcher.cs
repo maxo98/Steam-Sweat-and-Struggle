@@ -32,8 +32,6 @@ public class CharacterSwitcher : MonoBehaviour
         inputs = GetComponent<InputManager>();
         inputs.SetInputs(selectionPlayerId);
         Debug.Log(inputs.getIdController());
-        selectionPlayer.SetActive(false);
-
     }
 
     // Update is called once per frame
@@ -41,18 +39,6 @@ public class CharacterSwitcher : MonoBehaviour
     {
         Switcher();
         Confirm();
-    }
-
-    public void activateSelection()
-    {
-        if (inputs.GetAPressed()) {
-            selectionPlayer.SetActive(true);
-            leftArrow.SetActive(true);
-            rightArrow.SetActive(true);
-            character1.SetActive(true);
-            character2.SetActive(false);
-            character3.SetActive(false);
-        }
     }
 
     public void Switcher()
