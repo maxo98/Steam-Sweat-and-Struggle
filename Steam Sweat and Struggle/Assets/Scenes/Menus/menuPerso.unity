@@ -619,6 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionPlayerId: 4
+  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1516706866}
   rightArrow: {fileID: 870248579}
   confirm: {fileID: 610381877}
@@ -747,6 +748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionPlayerId: 2
+  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1545374109}
   rightArrow: {fileID: 1453747653}
   confirm: {fileID: 1767086461}
@@ -875,6 +877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionPlayerId: 3
+  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1140094459}
   rightArrow: {fileID: 1099236904}
   confirm: {fileID: 1774374958}
@@ -1315,6 +1318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionPlayerId: 1
+  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1241106514}
   rightArrow: {fileID: 184213302}
   confirm: {fileID: 1807768573}

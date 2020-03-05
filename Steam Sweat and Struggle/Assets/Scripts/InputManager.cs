@@ -49,6 +49,11 @@ public class InputManager : MonoBehaviour
         
     }
 
+    public int getIdController()
+    {
+        return idController;
+    }
+
     public float GetHorizontalMovement()
     {
         return Input.GetAxis(horizontalMovementAxis);

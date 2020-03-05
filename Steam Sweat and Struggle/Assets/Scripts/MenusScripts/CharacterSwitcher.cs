@@ -9,6 +9,8 @@ public class CharacterSwitcher : MonoBehaviour
     [SerializeField]
     private int selectionPlayerId;
     [SerializeField]
+    private GameObject selectionPlayer;
+    [SerializeField]
     private GameObject leftArrow;
     [SerializeField]
     private GameObject rightArrow;
@@ -28,12 +30,10 @@ public class CharacterSwitcher : MonoBehaviour
     {
         selectionPlayerId = Int32.Parse(this.name.Split('r')[1]);
         inputs = GetComponent<InputManager>();
-        inputs.SetInputs(1);
-        leftArrow.SetActive(true);
-        rightArrow.SetActive(true);
-        character1.SetActive(true);
-        character2.SetActive(false);
-        character3.SetActive(false);
+        inputs.SetInputs(selectionPlayerId);
+        Debug.Log(inputs.getIdController());
+        selectionPlayer.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -43,12 +43,22 @@ public class CharacterSwitcher : MonoBehaviour
         Confirm();
     }
 
+    public void activateSelection()
+    {
+        if (inputs.GetAPressed()) {
+            selectionPlayer.SetActive(true);
+            leftArrow.SetActive(true);
+            rightArrow.SetActive(true);
+            character1.SetActive(true);
+            character2.SetActive(false);
+            character3.SetActive(false);
+        }
+    }
+
     public void Switcher()
     {
-        Debug.Log(inputs.GetHorizontalMovement());
-        if (inputs.GetHorizontalMovement() > 0.02)
+        if (inputs.GetRBPressed())
         {
-            Debug.Log("vers la droite");
             if (character1.activeSelf == true)
             {
                 character1.SetActive(false);
@@ -68,9 +78,8 @@ public class CharacterSwitcher : MonoBehaviour
                 character3.SetActive(false);
             }
         }
-        if(inputs.GetHorizontalMovement() < -0.02)
+        if(inputs.GetLBPressed())
         {
-            Debug.Log("vers la gauche");
             if (character1.activeSelf == true)
             {
                 character1.SetActive(false);
@@ -89,9 +98,7 @@ public class CharacterSwitcher : MonoBehaviour
                 character2.SetActive(true);
                 character3.SetActive(false);
             }
-        }
-        Debug.Log("je fais rien");
-        
+        }        
     }
 
     public void Confirm()
