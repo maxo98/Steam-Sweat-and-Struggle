@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour
     private float fallSpeed = -70.0f;
     [SerializeField]
     private float fastFallSpeed = -140.0f;
-    [SerializeField]
-    private float offsetProjectile = 5.0f;
 
     //inputs
     private InputManager inputs;
