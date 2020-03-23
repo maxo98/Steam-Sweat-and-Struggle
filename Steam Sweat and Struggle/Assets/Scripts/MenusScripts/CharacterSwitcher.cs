@@ -30,8 +30,10 @@ public class CharacterSwitcher : MonoBehaviour
     {
         selectionPlayerId = Int32.Parse(this.name.Split('r')[1]);
         inputs = GetComponent<InputManager>();
-        inputs.SetInputs(selectionPlayerId);
-        Debug.Log(inputs.getIdController());
+        if(!inputs.SetInputs(selectionPlayerId))
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame

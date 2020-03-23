@@ -20,20 +20,34 @@ public class InputManager : MonoBehaviour
     private string LB;
     private string RB;
 
-    public void SetInputs(int number)
+    //controllers 
+    string joystick;
+    string identifier;
+
+    public bool SetInputs(int number)
     {
         idController = number;
-        horizontalMovementAxis = "HorizontalMovement" + idController;
-        verticalMovementAxis = "VerticalMovement" + idController;
-        horizontalLookAxis = "HorizontalLook" + idController;
-        verticalLookAxis = "VerticalLook" + idController;
+        if (number > Input.GetJoystickNames().Length)
+        {
+            return false;
+        }
+        else 
+        { 
+            joystick = Input.GetJoystickNames()[idController - 1];
+            horizontalMovementAxis = "HorizontalMovement" + idController;
+            verticalMovementAxis = "VerticalMovement" + idController;
+            horizontalLookAxis = "HorizontalLook" + idController;
+            verticalLookAxis = "VerticalLook" + idController;
+            foreach(string s in Input.GetJoystickNames()) { Debug.Log(s); }
+            A = "A" + idController;
+            B = "B" + idController;
+            LT = "LT" + idController;
+            RT = "RT" + idController;
+            LB = "LB" + idController;
+            RB = "RB" + idController;
 
-        A = "A" + idController;
-        B = "B" + idController;
-        LT = "LT" + idController;
-        RT = "RT" + idController;
-        LB = "LB" + idController;
-        RB = "RB" + idController;
+            return true;
+        }
     }
 
 
@@ -52,6 +66,11 @@ public class InputManager : MonoBehaviour
     public int getIdController()
     {
         return idController;
+    }
+
+    public string getJoystick()
+    {
+        return joystick;
     }
 
     public float GetHorizontalMovement()
