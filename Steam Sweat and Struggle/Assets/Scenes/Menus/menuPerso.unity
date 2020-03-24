@@ -120,6 +120,80 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &15884803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15884804}
+  - component: {fileID: 15884805}
+  m_Layer: 0
+  m_Name: PlayerInputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &15884804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15884803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 625.3473, y: 296.08868, z: -148.1759}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &15884805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15884803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: -1
+  m_AllowJoining: 1
+  m_JoinBehavior: 0
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 0}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &73420211
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +690,7 @@ GameObject:
   - component: {fileID: 383975986}
   - component: {fileID: 383975991}
   - component: {fileID: 383975990}
+  - component: {fileID: 383975992}
   m_Layer: 0
   m_Name: selectionPlayer4
   m_TagString: Untagged
@@ -635,8 +710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59db3205d66daf4c9e0684b61f0a3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionPlayerId: 4
-  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1516706866}
   rightArrow: {fileID: 870248579}
   confirm: {fileID: 610381877}
@@ -717,6 +790,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idController: 0
+  horizontalMovementAxis: 
+  verticalMovementAxis: 
+  horizontalLookAxis: 
+  verticalLookAxis: 
+  A: 
+  B: 
+  LT: 
+  RT: 
+  LB: 
+  RB: 
+  joystick: 
 --- !u!114 &383975991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,6 +817,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 610381877}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &383975992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383975985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: fd455c0629248f44687e729a14ba3ef1,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Menu
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &411093240
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +862,7 @@ GameObject:
   - component: {fileID: 411093241}
   - component: {fileID: 411093246}
   - component: {fileID: 411093245}
+  - component: {fileID: 411093247}
   m_Layer: 0
   m_Name: selectionPlayer2
   m_TagString: Untagged
@@ -765,8 +882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59db3205d66daf4c9e0684b61f0a3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionPlayerId: 2
-  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1545374109}
   rightArrow: {fileID: 1453747653}
   confirm: {fileID: 1767086461}
@@ -847,6 +962,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idController: 0
+  horizontalMovementAxis: 
+  verticalMovementAxis: 
+  horizontalLookAxis: 
+  verticalLookAxis: 
+  A: 
+  B: 
+  LT: 
+  RT: 
+  LB: 
+  RB: 
+  joystick: 
 --- !u!114 &411093246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,6 +989,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 1767086461}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &411093247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411093240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: fd455c0629248f44687e729a14ba3ef1,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Menu
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &447479460
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +1034,7 @@ GameObject:
   - component: {fileID: 447479461}
   - component: {fileID: 447479466}
   - component: {fileID: 447479465}
+  - component: {fileID: 447479467}
   m_Layer: 0
   m_Name: selectionPlayer3
   m_TagString: Untagged
@@ -895,8 +1054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59db3205d66daf4c9e0684b61f0a3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionPlayerId: 3
-  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1140094459}
   rightArrow: {fileID: 1099236904}
   confirm: {fileID: 1774374958}
@@ -977,6 +1134,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idController: 0
+  horizontalMovementAxis: 
+  verticalMovementAxis: 
+  horizontalLookAxis: 
+  verticalLookAxis: 
+  A: 
+  B: 
+  LT: 
+  RT: 
+  LB: 
+  RB: 
+  joystick: 
 --- !u!114 &447479466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,6 +1161,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 1774374958}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &447479467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447479460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: fd455c0629248f44687e729a14ba3ef1,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Menu
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &484766744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1458,6 @@ GameObject:
   - component: {fileID: 589211742}
   - component: {fileID: 589211744}
   - component: {fileID: 589211746}
-  - component: {fileID: 589211745}
   - component: {fileID: 589211747}
   m_Layer: 0
   m_Name: selectionPlayer1
@@ -1341,26 +1540,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59db3205d66daf4c9e0684b61f0a3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionPlayerId: 1
-  selectionPlayer: {fileID: 0}
   leftArrow: {fileID: 1241106514}
   rightArrow: {fileID: 184213302}
   confirm: {fileID: 1807768573}
   character1: {fileID: 1800236100}
   character2: {fileID: 73420211}
   character3: {fileID: 242093817}
---- !u!114 &589211745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 589211740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &589211746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1388,7 +1573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 527df2cb12c082a4ea05832f2f439857,
+  m_Actions: {fileID: -944628639613478452, guid: fd455c0629248f44687e729a14ba3ef1,
     type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
@@ -1404,7 +1589,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Menu
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &602210144
