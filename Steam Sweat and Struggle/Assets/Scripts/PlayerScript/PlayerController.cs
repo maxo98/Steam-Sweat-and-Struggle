@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
-    [SerializeField]
-    private int idPlayer;
 
     //speed and jumpSpeed 
     [SerializeField]
@@ -19,10 +17,8 @@ public class PlayerController : MonoBehaviour
     private float fallSpeed = -70.0f;
     [SerializeField]
     private float fastFallSpeed = -140.0f;
-
-    //inputs
-    private InputManager inputs;
-    private MapSettings mapSettings;
+    [SerializeField]
+    private float dashSpeed = 500;
 
     //jump condition
     [SerializeField]
@@ -80,9 +76,6 @@ public class PlayerController : MonoBehaviour
 	private int gazeDirectionY = 0;
 	private int gazeDirectionX = 1;
 
-    private float dashSpeed = 500;
-
-
 	bool dashing = false;
     bool lastJumped = false;
 
@@ -91,64 +84,130 @@ public class PlayerController : MonoBehaviour
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
-        inputs = GetComponent<InputManager>();
-        inputs.SetInputs(1);
         nextFire = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
-        Jump();
-        Throw();
+        ResetJump();
     
     }
 
     //movement methode
-    private void Move()
+    void OnMove(InputValue value)
     {
+        Vector2 movements = value.Get<Vector2>();
+
         //moving the character on the X axis
-        float fSpd = (inputs.GetVerticalMovement()<0)?fastFallSpeed:fallSpeed;
-        body.velocity = new Vector2(body.velocity.x*3/4 + (inputs.GetHorizontalMovement() * speed)*1/4, Mathf.Max(body.velocity.y, fSpd));
+        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
+        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+
+        //player gaze by default
+        if (gazeDirectionX == 0 && gazeDirectionY == 0)
+        {
+            if (movements.x < -0.1)
+                gazeDirectionX = -1;
+            else if (movements.x > 0.1)
+                gazeDirectionX = 1;
+            else if (gazeDirectionX == 0)
+                gazeDirectionX = 1;
+        }
+
+        SetGazeAngle();
+
+    }
+
+    void OnJump()
+    {
+        if (!lastJumped)
+        {
+            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+            {
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+            }
+            else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+
+                body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
+            }
+            else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            {
+                body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
+            }
+        }
+        lastJumped = true;
+    }
+
+    void OnLook(InputValue value)
+    {
+        Vector2 gaze = value.Get<Vector2>();
+
+		if (gaze.x < -0.5)
+			gazeDirectionX = -1;
+		else if (gaze.x > 0.5)
+			gazeDirectionX = 1;
+        else
+            gazeDirectionX = 0;
+
+		if (gaze.y > 0.5)
+			gazeDirectionY = -1;
+		else if (gaze.y < -0.5)
+			gazeDirectionY = 1;
+        else
+            gazeDirectionY = 0;
+
+		SetGazeAngle();
+    }
+
+    void OnFire()
+    {
+        if (Time.time > nextFire)
+        {
+            //update the time when the player will be able to shoot
+            nextFire = Time.time + fireRate;
+            //instanciate the projectile
+            GameObject projectile = Instantiate(projectilePrefab,
+                            new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
+                            projectilePrefab.transform.rotation);
+            projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
+            ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
+            scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
+        }
+    }
+
+    void OnDash()
+    {
+        if (Time.time > nextDash) 
+        {
+            //update the time when the player will be able to dash
+            nextDash = Time.time + dashRate;
+            body.velocity = (new Vector2(0, 0));
+
+            //we use cos(angle) and sin(angle) to normalize speed in every direction
+            //body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
+
+            //transform.position = Vector2.Lerp(
+            //				new Vector2(transform.position.x, transform.position.y),
+            //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
+            //				dashSpeed * Time.deltaTime);
+
+            body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+        }
     }
 
     //Jump methode
-    private void Jump()
-    {
-
-        if (inputs.GetLT())
-        {
-            if (!lastJumped) { 
-                if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
-                {
-                    body.velocity = new Vector2(body.velocity.x, jumpForce);
-                }
-                else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
-                {
-
-                    body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
-                }
-                else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
-                {
-                    body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
-                }
-            }
-            lastJumped = true;
-            
-        } else
-        {
-            lastJumped = false;
-        }
-        
+    private void ResetJump()
+    {           
+        lastJumped = false;   
     }
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4 && !inputs.GetLT())
+        if (body.velocity.y > -4)
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -205,85 +264,6 @@ public class PlayerController : MonoBehaviour
             isOnRightWall = false;
         }
     }
-
-	private void Throw()
-	{
-		//throw inputs : 
-		//vertical
-		float HGazeInput = inputs.GetHorizontalLook();
-		//horizontal
-		float VGazeInput = inputs.GetVerticalLook();
-
-
-		int throwDirectionTmp = gazeDirectionX;
-
-		if (HGazeInput < -0.5)
-			gazeDirectionX = -1;
-		else if (HGazeInput > 0.5)
-			gazeDirectionX = 1;
-        else
-            gazeDirectionX = 0;
-
-		if (VGazeInput > 0.5)
-			gazeDirectionY = -1;
-		else if (VGazeInput < -0.5)
-			gazeDirectionY = 1;
-        else
-            gazeDirectionY = 0;
-
-		if (gazeDirectionX == 0 && gazeDirectionY == 0)
-		{
-			gazeDirectionX = throwDirectionTmp;
-			if (inputs.GetHorizontalMovement() < -0.1)
-				gazeDirectionX = -1;
-			else if (inputs.GetHorizontalMovement() > 0.1)
-				gazeDirectionX = 1;
-            else if (gazeDirectionX==0)
-				gazeDirectionX = 1;
-		}
-        Debug.Log(gazeDirectionX);
-		SetGazeAngle();
-
-		if (inputs.GetRT() && Time.time > nextFire)
-		{
-			nextFire = Time.time + fireRate;
-			Shoot();
-		}
-
-		if (inputs.GetRBPressed() && Time.time > nextDash)
-		{
-			nextDash = Time.time + dashRate;
-			Dash();
-		}
-	}
-
-    private void Shoot()
-	{
-		//instanciate the projectile
-		GameObject projectile = Instantiate(projectilePrefab,
-						new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
-						projectilePrefab.transform.rotation);
-		projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
-		ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
-		scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
-
-	}
-
-	private void Dash()
-	{
-		body.velocity = (new Vector2(0, 0));
-
-		//we use cos(angle) and sin(angle) to normalize speed in every direction
-		//body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
-
-		//transform.position = Vector2.Lerp(
-		//				new Vector2(transform.position.x, transform.position.y),
-		//				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
-		//				dashSpeed * Time.deltaTime);
-
-		body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
-
-	}
 
 	//sets the character's gaze direction angle in radians
 	public void SetGazeAngle()

@@ -22,7 +22,6 @@ public class InputManager : MonoBehaviour
 
     //controllers 
     string joystick;
-    string identifier;
 
     public bool SetInputs(int number)
     {
@@ -47,6 +46,8 @@ public class InputManager : MonoBehaviour
             RB = "RB" + idController;
 
             return true;
+
+            
         }
     }
 
