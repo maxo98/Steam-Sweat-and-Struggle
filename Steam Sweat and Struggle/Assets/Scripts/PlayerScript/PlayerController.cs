@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour
 	bool dashing = false;
     bool lastJumped = false;
 
+    Vector2 movements = new Vector2(0,0);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +92,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //moving the character on the X axis
+        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
+        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
@@ -100,11 +106,8 @@ public class PlayerController : MonoBehaviour
     //movement methode
     void OnMove(InputValue value)
     {
-        Vector2 movements = value.Get<Vector2>();
-
-        //moving the character on the X axis
-        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
-        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+        Debug.Log("Moving");
+        movements = value.Get<Vector2>();
 
         //player gaze by default
         if (gazeDirectionX == 0 && gazeDirectionY == 0)
@@ -123,6 +126,7 @@ public class PlayerController : MonoBehaviour
 
     void OnJump()
     {
+        Debug.Log("Jumping");
         if (!lastJumped)
         {
             if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
@@ -144,6 +148,7 @@ public class PlayerController : MonoBehaviour
 
     void OnLook(InputValue value)
     {
+        Debug.Log("Looking");
         Vector2 gaze = value.Get<Vector2>();
 
 		if (gaze.x < -0.5)
@@ -165,6 +170,7 @@ public class PlayerController : MonoBehaviour
 
     void OnFire()
     {
+        Debug.Log("Firing");
         if (Time.time > nextFire)
         {
             //update the time when the player will be able to shoot
@@ -181,6 +187,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDash()
     {
+        Debug.Log("Dashing");
         if (Time.time > nextDash) 
         {
             //update the time when the player will be able to dash
