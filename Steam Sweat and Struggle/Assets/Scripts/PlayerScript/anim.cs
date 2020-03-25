@@ -25,7 +25,6 @@ public class anim : MonoBehaviour
         PlayerController control = gameObject.GetComponent<PlayerController>();
         HInput = Input.GetAxis("HorizontalPlayerOne");
         JInput = Input.GetButton("JumpPlayerOne");
-        Debug.Log(HInput);
         if (HInput < 0.001 && HInput > -0.001)
             animator.SetBool("isRunning", false);
         else
