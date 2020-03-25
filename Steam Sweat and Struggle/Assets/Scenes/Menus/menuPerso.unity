@@ -689,7 +689,6 @@ GameObject:
   - component: {fileID: 383975987}
   - component: {fileID: 383975986}
   - component: {fileID: 383975991}
-  - component: {fileID: 383975990}
   - component: {fileID: 383975992}
   m_Layer: 0
   m_Name: selectionPlayer4
@@ -778,30 +777,6 @@ RectTransform:
   m_AnchoredPosition: {x: 600, y: 20}
   m_SizeDelta: {x: 3.2, y: 6.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &383975990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383975985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idController: 0
-  horizontalMovementAxis: 
-  verticalMovementAxis: 
-  horizontalLookAxis: 
-  verticalLookAxis: 
-  A: 
-  B: 
-  LT: 
-  RT: 
-  LB: 
-  RB: 
-  joystick: 
 --- !u!114 &383975991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,7 +836,6 @@ GameObject:
   - component: {fileID: 411093242}
   - component: {fileID: 411093241}
   - component: {fileID: 411093246}
-  - component: {fileID: 411093245}
   - component: {fileID: 411093247}
   m_Layer: 0
   m_Name: selectionPlayer2
@@ -950,30 +924,6 @@ RectTransform:
   m_AnchoredPosition: {x: -200, y: 20}
   m_SizeDelta: {x: 3.2, y: 6.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &411093245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411093240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idController: 0
-  horizontalMovementAxis: 
-  verticalMovementAxis: 
-  horizontalLookAxis: 
-  verticalLookAxis: 
-  A: 
-  B: 
-  LT: 
-  RT: 
-  LB: 
-  RB: 
-  joystick: 
 --- !u!114 &411093246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1033,7 +983,6 @@ GameObject:
   - component: {fileID: 447479462}
   - component: {fileID: 447479461}
   - component: {fileID: 447479466}
-  - component: {fileID: 447479465}
   - component: {fileID: 447479467}
   m_Layer: 0
   m_Name: selectionPlayer3
@@ -1122,30 +1071,6 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 20}
   m_SizeDelta: {x: 3.2, y: 6.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &447479465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447479460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1725bdd5ad37ff54ba8f89f7b77d29d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idController: 0
-  horizontalMovementAxis: 
-  verticalMovementAxis: 
-  horizontalLookAxis: 
-  verticalLookAxis: 
-  A: 
-  B: 
-  LT: 
-  RT: 
-  LB: 
-  RB: 
-  joystick: 
 --- !u!114 &447479466
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -425,7 +425,7 @@ GameObject:
   - component: {fileID: 311872626}
   - component: {fileID: 311872625}
   m_Layer: 0
-  m_Name: PlayerInputManager
+  m_Name: Multiplayer Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -454,12 +454,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_JoinAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
-      m_Name: 
+      m_Name: Join
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: af2d2a28-46a5-4e14-bab7-c55cd8d22868
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -1259,6 +1259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: idPlayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: jumpForce
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 4398442044822706378, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}

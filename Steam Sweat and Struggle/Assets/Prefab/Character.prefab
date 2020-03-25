@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2076967740202047980}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LeftWallChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7481569838464405072}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: RightWallChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 5391240805286782411}
   - component: {fileID: 536974628995395816}
   - component: {fileID: 224631039881452456}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GroundChecker
   m_TagString: Characters
   m_Icon: {fileID: 0}
