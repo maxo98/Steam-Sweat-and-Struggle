@@ -65,9 +65,9 @@ public class PlayerController : MonoBehaviour
 	private float fireRate = 0.2f;
 	[SerializeField]
 	private float nextFire;
-	//[SerializeField]
+	[SerializeField]
 	private float dashRate = 2f;
-	//[SerializeField]
+	[SerializeField]
 	private float nextDash;
 	private float dashDistance = 15f;
 
@@ -151,17 +151,17 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Looking");
         Vector2 gaze = value.Get<Vector2>();
 
-		if (gaze.x < -0.5)
+		if (gaze.x < -0.3)
 			gazeDirectionX = -1;
-		else if (gaze.x > 0.5)
+		else if (gaze.x > 0.3)
 			gazeDirectionX = 1;
         else
             gazeDirectionX = 0;
 
-		if (gaze.y > 0.5)
-			gazeDirectionY = -1;
-		else if (gaze.y < -0.5)
+		if (gaze.y > 0.3)
 			gazeDirectionY = 1;
+		else if (gaze.y < -0.3)
+			gazeDirectionY = -1;
         else
             gazeDirectionY = 0;
 
