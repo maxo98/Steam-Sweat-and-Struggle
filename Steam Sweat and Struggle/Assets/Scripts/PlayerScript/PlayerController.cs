@@ -8,17 +8,17 @@ public class PlayerController : MonoBehaviour
 
     //speed and jumpSpeed 
     [SerializeField]
-    private float speed = 50.0f;
+    public float speed {get;} = 50.0f;
     [SerializeField]
     private float wallJumpForce = 20.0f;
     [SerializeField]
-    private float jumpForce = 110.0f;
+    private float jumpForce = 150.0f;
     [SerializeField]
-    private float fallSpeed = -70.0f;
+    public float fallSpeed {get;} = -70.0f;
     [SerializeField]
-    private float fastFallSpeed = -140.0f;
+    public float fastFallSpeed {get;} = -140.0f;
     [SerializeField]
-    private float dashSpeed = 500;
+    private float dashSpeed = 200.0f;
 
     //jump condition
     [SerializeField]
@@ -36,10 +36,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float rememberOnWallFor = 0.5f;
     [SerializeField]
-    private float rememberGroundedFor = 0.5f;
+    private float rememberGroundedFor = 0f;
 
     //hitbox components
-    private Rigidbody2D body;
+    public Rigidbody2D body {get; set;}
     [SerializeField]
     private float groundCheckerRadius = 1f;
     [SerializeField]
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform rightWallChecker;
     [SerializeField]
-    private float wallCheckerRadius = 2f;
+    private float wallCheckerRadius = 1f;
 
 	//projectile & dash components
 	[SerializeField]
@@ -66,20 +66,20 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float nextFire;
 	[SerializeField]
-	private float dashRate = 2f;
+	private float dashRate = 1f;
 	[SerializeField]
 	private float nextDash;
-	private float dashDistance = 15f;
+	private int dashDistance = 8;
 
 	//where the character is looking
 	private float gazeDirectionAngle;
 	private int gazeDirectionY = 0;
-	private int gazeDirectionX = 1;
+	private int gazeDirectionX = 0;
 
-	bool dashing = false;
-    bool lastJumped = false;
+	public int dashing {get; set;} = 0;
+    private bool lastJumped = false;
 
-    Vector2 movements = new Vector2(0,0);
+    public Vector2 movements {get; set;} = new Vector2(0,0);
 
     // Start is called before the first frame update
     void Start()
@@ -92,10 +92,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //moving the character on the X axis
-        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
-        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
-
+		Move();
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
@@ -103,25 +100,20 @@ public class PlayerController : MonoBehaviour
     
     }
 
+	public virtual void Move() {
+		if (dashing>0) {
+			--dashing;
+		} else {
+		    //moving the character on the X and Y axis
+		    float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
+		    body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+		}
+	}
     //movement methode
     void OnMove(InputValue value)
     {
         Debug.Log("Moving");
         movements = value.Get<Vector2>();
-
-        //player gaze by default
-        if (gazeDirectionX == 0 && gazeDirectionY == 0)
-        {
-            if (movements.x < -0.1)
-                gazeDirectionX = -1;
-            else if (movements.x > 0.1)
-                gazeDirectionX = 1;
-            else if (gazeDirectionX == 0)
-                gazeDirectionX = 1;
-        }
-
-        SetGazeAngle();
-
     }
 
     void OnJump()
@@ -164,8 +156,6 @@ public class PlayerController : MonoBehaviour
 			gazeDirectionY = -1;
         else
             gazeDirectionY = 0;
-
-		SetGazeAngle();
     }
 
     void OnFire()
@@ -173,6 +163,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Firing");
         if (Time.time > nextFire)
         {
+			AdjustGazeDirection();
+			SetGazeAngle();
             //update the time when the player will be able to shoot
             nextFire = Time.time + fireRate;
             //instanciate the projectile
@@ -195,14 +187,9 @@ public class PlayerController : MonoBehaviour
             body.velocity = (new Vector2(0, 0));
 
             //we use cos(angle) and sin(angle) to normalize speed in every direction
-            //body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
-
-            //transform.position = Vector2.Lerp(
-            //				new Vector2(transform.position.x, transform.position.y),
-            //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
-            //				dashSpeed * Time.deltaTime);
-
+			AdjustGazeDirection();
             body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+			dashing = dashDistance;
         }
     }
 
@@ -222,7 +209,14 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+	void AdjustGazeDirection() {
+		if (gazeDirectionX == 0 && gazeDirectionY == 0) {
+			if (movements.x < 0)
+			    gazeDirectionX = -1;
+			else
+				gazeDirectionX = 1;
+		}
+	}
     private void CheckIfGrounded()
     {
         Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
@@ -280,7 +274,7 @@ public class PlayerController : MonoBehaviour
 			case 0:
 				switch (gazeDirectionX)
 				{
-					case 1:
+					case 1: case 0:
 						gazeDirectionAngle = 0;
 						break;
 					case -1:

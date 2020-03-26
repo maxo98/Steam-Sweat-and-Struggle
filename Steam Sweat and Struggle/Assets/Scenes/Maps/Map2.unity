@@ -127,6 +127,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: dashSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: dashRate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5648709717810752015, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}
       propertyPath: mapData
