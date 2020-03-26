@@ -60,8 +60,30 @@
                 },
                 {
                     "name": "",
+                    "id": "179dee1a-3fd4-4004-a884-a5a0c89b0296",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8ff142a6-e755-4854-ad49-6731dc4dede3",
                     "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bae306b-70be-4d1b-ab56-100ffda76839",
+                    "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -93,6 +115,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ded4b7ac-5c40-4863-8315-e2ab57b61494",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "83860ce0-6a76-434d-b6bb-a991ef18eb51",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
@@ -115,8 +148,30 @@
                 },
                 {
                     "name": "",
+                    "id": "08cf3592-b0a3-419f-a579-193de5ed06ee",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "42fc72b4-9721-4acd-96bc-c035309d560c",
                     "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "220805d5-7ef7-49a9-81d3-e286f85b6fbc",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
