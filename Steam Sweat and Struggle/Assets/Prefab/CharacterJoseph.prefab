@@ -18,7 +18,6 @@ MonoBehaviour:
   fallSpeed: -70
   fastFallSpeed: -140
   dashSpeed: 200
-  isGrounded: 0
   isOnLeftWall: 0
   isOnRightWall: 0
   fallMultiplier: 20
@@ -45,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}
       propertyPath: m_Name
-      value: Character
+      value: CharacterJoseph
       objectReference: {fileID: 0}
     - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}

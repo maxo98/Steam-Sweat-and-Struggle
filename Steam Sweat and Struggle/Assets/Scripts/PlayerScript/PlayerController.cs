@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     //jump condition
     [SerializeField]
-    private bool isGrounded = false;
+    public bool isGrounded {get; set; } = false;
     [SerializeField]
     private bool isOnLeftWall = false;
     [SerializeField]
@@ -111,7 +111,12 @@ public class PlayerController : MonoBehaviour
 		    body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
 		}
 	}
-    //movement methode
+
+    protected virtual void OnSkill() {
+
+    }
+
+    //movement method
     protected virtual void OnMove(InputValue value)
     {
         Debug.Log("Moving");
