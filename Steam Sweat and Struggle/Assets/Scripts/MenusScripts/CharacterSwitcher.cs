@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class CharacterSwitcher : MonoBehaviour
 {
- 
+    
+    private int idPlayer;
+
     [SerializeField]
     private GameObject leftArrow;
     [SerializeField]
@@ -19,13 +21,48 @@ public class CharacterSwitcher : MonoBehaviour
     private GameObject character2;
     [SerializeField]
     private GameObject character3;
+    private RectTransform rectTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
+    public void SetParent(int playerIndex, GameObject newParent) {
+        gameObject.transform.SetParent(newParent.transform);
+
+        rectTransform = GetComponent<RectTransform>();
+
+        idPlayer = playerIndex;
+        
+        switch (idPlayer)
+        {
+
+            case 1:
+                Debug.Log("player number :" + idPlayer);
+                rectTransform.localPosition = new Vector2(-600, 20);
+                break;
+            case 2:
+                Debug.Log("player number :" + idPlayer);
+                rectTransform.localPosition = new Vector2(-200, 20);
+                break;
+            case 3:
+                Debug.Log("player number :" + idPlayer);
+                rectTransform.localPosition = new Vector2(200, 20);
+                break;
+            case 4:
+                Debug.Log("player number :" + idPlayer);
+                rectTransform.localPosition = new Vector2(600, 20);
+                break;
+        }
+
+        rectTransform.localScale = new Vector2(100, 100);
+
+
+    }
+    
+   
     // Update is called once per frame
     void Update()
     {
