@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class CharacterSwitcher : MonoBehaviour
 {
-    
+
     private int idPlayer;
 
     [SerializeField]
@@ -15,17 +15,27 @@ public class CharacterSwitcher : MonoBehaviour
     private GameObject rightArrow;
     [SerializeField]
     private GameObject confirm;
-    [SerializeField]
-    private GameObject character1;
-    [SerializeField]
-    private GameObject character2;
-    [SerializeField]
-    private GameObject character3;
+
+    //all the characters playable in the game
+    private GameObject[] characters;
+    private int currentcharacter;
+
+    //tableau contenant le nom du perso et l'id du controller
+    private string[] characterSelected = new string[2];
+
+    //position of the current GameObject
     private RectTransform rectTransform;
-    private bool selected;
+
+    private bool firstInput = true;
+    public bool Selected { get; set; }
 
     // Start is called before the first frame update
     void Start()
+    {
+
+    }
+
+    private void Awake()
     {
 
     }
@@ -35,8 +45,16 @@ public class CharacterSwitcher : MonoBehaviour
 
         rectTransform = GetComponent<RectTransform>();
 
+        characters = GameObject.FindGameObjectsWithTag("characterIcon");
+        characters[0].SetActive(true);
+        for (int i = 1; i < characters.Length; ++i)
+        {
+            characters[i].SetActive(false);
+        }
+        currentcharacter = 0;
+
         idPlayer = playerIndex;
-        
+
         switch (idPlayer)
         {
 
@@ -58,12 +76,13 @@ public class CharacterSwitcher : MonoBehaviour
                 break;
         }
 
-        rectTransform.localScale = new Vector2(100, 100);
+        rectTransform.localScale = new Vector3(100, 100, 1);
+        rectTransform.ForceUpdateRectTransforms();
 
 
     }
-    
-   
+
+
     // Update is called once per frame
     void Update()
     {
@@ -72,67 +91,110 @@ public class CharacterSwitcher : MonoBehaviour
 
     void OnSubmit()
     {
-        if (leftArrow.activeSelf == true)
+        if (firstInput)
         {
-            Debug.Log("arrow deactivated");
+            firstInput = false;
+            return;
+        }
+
+        if (leftArrow.activeSelf)
+        {
+            Debug.Log("Submit");
+            Debug.Log("character 0 : " + characters[0].name + " character 1 : " + characters[1].name);
+            Debug.Log("Current Character : " + currentcharacter);
+            Debug.Log("character selected : " + characters[currentcharacter].name);
             leftArrow.SetActive(false);
             rightArrow.SetActive(false);
             confirm.SetActive(false);
-        }
-        else
-        {
-            Debug.Log("arrow activated");
-            leftArrow.SetActive(true);
-            rightArrow.SetActive(true);
-            confirm.SetActive(true);
+
+            characterSelected[0] = characters[currentcharacter].name;
+            characterSelected[1] = gameObject.GetComponent<PlayerInput>().devices[0].deviceId.ToString();
+            Selected = true;
         }
     }
+
     void OnCancel()
     {
 
+        if (firstInput)
+        {
+            firstInput = false;
+            return;
+        }
+
+        if (!leftArrow.activeSelf)
+        {
+            Debug.Log("Cancel");
+            leftArrow.SetActive(true);
+            rightArrow.SetActive(true);
+            confirm.SetActive(true);
+            Selected = false;
+        }
+        else
+        {
+            SceneManagerWithParameters.Load("menuPrincipal");
+        }
+    }
+
+
+    void OnStart()
+    {
+        if (firstInput)
+        {
+            firstInput = false;
+            return;
+        }
+        
+        GameObject[] characterSelecters = GameObject.FindGameObjectsWithTag("characterSelectionMenu");
+        int numberSelected = 0;
+        string[][] characters = new string[characterSelecters.Length][];
+        foreach (GameObject g in characterSelecters)
+        {
+            CharacterSwitcher currentPlayer = g.GetComponent<CharacterSwitcher>();
+            if (currentPlayer.Selected)
+            {
+                characters[numberSelected] = currentPlayer.characterSelected;
+                numberSelected++;
+            }
+        }
+        if (numberSelected == characterSelecters.Length)
+        {
+            SceneManagerWithParameters.SetCharacters(characters);
+
+            SceneManagerWithParameters.Load(SceneManagerWithParameters.GetSceneParameters().MapName);
+        }
+        
     }
 
     void OnLeft()
     {
-        if (character1.activeSelf == true)
+        if (firstInput)
         {
-            character1.SetActive(false);
-            character2.SetActive(false);
-            character3.SetActive(true);
+            firstInput = false;
+            return;
         }
-        else if (character2.activeSelf == true)
+
+        if (leftArrow.activeSelf && currentcharacter == 0)
         {
-            character1.SetActive(true);
-            character2.SetActive(false);
-            character3.SetActive(false);
-        }
-        else if (character3.activeSelf == true)
-        {
-            character1.SetActive(false);
-            character2.SetActive(true);
-            character3.SetActive(false);
+            Debug.Log("Left");
+            characters[currentcharacter].SetActive(false);
+            characters[currentcharacter++].SetActive(true);
         }
     }
 
     void OnRight()
     {
-        if (character1.activeSelf == true)
+        if (firstInput)
         {
-            character1.SetActive(false);
-            character2.SetActive(true);
-            character3.SetActive(false);
+            firstInput = false;
+            return;
         }
-        else if (character2.activeSelf == true)
+        if (leftArrow.activeSelf && currentcharacter == characters.Length)
         {
-            character1.SetActive(false);
-            character2.SetActive(false);
-            character3.SetActive(true);
-        }
-        else if (character3.activeSelf == true)
-        {
-            character1.SetActive(true);
-            character2.SetActive(false);
-            character3.SetActive(false);
+            Debug.Log("Right");
+            characters[currentcharacter].SetActive(false);
+            characters[currentcharacter--].SetActive(true);
+            
         }
     }
 }

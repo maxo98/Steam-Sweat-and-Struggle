@@ -10,6 +10,7 @@ TagManager:
   - platforms
   - Characters
   - characterSelectionMenu
+  - characterIcon
   layers:
   - Default
   - TransparentFX

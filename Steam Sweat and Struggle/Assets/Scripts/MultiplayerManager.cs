@@ -12,7 +12,7 @@ public class MultiplayerManager : MonoBehaviour
     private PlayerInputManager playerInputManager;
 	[SerializeField]
     private GameObject playerPrefab;
-    public PlayerInput PlayerInput { get; set; }
+    private PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
@@ -34,16 +34,23 @@ public class MultiplayerManager : MonoBehaviour
                 return;
 
             //ignore anything that isn't a gamepad
-            if (control.device as Gamepad == null && control.device as Keyboard == null)
+            if (control.device as Gamepad == null)
                 return;
 
             // Spawn player and pair device. If the player's actions have control schemes
             // defined in them, PlayerInput will look for a compatible scheme automatically.
             if (playerInputManager.playerCount <= playerInputManager.maxPlayerCount)
             {
-                PlayerInput = PlayerInput.Instantiate(prefab: playerPrefab, playerIndex: playerInputManager.playerCount, pairWithDevice: control.device);
+                playerInput = PlayerInput.Instantiate(prefab: playerPrefab, playerIndex: playerInputManager.playerCount, pairWithDevice: control.device);
+                playerInput.onActionTriggered +=
+                (context) =>
+                {
+                    return;
+                };
+
+                
                 Debug.Log("new Player");
-                CharacterSwitcher characterSwitch = PlayerInput.GetComponent<CharacterSwitcher>();
+                CharacterSwitcher characterSwitch = playerInput.GetComponent<CharacterSwitcher>();
                 Debug.Log("clone created : " + characterSwitch.gameObject);
                 Debug.Log("menu : " + gameObject.ToString());
                 characterSwitch.SetParent(playerInputManager.playerCount, gameObject);
