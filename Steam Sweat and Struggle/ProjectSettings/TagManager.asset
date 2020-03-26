@@ -9,6 +9,7 @@ TagManager:
   - Positions
   - platforms
   - Characters
+  - characterSelectionMenu
   layers:
   - Default
   - TransparentFX
