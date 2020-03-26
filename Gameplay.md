@@ -14,7 +14,7 @@
 
 ### Armes
 
-- Meuf test :
+- Jade :
     - pistolet classique : 
         - 6 balles/chargeur
         - 2 sec de recharge
@@ -40,7 +40,7 @@
         - grosse balle
         - portée réduite
 
-- Shady guy :
+- Joseph :
     - couteaux de lancer :
         - 4 balles/chargeur
         - 3 sec de recharge
@@ -69,7 +69,7 @@
 
 ### Capacite Speciale
 
-- Meuf test : 
+- Jade : 
     - pose une mine sur le terrain (seulement sur le sol, explose si l'on marche dessus ou dash dessus)
     - pose une tourelle (tire a intervalle régulier)
 
@@ -80,7 +80,7 @@
     - peut renvoyer une balle a l'envoyeur (la balle ignore le décor et fonce vers le joueur)
     - l'arène est prise dans une nuage de parfum pendant 10 secondes
 
-- Shady Guy : 
+- Joseph : 
     - peut se rendre invincible pendant 2 secondes
     - peut se tp une fois (style tp de metaknight de Smash)
 
