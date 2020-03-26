@@ -44,7 +44,7 @@ public class ProjectileMovements : MonoBehaviour
 		{
 			if (other.gameObject.tag == "Characters") {
 				//Character dies
-				Destroy(other.gameObject);
+				other.gameObject.SendMessage("OnDie");
 			}
 			Destroy(gameObject);
 		}

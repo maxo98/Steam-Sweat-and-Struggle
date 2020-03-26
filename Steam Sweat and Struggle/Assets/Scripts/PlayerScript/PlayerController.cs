@@ -328,4 +328,8 @@ public class PlayerController : MonoBehaviour
 				break;
 		}
 	}
+    protected virtual void OnDie() {
+        Debug.Log("YOU DIED");
+        Destroy(gameObject);
+    }
 }

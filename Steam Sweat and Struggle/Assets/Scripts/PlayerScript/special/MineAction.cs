@@ -23,7 +23,7 @@ public class MineAction : MonoBehaviour
 		if (other.gameObject.tag == "Characters" && Time.time>activatedTime)
 		{
 			//Character dies
-			Destroy(other.gameObject);
+			other.gameObject.SendMessage("OnDie");
 			Destroy(gameObject);
 		}
 	}
