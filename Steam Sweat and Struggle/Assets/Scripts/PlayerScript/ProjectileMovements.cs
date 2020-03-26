@@ -8,7 +8,7 @@ public class ProjectileMovements : MonoBehaviour
 	private float speed = 500;
 
 	[SerializeField]
-	private float direction = 1;
+	private float directionAngle;
 
 	private Rigidbody2D body;
 	private Collider2D collider2d;
@@ -18,7 +18,9 @@ public class ProjectileMovements : MonoBehaviour
     {
 		body = GetComponent<Rigidbody2D>();
 		collider2d = GetComponent<Collider2D>();
-		body.AddForce(transform.right * speed * direction, ForceMode2D.Impulse);
+
+		//we use cos(angle) and sin(angle) to normalize speed in every direction
+		body.AddForce(new Vector2(transform.right.x * speed * Mathf.Cos(directionAngle), transform.up.y * speed * Mathf.Sin(directionAngle)), ForceMode2D.Impulse);
 	}
 
     // Update is called once per frame
@@ -28,15 +30,19 @@ public class ProjectileMovements : MonoBehaviour
 		
 	}
 
-	public void setThrowDirection(float throwDirection)
+	public void SetDirectionAngle(float direction)
 	{
-		direction = throwDirection;
+		directionAngle = direction;
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "platforms" || other.gameObject.tag == "Characters")
 		{
+			if (other.gameObject.tag == "Characters") {
+				//Character dies
+				Destroy(other.gameObject);
+			}
 			Destroy(gameObject);
 		}
 	}
