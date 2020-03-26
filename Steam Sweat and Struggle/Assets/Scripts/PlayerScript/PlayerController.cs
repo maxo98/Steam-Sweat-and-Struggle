@@ -8,15 +8,15 @@ public class PlayerController : MonoBehaviour
 
     //speed and jumpSpeed 
     [SerializeField]
-    public float speed {get;} = 50.0f;
+    private float speed = 50.0f;
     [SerializeField]
     private float wallJumpForce = 20.0f;
     [SerializeField]
     private float jumpForce = 150.0f;
     [SerializeField]
-    public float fallSpeed {get;} = -70.0f;
+    private float fallSpeed = -70.0f;
     [SerializeField]
-    public float fastFallSpeed {get;} = -140.0f;
+    private float fastFallSpeed = -140.0f;
     [SerializeField]
     private float dashSpeed = 200.0f;
 
@@ -57,17 +57,15 @@ public class PlayerController : MonoBehaviour
 	//projectile & dash components
 	[SerializeField]
 	private GameObject projectilePrefab;
-	[SerializeField]
 	private float offsetProjectileX = 5.0f;
-	[SerializeField]
 	private float offsetProjectileY = 6.5f;
-	[SerializeField]
-	private float fireRate = 0.2f;
-	[SerializeField]
+    public float projectileSpeed {get; set;} = 100f;
+	public int nbShots {get; set;} = 5;
+	public int nbRemainingShots {get; set;} = 5;
+	public float reload {get; set;} = 3f;
+	public float cooldown {get; set;} = 0.2f;
 	private float nextFire;
-	[SerializeField]
 	private float dashRate = 1f;
-	[SerializeField]
 	private float nextDash;
 	private int dashDistance = 8;
 
@@ -76,10 +74,10 @@ public class PlayerController : MonoBehaviour
 	private int gazeDirectionY = 0;
 	private int gazeDirectionX = 0;
 
-	public int dashing {get; set;} = 0;
+	private int dashing = 0;
     private bool lastJumped = false;
 
-    public Vector2 movements {get; set;} = new Vector2(0,0);
+    private Vector2 movements = new Vector2(0,0);
 
     // Start is called before the first frame update
     void Start()
@@ -87,8 +85,12 @@ public class PlayerController : MonoBehaviour
         //get the components
         body = GetComponent<Rigidbody2D>();
         nextFire = Time.time;
+        InitCharacterSpecs();
     }
 
+    protected virtual void InitCharacterSpecs() {
+
+    }
     // Update is called once per frame
     void Update()
     {
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
     
     }
 
-	public virtual void Move() {
+	protected virtual void Move() {
 		if (dashing>0) {
 			--dashing;
 		} else {
@@ -110,13 +112,13 @@ public class PlayerController : MonoBehaviour
 		}
 	}
     //movement methode
-    void OnMove(InputValue value)
+    protected virtual void OnMove(InputValue value)
     {
         Debug.Log("Moving");
         movements = value.Get<Vector2>();
     }
 
-    void OnJump()
+    protected virtual void OnJump()
     {
         Debug.Log("Jumping");
         if (!lastJumped)
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
         lastJumped = true;
     }
 
-    void OnLook(InputValue value)
+    protected virtual void OnLook(InputValue value)
     {
         Debug.Log("Looking");
         Vector2 gaze = value.Get<Vector2>();
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour
             gazeDirectionY = 0;
     }
 
-    void OnFire()
+    protected virtual void OnFire()
     {
         Debug.Log("Firing");
         if (Time.time > nextFire)
@@ -166,7 +168,13 @@ public class PlayerController : MonoBehaviour
 			AdjustGazeDirection();
 			SetGazeAngle();
             //update the time when the player will be able to shoot
-            nextFire = Time.time + fireRate;
+            --nbShots;
+            if (nbShots<=0) {
+                nextFire = Time.time + reload;
+                nbShots = nbRemainingShots;
+            } else {
+                nextFire = Time.time + cooldown;
+            }
             //instanciate the projectile
             GameObject projectile = Instantiate(projectilePrefab,
                             new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
@@ -174,10 +182,11 @@ public class PlayerController : MonoBehaviour
             projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
             ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
             scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
+            scriptProjectile.SetSpeed(projectileSpeed);
         }
     }
 
-    void OnDash()
+    protected virtual void OnDash()
     {
         Debug.Log("Dashing");
         if (Time.time > nextDash) 
@@ -209,7 +218,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-	void AdjustGazeDirection() {
+	private void AdjustGazeDirection() {
 		if (gazeDirectionX == 0 && gazeDirectionY == 0) {
 			if (movements.x < 0)
 			    gazeDirectionX = -1;
