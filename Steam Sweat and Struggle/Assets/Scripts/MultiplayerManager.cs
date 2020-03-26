@@ -34,7 +34,7 @@ public class MultiplayerManager : MonoBehaviour
                 return;
 
             //ignore anything that isn't a gamepad
-            if (control.device as Gamepad == null)
+            if (control.device as Gamepad == null && control.device as Keyboard == null)
                 return;
 
             // Spawn player and pair device. If the player's actions have control schemes

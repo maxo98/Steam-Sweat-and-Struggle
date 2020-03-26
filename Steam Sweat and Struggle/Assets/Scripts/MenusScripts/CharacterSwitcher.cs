@@ -22,6 +22,7 @@ public class CharacterSwitcher : MonoBehaviour
     [SerializeField]
     private GameObject character3;
     private RectTransform rectTransform;
+    private bool selected;
 
     // Start is called before the first frame update
     void Start()
