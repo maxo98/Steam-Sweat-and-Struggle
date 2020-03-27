@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Jade : PlayerController
 {
+    [SerializeField]
 	private GameObject minePrefab;
     private bool hasUsedMine = false;
 

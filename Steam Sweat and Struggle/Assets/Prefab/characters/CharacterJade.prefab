@@ -36,7 +36,6 @@ MonoBehaviour:
     type: 3}
   minePrefab: {fileID: 1925421383955953965, guid: 1d18f0f58e7d559d4aada6768edc0593,
     type: 3}
-  hasUsedMine: 0
 --- !u!1001 &5410556300481504045
 PrefabInstance:
   m_ObjectHideFlags: 0
