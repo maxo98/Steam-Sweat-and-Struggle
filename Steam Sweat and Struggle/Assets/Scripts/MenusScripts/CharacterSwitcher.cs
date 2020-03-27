@@ -157,6 +157,7 @@ public class CharacterSwitcher : MonoBehaviour
         Dictionary<string, InputDevice> characters = new Dictionary<string, InputDevice>();
         foreach (GameObject g in characterSelecters)
         {
+            Debug.Log("Test Selector");
             CharacterSwitcher currentPlayer = g.GetComponent<CharacterSwitcher>();
             if (currentPlayer.selected)
             {

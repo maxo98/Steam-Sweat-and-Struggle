@@ -12,8 +12,7 @@ TagManager:
   - characterSelectionMenu
   - characterIcon
   - mapIcon
-  - Jade
-  - Joseph
+  - Spot
   layers:
   - Default
   - TransparentFX

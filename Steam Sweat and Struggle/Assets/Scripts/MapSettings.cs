@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,17 +19,28 @@ public class MapSettings : MonoBehaviour
     void Start()
     {
         MapSizeChecker();
-        InstantiatePlayers();
-
     }
 
     private void OnEnable()
     {
         Dictionary<string, InputDevice> characters = SceneManagerWithParameters.GetSceneParameters().CharactersSelected;
+        int i = 0;
+        List<GameObject> list_spots_unrandomized = new List<GameObject>(GameObject.FindGameObjectsWithTag("Spot"));
+        List<GameObject> list_spots = new List<GameObject>();
+        System.Random rand = new System.Random();
+        //Randomize list
+        while (list_spots_unrandomized.Count>0) {
+            int x = rand.Next(list_spots_unrandomized.Count);
+            list_spots.Add(list_spots_unrandomized[x]);
+            list_spots_unrandomized.RemoveAt(x);
+        }
         foreach(string s in characters.Keys)
         {
-            PlayerInput playerInput = PlayerInput.Instantiate(prefab: GameObject.FindGameObjectWithTag(s), pairWithDevice: characters[s]);
+            PlayerInput playerInput = PlayerInput.Instantiate(prefab: (GameObject) Resources.Load("Prefab/characters/Character"+s), pairWithDevice: characters[s]);
             player.Add(playerInput.gameObject);
+            playerInput.gameObject.GetComponent<Teleportation>().SetMapData(gameObject);
+            playerInput.gameObject.transform.position = list_spots[i].transform.position;
+            ++i;
         }
     }
 
@@ -64,8 +76,4 @@ public class MapSettings : MonoBehaviour
         }
     }
 
-    void InstantiatePlayers()
-    {
-
-    }
 }

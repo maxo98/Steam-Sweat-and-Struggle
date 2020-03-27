@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1807999619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065218968862265865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 879b3cb270d2470068d5f759279ae9bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  wallJumpForce: 20
+  jumpForce: 150
+  fallSpeed: -70
+  fastFallSpeed: -140
+  dashSpeed: 200
+  isOnLeftWall: 0
+  isOnRightWall: 0
+  fallMultiplier: 20
+  lowJumpMultiplier: 40
+  rememberOnWallFor: 0.5
+  rememberGroundedFor: 0
+  groundCheckerRadius: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  groundChecker: {fileID: 8603453214710984574}
+  leftWallChecker: {fileID: 2406836213019284313}
+  rightWallChecker: {fileID: 6514443453962470629}
+  wallCheckerRadius: 1
+  projectilePrefab: {fileID: 1925421383955953965, guid: 105cab8e2c10eab628599e75a6b36ae7,
+    type: 3}
+--- !u!1001 &4446200651105422005
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_Name
+      value: CharacterJoseph
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_TagString
+      value: Characters
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d58530a48bc61d46b0df9bc42b18326, type: 3}
+--- !u!1 &6065218968862265865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
+    type: 3}
+  m_PrefabInstance: {fileID: 4446200651105422005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8603453214710984574 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5391240805286782411, guid: 5d58530a48bc61d46b0df9bc42b18326,
+    type: 3}
+  m_PrefabInstance: {fileID: 4446200651105422005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2406836213019284313 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2076967740202047980, guid: 5d58530a48bc61d46b0df9bc42b18326,
+    type: 3}
+  m_PrefabInstance: {fileID: 4446200651105422005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6514443453962470629 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7481569838464405072, guid: 5d58530a48bc61d46b0df9bc42b18326,
+    type: 3}
+  m_PrefabInstance: {fileID: 4446200651105422005}
+  m_PrefabAsset: {fileID: 0}
