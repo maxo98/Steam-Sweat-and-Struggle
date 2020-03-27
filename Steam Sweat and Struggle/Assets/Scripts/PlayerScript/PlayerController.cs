@@ -54,32 +54,36 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float wallCheckerRadius = 2f;
 
-	//projectile & dash components
-	[SerializeField]
-	private GameObject projectilePrefab;
-	[SerializeField]
-	private float offsetProjectileX = 5.0f;
-	[SerializeField]
-	private float offsetProjectileY = 6.5f;
-	[SerializeField]
-	private float fireRate = 0.2f;
-	[SerializeField]
-	private float nextFire;
-	[SerializeField]
-	private float dashRate = 2f;
-	[SerializeField]
-	private float nextDash;
-	private float dashDistance = 15f;
+    //projectile & dash components
+    [SerializeField]
+    private GameObject projectilePrefab;
+    [SerializeField]
+    private float offsetProjectileX = 5.0f;
+    [SerializeField]
+    private float offsetProjectileY = 6.5f;
+    [SerializeField]
+    private float fireRate = 0.2f;
+    [SerializeField]
+    private float nextFire;
+    [SerializeField]
+    private float dashRate = 2f;
+    [SerializeField]
+    private float nextDash;
+    private float dashDistance = 15f;
 
-	//where the character is looking
-	private float gazeDirectionAngle;
-	private int gazeDirectionY = 0;
-	private int gazeDirectionX = 1;
+    //where the character is looking
+    private float gazeDirectionAngle;
+    private int gazeDirectionY = 0;
+    private int gazeDirectionX = 1;
+    private int gazeMemory = 1;
 
-	bool dashing = false;
+    private int timerFiring = 0;
+    private bool firing = false;
+    private int timerDashing = 0;
+    private bool dashing = false;
     bool lastJumped = false;
 
-    Vector2 movements = new Vector2(0,0);
+    Vector2 movements = new Vector2(0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -94,13 +98,27 @@ public class PlayerController : MonoBehaviour
     {
         //moving the character on the X axis
         float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
+        if (movements.x < -0.1)
+            gazeMemory = -1;
+        else if (movements.x > 0.1)
+            gazeMemory = 1;
         body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+
+        if (timerDashing == 0)
+            dashing = false;
+        else
+            --timerDashing;
+
+        if (timerFiring == 0)
+            firing = false;
+        else
+            --timerFiring;
 
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
         ResetJump();
-    
+
     }
 
     //movement methode
@@ -151,21 +169,21 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Looking");
         Vector2 gaze = value.Get<Vector2>();
 
-		if (gaze.x < -0.3)
-			gazeDirectionX = -1;
-		else if (gaze.x > 0.3)
-			gazeDirectionX = 1;
+        if (gaze.x < -0.3)
+            gazeDirectionX = -1;
+        else if (gaze.x > 0.3)
+            gazeDirectionX = 1;
         else
             gazeDirectionX = 0;
 
-		if (gaze.y > 0.3)
-			gazeDirectionY = 1;
-		else if (gaze.y < -0.3)
-			gazeDirectionY = -1;
+        if (gaze.y > 0.3)
+            gazeDirectionY = 1;
+        else if (gaze.y < -0.3)
+            gazeDirectionY = -1;
         else
             gazeDirectionY = 0;
 
-		SetGazeAngle();
+        SetGazeAngle();
     }
 
     void OnFire()
@@ -173,6 +191,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Firing");
         if (Time.time > nextFire)
         {
+            firing = true;
+            timerFiring = 5;
             //update the time when the player will be able to shoot
             nextFire = Time.time + fireRate;
             //instanciate the projectile
@@ -188,7 +208,7 @@ public class PlayerController : MonoBehaviour
     void OnDash()
     {
         Debug.Log("Dashing");
-        if (Time.time > nextDash) 
+        if (Time.time > nextDash)
         {
             //update the time when the player will be able to dash
             nextDash = Time.time + dashRate;
@@ -201,15 +221,17 @@ public class PlayerController : MonoBehaviour
             //				new Vector2(transform.position.x, transform.position.y),
             //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
             //				dashSpeed * Time.deltaTime);
-
+            dashing = true;
+            timerDashing = 5;
             body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+
         }
     }
 
     //Jump methode
     private void ResetJump()
-    {           
-        lastJumped = false;   
+    {
+        lastJumped = false;
     }
 
     private void BetterJump()
@@ -217,7 +239,9 @@ public class PlayerController : MonoBehaviour
         if (body.velocity.y > -4)
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
-        } else {
+        }
+        else
+        {
             body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
         }
 
@@ -256,7 +280,7 @@ public class PlayerController : MonoBehaviour
             }
             isOnLeftWall = false;
         }
-        
+
         collider = Physics2D.OverlapCircle(rightWallChecker.position, wallCheckerRadius, groundLayer);
         if (collider != null)
         {
@@ -272,59 +296,81 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-	//sets the character's gaze direction angle in radians
-	public void SetGazeAngle()
-	{
-		switch (gazeDirectionY)
+    //sets the character's gaze direction angle in radians
+    public void SetGazeAngle()
+    {
+        switch (gazeDirectionY)
         {
-			case 0:
-				switch (gazeDirectionX)
-				{
-					case 1:
-						gazeDirectionAngle = 0;
-						break;
-					case -1:
-						gazeDirectionAngle = Mathf.PI;
-						break;
-				}
-				break;
-			case 1:
-				switch (gazeDirectionX)
-				{
-					case 1:
-						gazeDirectionAngle = Mathf.PI / 4;
-						break;
-					case 0:
-						gazeDirectionAngle = Mathf.PI / 2;
-						break;
-					case -1:
-						gazeDirectionAngle = 3 * Mathf.PI / 4;
-						break;
-				}
-				break;
-			case -1:
-				switch (gazeDirectionX)
-				{
-					case 1:
-						gazeDirectionAngle = 7 * Mathf.PI / 4;
-						break;
-					case 0:
-						gazeDirectionAngle = 3 * Mathf.PI / 2;
-						break;
-					case -1:
-						gazeDirectionAngle = 5 * Mathf.PI / 4;
-						break;
-				}
-				break;
-			default:
-				break;
-		}
-	}
+            case 0:
+                switch (gazeDirectionX)
+                {
+                    case 1:
+                        gazeDirectionAngle = 0;
+                        break;
+                    case -1:
+                        gazeDirectionAngle = Mathf.PI;
+                        break;
+                }
+                break;
+            case 1:
+                switch (gazeDirectionX)
+                {
+                    case 1:
+                        gazeDirectionAngle = Mathf.PI / 4;
+                        break;
+                    case 0:
+                        gazeDirectionAngle = Mathf.PI / 2;
+                        break;
+                    case -1:
+                        gazeDirectionAngle = 3 * Mathf.PI / 4;
+                        break;
+                }
+                break;
+            case -1:
+                switch (gazeDirectionX)
+                {
+                    case 1:
+                        gazeDirectionAngle = 7 * Mathf.PI / 4;
+                        break;
+                    case 0:
+                        gazeDirectionAngle = 3 * Mathf.PI / 2;
+                        break;
+                    case -1:
+                        gazeDirectionAngle = 5 * Mathf.PI / 4;
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     public bool GetIsGrounded()
     {
         return isGrounded;
     }
 
-}
+    public int GetGazeDirectionX()
+    {
+        return gazeMemory;
+    }
+
+    public bool GetDashing()
+    {
+        return dashing;
+    }
+
+    public bool GetFiring()
+    {
+        return firing;
+    }
+    public bool GetIsOnRightWall()
+    {
+        return isOnRightWall;
+    }
+
+    public bool GetIsOnLeftWall()
+    {
+        return isOnLeftWall;
+    }
 }

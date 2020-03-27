@@ -16,28 +16,31 @@ public class anim : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetFloat("look", 1f);
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerController control = gameObject.GetComponent<PlayerController>();
-        HInput = Input.GetAxis("HorizontalPlayerOne");
-        JInput = Input.GetButton("JumpPlayerOne");
-        if (HInput < 0.001 && HInput > -0.001)
+        if (body.velocity.x < 1 && body.velocity.x > -1)
             animator.SetBool("isRunning", false);
         else
             animator.SetBool("isRunning", true);
-        if (HInput < -0.01)
-            animator.SetFloat("look", -1f);
-        if (HInput > 0.01)
-            animator.SetFloat("look", 1f);
-        animator.SetBool("isJumping", JInput);
+        animator.SetFloat("look", control.GetGazeDirectionX());
         animator.SetFloat("vVelocity", body.velocity.y);
         animator.SetFloat("hVelocity", body.velocity.x);
         animator.SetFloat("speed", System.Math.Abs(body.velocity.x));
         animator.SetBool("isGrounded", control.GetIsGrounded());
-
+        animator.SetBool("isDashing", control.GetDashing());
+        animator.SetBool("isFiring", control.GetFiring());
+        Debug.Log(control.GetIsOnLeftWall() + "Left wall");
+        Debug.Log(control.GetIsGrounded() + "Grounded");
+        animator.SetBool("isOnLeftWall", control.GetIsOnLeftWall());
+        animator.SetBool("isOnRightWall", control.GetIsOnRightWall());
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Saut"))
+            animator.SetBool("isJumping", true);
+        else
+            animator.SetBool("isJumping", false);
     }
 }
