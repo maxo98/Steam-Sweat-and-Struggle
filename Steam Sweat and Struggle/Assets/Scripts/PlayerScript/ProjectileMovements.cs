@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileMovements : MonoBehaviour
 {
 	[SerializeField]
-	private float speed = 500;
+	private float speed;
 
 	[SerializeField]
 	private float directionAngle;
@@ -34,14 +34,17 @@ public class ProjectileMovements : MonoBehaviour
 	{
 		directionAngle = direction;
 	}
-
+	public void SetSpeed(float spd)
+	{
+		speed = spd;
+	}
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "platforms" || other.gameObject.tag == "Characters")
 		{
 			if (other.gameObject.tag == "Characters") {
 				//Character dies
-				Destroy(other.gameObject);
+				other.gameObject.SendMessage("OnDie");
 			}
 			Destroy(gameObject);
 		}

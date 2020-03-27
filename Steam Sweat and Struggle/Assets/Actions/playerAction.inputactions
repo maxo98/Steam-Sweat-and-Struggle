@@ -51,7 +51,7 @@
                     "id": "7ad06ab1-4c01-4403-bd65-c4a5942a9bd4",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -70,7 +70,7 @@
                     "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
                     "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Fire",
@@ -81,7 +81,7 @@
                     "name": "",
                     "id": "31d97a49-d091-4ecb-816a-6355be9d3d94",
                     "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Jump",
@@ -103,7 +103,7 @@
                     "name": "",
                     "id": "2128c512-bfd7-4b1a-bb64-ef83749c1cee",
                     "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Skill",

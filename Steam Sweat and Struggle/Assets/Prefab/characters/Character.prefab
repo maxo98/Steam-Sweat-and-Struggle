@@ -116,7 +116,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1}
+  m_Size: {x: 1.6, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &224631039881452456
 MonoBehaviour:
@@ -236,7 +236,6 @@ MonoBehaviour:
   fallSpeed: -70
   fastFallSpeed: -140
   dashSpeed: 500
-  isGrounded: 0
   isOnLeftWall: 0
   isOnRightWall: 0
   fallMultiplier: 20
@@ -253,12 +252,6 @@ MonoBehaviour:
   wallCheckerRadius: 1
   projectilePrefab: {fileID: 1925421383955953965, guid: 105cab8e2c10eab628599e75a6b36ae7,
     type: 3}
-  offsetProjectileX: 5
-  offsetProjectileY: 6.5
-  fireRate: 0.2
-  nextFire: 0
-  dashRate: 2
-  nextDash: 0
 --- !u!114 &5648709717810752015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409fce87cb6d9ca47a362652ef9c0bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapData: {fileID: 7953389588111579505, guid: acf97acd921185479872337b2ae94a8f, type: 3}
+  mapData: {fileID: 0}
 --- !u!50 &3280055261261386098
 Rigidbody2D:
   serializedVersion: 4
