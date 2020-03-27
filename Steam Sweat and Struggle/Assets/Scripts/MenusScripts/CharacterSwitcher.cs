@@ -17,8 +17,9 @@ public class CharacterSwitcher : MonoBehaviour
     private GameObject confirm;
 
     //all the characters playable in the game
-    private GameObject[] characters;
-    private int currentcharacter;
+
+    private CharacterName[] characters;
+    private int currentCharacter;
 
     //tableau contenant le nom du perso et l'id du controller
     private string[] characterSelected = new string[2];
@@ -27,7 +28,8 @@ public class CharacterSwitcher : MonoBehaviour
     private RectTransform rectTransform;
 
     private bool firstInput = true;
-    public bool Selected { get; set; }
+    public bool selected = false;
+    public bool destroyed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,24 +37,27 @@ public class CharacterSwitcher : MonoBehaviour
 
     }
 
-    private void Awake()
-    {
+    public void SetParent(int playerIndex, GameObject newParent, CharacterName[] characters) {
 
-    }
-
-    public void SetParent(int playerIndex, GameObject newParent) {
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        //set the parent of the selector as the menu
         gameObject.transform.SetParent(newParent.transform);
 
         rectTransform = GetComponent<RectTransform>();
 
-        characters = GameObject.FindGameObjectsWithTag("characterIcon");
-        characters[0].SetActive(true);
+        //get all the characters implemented
+        this.characters = characters;
+
+        Debug.Log("number of character available : " + characters.Length);
+        //display the first character on the selection menu for each new player
+        characters[0].gameObject.SetActive(true);
         for (int i = 1; i < characters.Length; ++i)
         {
-            characters[i].SetActive(false);
+            characters[i].gameObject.SetActive(false);
         }
-        currentcharacter = 0;
+        currentCharacter = 0;
 
+        //place the selector according to the player number
         idPlayer = playerIndex;
 
         switch (idPlayer)
@@ -77,9 +82,6 @@ public class CharacterSwitcher : MonoBehaviour
         }
 
         rectTransform.localScale = new Vector3(100, 100, 1);
-        rectTransform.ForceUpdateRectTransforms();
-
-
     }
 
 
@@ -97,19 +99,19 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         }
 
-        if (leftArrow.activeSelf)
+        if (confirm.activeSelf)
         {
             Debug.Log("Submit");
             Debug.Log("character 0 : " + characters[0].name + " character 1 : " + characters[1].name);
-            Debug.Log("Current Character : " + currentcharacter);
-            Debug.Log("character selected : " + characters[currentcharacter].name);
+            Debug.Log("Current Character : " + currentCharacter);
+            Debug.Log("character selected : " + characters[currentCharacter].name);
             leftArrow.SetActive(false);
             rightArrow.SetActive(false);
             confirm.SetActive(false);
 
-            characterSelected[0] = characters[currentcharacter].name;
-            characterSelected[1] = gameObject.GetComponent<PlayerInput>().devices[0].deviceId.ToString();
-            Selected = true;
+            characterSelected[0] = characters[currentCharacter].name;
+            characterSelected[1] = GetComponent<PlayerInput>().devices[0].path;
+            selected = true;
         }
     }
 
@@ -122,17 +124,17 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         }
 
-        if (!leftArrow.activeSelf)
+        if (!confirm.activeSelf)
         {
             Debug.Log("Cancel");
             leftArrow.SetActive(true);
             rightArrow.SetActive(true);
             confirm.SetActive(true);
-            Selected = false;
+            selected = false;
         }
         else
         {
-            SceneManagerWithParameters.Load("menuPrincipal");
+            SceneManagerWithParameters.Load("menuMap");
         }
     }
 
@@ -151,7 +153,7 @@ public class CharacterSwitcher : MonoBehaviour
         foreach (GameObject g in characterSelecters)
         {
             CharacterSwitcher currentPlayer = g.GetComponent<CharacterSwitcher>();
-            if (currentPlayer.Selected)
+            if (currentPlayer.selected)
             {
                 characters[numberSelected] = currentPlayer.characterSelected;
                 numberSelected++;
@@ -174,11 +176,16 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         }
 
-        if (leftArrow.activeSelf && currentcharacter == 0)
+        if (confirm.activeSelf && !(currentCharacter <= 0))
         {
             Debug.Log("Left");
-            characters[currentcharacter].SetActive(false);
-            characters[currentcharacter++].SetActive(true);
+            characters[currentCharacter - 1].gameObject.SetActive(true);
+            characters[currentCharacter].gameObject.SetActive(false);
+            currentCharacter --;
+        }
+        else
+        {
+            currentCharacter = 0;
         }
     }
 
@@ -189,12 +196,16 @@ public class CharacterSwitcher : MonoBehaviour
             firstInput = false;
             return;
         }
-        if (leftArrow.activeSelf && currentcharacter == characters.Length)
+        if (confirm.activeSelf && !(currentCharacter >= characters.Length - 1))
         {
             Debug.Log("Right");
-            characters[currentcharacter].SetActive(false);
-            characters[currentcharacter--].SetActive(true);
-            
+            characters[currentCharacter + 1].gameObject.SetActive(true);
+            characters[currentCharacter].gameObject.SetActive(false);
+            currentCharacter ++;
+        }
+        else
+        {
+            currentCharacter = characters.Length - 1;
         }
     }
 }

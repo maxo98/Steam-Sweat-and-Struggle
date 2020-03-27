@@ -18,13 +18,17 @@ public class MultiplayerManager : MonoBehaviour
     void Start()
     {
 
+    }
+
+    private void OnEnable()
+    {
         playerInputManager = GetComponent<PlayerInputManager>();
 
 
         // Listening must be enabled explicitly
         ++InputUser.listenForUnpairedDeviceActivity;
 
-        // Example of how to spawn a new player automatically when a button
+        //spawn a new player automatically when a button
         // is pressed on an unpaired device.
         InputUser.onUnpairedDeviceUsed +=
         (control, eventPtr) =>
@@ -42,18 +46,13 @@ public class MultiplayerManager : MonoBehaviour
             if (playerInputManager.playerCount <= playerInputManager.maxPlayerCount)
             {
                 playerInput = PlayerInput.Instantiate(prefab: playerPrefab, playerIndex: playerInputManager.playerCount, pairWithDevice: control.device);
-                playerInput.onActionTriggered +=
-                (context) =>
-                {
-                    return;
-                };
-
-                
+                Debug.Log("controllers : " + playerInput.devices.Count);
                 Debug.Log("new Player");
                 CharacterSwitcher characterSwitch = playerInput.GetComponent<CharacterSwitcher>();
                 Debug.Log("clone created : " + characterSwitch.gameObject);
                 Debug.Log("menu : " + gameObject.ToString());
-                characterSwitch.SetParent(playerInputManager.playerCount, gameObject);
+                CharacterName[] characters = characterSwitch.GetComponentsInChildren<CharacterName>();
+                characterSwitch.SetParent(playerInputManager.playerCount, gameObject, characters);
             }
         };
     }

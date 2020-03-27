@@ -4,7 +4,28 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuPrincipal.unity
+    guid: 0749cbf66730fe348a38e0918b029cdc
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuQuit.unity
+    guid: 143cadcb5f0602845b5f9f83f57ad5c4
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuOption.unity
+    guid: 609cc47af145c994288ebde5520b4d6f
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuMap.unity
+    guid: ec85aa5d1dedb5e44b48e21c1b7253a9
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuPerso.unity
+    guid: 5608d82f54b4b04409755bc78789431a
+  - enabled: 1
+    path: Assets/Scenes/Maps/Map1.unity
+    guid: 18e792baf31958747aa5253f7a10f664
+  - enabled: 1
+    path: Assets/Scenes/Maps/Map2.unity
+    guid: 82c2743547fa45c4abb7bdf5ad2a4b71
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f4a2ca205db1f3ed296998aae4f310ec,
       type: 2}
