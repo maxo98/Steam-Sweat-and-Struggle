@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 	private float offsetProjectileY = 6.5f;
 	[SerializeField]
 	private float fireRate = 0.2f;
-    [SerializeField]
+	[SerializeField]
 	private float nextFire;
 	[SerializeField]
 	private float dashRate = 2f;
@@ -75,12 +75,8 @@ public class PlayerController : MonoBehaviour
 	private float gazeDirectionAngle;
 	private int gazeDirectionY = 0;
 	private int gazeDirectionX = 1;
-    private int gazeMemory = 1;
 
-    private int timerFiring = 0;
-    private bool firing = false;
-    private int timerDashing = 0;
-    private bool dashing = false;
+	bool dashing = false;
     bool lastJumped = false;
 
     Vector2 movements = new Vector2(0,0);
@@ -98,21 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         //moving the character on the X axis
         float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
-        if (movements.x < -0.1)
-            gazeMemory = -1;
-        else if (movements.x > 0.1)
-            gazeMemory = 1;
         body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
-
-        if (timerDashing == 0)
-            dashing = false;
-        else
-            --timerDashing;
-
-        if (timerFiring == 0)
-            firing = false;
-        else
-            --timerFiring;
 
         CheckIfGrounded();
         CheckIfOnWall();
@@ -191,8 +173,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Firing");
         if (Time.time > nextFire)
         {
-            firing = true;
-            timerFiring = 5; 
             //update the time when the player will be able to shoot
             nextFire = Time.time + fireRate;
             //instanciate the projectile
@@ -221,10 +201,8 @@ public class PlayerController : MonoBehaviour
             //				new Vector2(transform.position.x, transform.position.y),
             //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
             //				dashSpeed * Time.deltaTime);
-            dashing = true;
-            timerDashing = 5;
-            body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
 
+            body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
         }
     }
 
@@ -348,28 +326,5 @@ public class PlayerController : MonoBehaviour
         return isGrounded;
     }
 
-    public int GetGazeDirectionX()
-    {
-        return gazeMemory;
-    }
-
-    public bool GetDashing()
-    {
-        return dashing;
-    }
-
-    public bool GetFiring()
-    {
-        return firing;
-    }
-    public bool GetIsOnRightWall()
-    {
-        return isOnRightWall;
-    }
-
-    public bool GetIsOnLeftWall()
-    {
-        return isOnLeftWall;
-    }
 }
-
+}
