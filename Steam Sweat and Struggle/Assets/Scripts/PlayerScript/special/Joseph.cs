@@ -36,9 +36,7 @@ public class Joseph : PlayerController
 
     protected override void OnDie() {
         if (Time.time>timeInvicible) {
-            timeInvicible = Time.time+invincibilityDelay;
-            Debug.Log("YOU DIED");
-            Destroy(gameObject);
+            base.OnDie();
         } else {
             Debug.Log("INVINCIBLE");
         }
