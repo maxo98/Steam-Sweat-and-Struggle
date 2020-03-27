@@ -1,8 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Steam Sweat and Struggle/Assets/Characters/Jade/Jade Run.anim.meta
 guid: 6ac4d67d612970849b5495e231e61125
+=======
+guid: 52bcb3ca7ed96664e9a1075c1305916f
+>>>>>>> parent of b1e6ba9... Ajout des tirs courses et idle, ajout animation acroche murale:Steam Sweat and Struggle/Assets/Characters/Jade Iddle Droite.anim.meta
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 0
+  mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
