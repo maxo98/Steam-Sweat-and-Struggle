@@ -43,10 +43,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7505607711880160994, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}
       propertyPath: m_Name
       value: CharacterJade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_TagString
+      value: Jade
       objectReference: {fileID: 0}
     - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}

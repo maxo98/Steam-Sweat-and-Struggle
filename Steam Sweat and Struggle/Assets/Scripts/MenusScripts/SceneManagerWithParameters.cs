@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public static class SceneManagerWithParameters
@@ -8,7 +9,7 @@ public static class SceneManagerWithParameters
     public struct Parameters
     {
         public string MapName { get; set; }
-        public string[][] CharactersSelected { get; set; }
+        public Dictionary<string, InputDevice> CharactersSelected { get; set; }
     }
 
     private static Parameters parameters;
@@ -32,7 +33,7 @@ public static class SceneManagerWithParameters
         parameters.MapName = mapName;
     }
 
-    public static void SetCharacters(string[][] charactersSelected)
+    public static void SetCharacters(Dictionary<string, InputDevice> charactersSelected)
     {
         parameters.CharactersSelected = charactersSelected;
     }

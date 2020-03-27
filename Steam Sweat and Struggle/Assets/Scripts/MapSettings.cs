@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MapSettings : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class MapSettings : MonoBehaviour
     public float Right { get; set; }
 
     private GameObject[] objects;
+    private List<GameObject> player = new List<GameObject>();
 
 
     // Start is called before the first frame update
@@ -18,6 +20,16 @@ public class MapSettings : MonoBehaviour
         MapSizeChecker();
         InstantiatePlayers();
 
+    }
+
+    private void OnEnable()
+    {
+        Dictionary<string, InputDevice> characters = SceneManagerWithParameters.GetSceneParameters().CharactersSelected;
+        foreach(string s in characters.Keys)
+        {
+            PlayerInput playerInput = PlayerInput.Instantiate(prefab: GameObject.FindGameObjectWithTag(s), pairWithDevice: characters[s]);
+            player.Add(playerInput.gameObject);
+        }
     }
 
     // Update is called once per frame

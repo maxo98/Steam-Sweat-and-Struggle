@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class CharacterSwitcher : MonoBehaviour
 {
-
     private int idPlayer;
 
     [SerializeField]
@@ -22,7 +21,8 @@ public class CharacterSwitcher : MonoBehaviour
     private int currentCharacter;
 
     //tableau contenant le nom du perso et l'id du controller
-    private string[] characterSelected = new string[2];
+    private string characterSelected;
+    private InputDevice inputDevice;
 
     //position of the current GameObject
     private RectTransform rectTransform;
@@ -109,8 +109,8 @@ public class CharacterSwitcher : MonoBehaviour
             rightArrow.SetActive(false);
             confirm.SetActive(false);
 
-            characterSelected[0] = characters[currentCharacter].name;
-            characterSelected[1] = GetComponent<PlayerInput>().devices[0].path;
+            characterSelected = characters[currentCharacter].name;
+            inputDevice = GetComponent<PlayerInput>().devices[0];
             selected = true;
         }
     }
@@ -148,14 +148,19 @@ public class CharacterSwitcher : MonoBehaviour
         }
         
         GameObject[] characterSelecters = GameObject.FindGameObjectsWithTag("characterSelectionMenu");
+        if(characterSelecters == null)
+        {
+            return;
+        }
+
         int numberSelected = 0;
-        string[][] characters = new string[characterSelecters.Length][];
+        Dictionary<string, InputDevice> characters = new Dictionary<string, InputDevice>();
         foreach (GameObject g in characterSelecters)
         {
             CharacterSwitcher currentPlayer = g.GetComponent<CharacterSwitcher>();
             if (currentPlayer.selected)
             {
-                characters[numberSelected] = currentPlayer.characterSelected;
+                characters.Add(currentPlayer.characterSelected,currentPlayer.inputDevice);
                 numberSelected++;
             }
         }

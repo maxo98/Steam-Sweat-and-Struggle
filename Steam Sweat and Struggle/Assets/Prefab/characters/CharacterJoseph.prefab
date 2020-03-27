@@ -34,9 +34,6 @@ MonoBehaviour:
   wallCheckerRadius: 1
   projectilePrefab: {fileID: 1925421383955953965, guid: 105cab8e2c10eab628599e75a6b36ae7,
     type: 3}
-  invincibilityDelay: 20
-  timeInvicible: 0
-  hasUsedInvincibility: 0
 --- !u!1001 &4446200651105422005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48,6 +45,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterJoseph
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611065138166159548, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_TagString
+      value: Joseph
       objectReference: {fileID: 0}
     - target: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
         type: 3}
