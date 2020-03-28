@@ -27,9 +27,8 @@ public class anim : MonoBehaviour
             animator.SetBool("isRunning", false);
         else
             animator.SetBool("isRunning", true);
-        animator.SetFloat("look", control.GetGazeDirectionX());
-        animator.SetFloat("vVelocity", body.velocity.y);
-        animator.SetFloat("hVelocity", body.velocity.x);
+        animator.SetFloat("look", control.GetGazeMemory());
+        animator.SetInteger("fireGaze", control.GetGazeDirectionX());
         animator.SetFloat("speed", System.Math.Abs(body.velocity.x));
         animator.SetBool("isGrounded", control.GetIsGrounded());
         animator.SetBool("isDashing", control.GetDashing());

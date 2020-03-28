@@ -192,9 +192,11 @@ public class PlayerController : MonoBehaviour
         if (Time.time > nextFire)
         {
             firing = true;
-            timerFiring = 5;
+            timerFiring = 15;
             //update the time when the player will be able to shoot
             nextFire = Time.time + fireRate;
+            if (gazeDirectionX == 0)
+                gazeDirectionX = gazeMemory;
             //instanciate the projectile
             GameObject projectile = Instantiate(projectilePrefab,
                             new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
@@ -350,7 +352,7 @@ public class PlayerController : MonoBehaviour
         return isGrounded;
     }
 
-    public int GetGazeDirectionX()
+    public int GetGazeMemory()
     {
         return gazeMemory;
     }
@@ -372,5 +374,10 @@ public class PlayerController : MonoBehaviour
     public bool GetIsOnLeftWall()
     {
         return isOnLeftWall;
+    }
+
+    public int GetGazeDirectionX()
+    {
+        return gazeDirectionX;
     }
 }
