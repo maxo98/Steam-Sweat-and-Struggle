@@ -13,6 +13,7 @@ TagManager:
   - characterIcon
   - mapIcon
   - Spot
+  - errorMsg
   layers:
   - Default
   - TransparentFX

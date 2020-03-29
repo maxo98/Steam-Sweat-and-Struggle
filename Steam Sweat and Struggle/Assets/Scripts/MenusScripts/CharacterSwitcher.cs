@@ -14,7 +14,7 @@ public class CharacterSwitcher : MonoBehaviour
     private GameObject rightArrow;
     [SerializeField]
     private GameObject confirm;
-
+    private GameObject errorMsg;
     //all the characters playable in the game
 
     private CharacterName[] characters;
@@ -34,15 +34,21 @@ public class CharacterSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
+        
     }
 
-    public void SetParent(int playerIndex, GameObject newParent, CharacterName[] characters) {
+    void Awake()
+    {
+        
+    }
+
+    public void SetParent(int playerIndex, GameObject newParent, CharacterName[] characters, GameObject errorMsg) {
 
         PlayerInput playerInput = GetComponent<PlayerInput>();
         //set the parent of the selector as the menu
         gameObject.transform.SetParent(newParent.transform);
-
+        this.errorMsg = errorMsg;
         rectTransform = GetComponent<RectTransform>();
 
         //get all the characters implemented
@@ -50,6 +56,7 @@ public class CharacterSwitcher : MonoBehaviour
 
         Debug.Log("number of character available : " + characters.Length);
         //display the first character on the selection menu for each new player
+        
         characters[0].gameObject.SetActive(true);
         for (int i = 1; i < characters.Length; ++i)
         {
@@ -124,6 +131,11 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         }
 
+        if(errorMsg.activeSelf)
+        {
+            errorMsg.SetActive(false);
+        }
+
         if (!confirm.activeSelf)
         {
             Debug.Log("Cancel");
@@ -150,6 +162,7 @@ public class CharacterSwitcher : MonoBehaviour
         GameObject[] characterSelecters = GameObject.FindGameObjectsWithTag("characterSelectionMenu");
         if(characterSelecters == null)
         {
+            
             return;
         }
 
@@ -162,6 +175,8 @@ public class CharacterSwitcher : MonoBehaviour
             if(characters.ContainsKey(currentPlayer.characterSelected))
             {
                 Debug.Log("Character selected twice");
+                errorMsg.transform.SetAsLastSibling();
+                errorMsg.SetActive(true);
                 return;
             }
             if (currentPlayer.selected)

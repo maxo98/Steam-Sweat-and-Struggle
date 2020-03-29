@@ -13,6 +13,7 @@ public class MultiplayerManager : MonoBehaviour
 	[SerializeField]
     private GameObject playerPrefab;
     private PlayerInput playerInput;
+    private GameObject errorMsg;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,9 @@ public class MultiplayerManager : MonoBehaviour
 
     private void OnEnable()
     {
+        errorMsg = GameObject.FindGameObjectWithTag("errorMsg");
+        errorMsg.SetActive(false);
+
         playerInputManager = GetComponent<PlayerInputManager>();
 
 
@@ -52,7 +56,7 @@ public class MultiplayerManager : MonoBehaviour
                 Debug.Log("clone created : " + characterSwitch.gameObject);
                 Debug.Log("menu : " + gameObject.ToString());
                 CharacterName[] characters = characterSwitch.GetComponentsInChildren<CharacterName>();
-                characterSwitch.SetParent(playerInputManager.playerCount, gameObject, characters);
+                characterSwitch.SetParent(playerInputManager.playerCount, gameObject, characters, errorMsg);
             }
         };
     }
