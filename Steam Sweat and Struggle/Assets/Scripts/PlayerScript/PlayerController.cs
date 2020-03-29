@@ -7,35 +7,26 @@ public class PlayerController : MonoBehaviour
 {
 
     //speed and jumpSpeed 
-    [SerializeField]
+    
     private float speed = 50.0f;
-    [SerializeField]
-    private float wallJumpForce = 20.0f;
-    [SerializeField]
-    private float jumpForce = 150.0f;
-    [SerializeField]
+    private float wallJumpForce = 50.0f;
+    private float jumpForce = 100.0f;
     private float fallSpeed = -70.0f;
-    [SerializeField]
-    private float fastFallSpeed = -140.0f;
-    [SerializeField]
+    private float fastFallSpeed = -100.0f;
     private float dashSpeed = 200.0f;
 
     //jump condition
-    [SerializeField]
+    
     public bool isGrounded {get; set; } = false;
-    [SerializeField]
+    
     private bool isOnLeftWall = false;
-    [SerializeField]
+    
     private bool isOnRightWall = false;
     private float lastTimeGrounded;
     private float lastTimeOnWall;
-    [SerializeField]
     private float fallMultiplier = 20.0f;
-    [SerializeField]
     private float lowJumpMultiplier = 40f;
-    [SerializeField]
     private float rememberOnWallFor = 0.5f;
-    [SerializeField]
     private float rememberGroundedFor = 0f;
 
     //hitbox components
@@ -76,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
 	private int dashing = 0;
     private bool lastJumped = false;
+    private bool jumping = false;
 
     private Vector2 movements = new Vector2(0,0);
 
@@ -107,7 +99,7 @@ public class PlayerController : MonoBehaviour
 			--dashing;
 		} else {
 		    //moving the character on the X and Y axis
-		    float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
+		    var fSpd = (movements.y < 0) ? fastFallSpeed : fallSpeed;
 		    body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
 		}
 	}
@@ -128,21 +120,30 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Jumping");
         if (!lastJumped)
         {
+            
             if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
+                jumping = true;
             }
             else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
 
                 body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
             else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
                 body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
         }
         lastJumped = true;
+    }
+
+    void OnStopJump()
+    {
+        jumping = false;
     }
 
     protected virtual void OnLook(InputValue value)
@@ -215,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4)
+        if (body.velocity.y > -4 && !jumping)
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -223,6 +224,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
 	private void AdjustGazeDirection() {
 		if (gazeDirectionX == 0 && gazeDirectionY == 0) {
 			if (movements.x < 0)

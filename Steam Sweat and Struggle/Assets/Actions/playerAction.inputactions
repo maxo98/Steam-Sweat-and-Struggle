@@ -52,6 +52,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "StopJump",
+                    "type": "Button",
+                    "id": "88adeb1f-3492-490f-8b5f-c6e2a98d4127",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -118,6 +126,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "939f9291-99b7-4a3d-96a0-b10040f6c88e",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "StopJump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
