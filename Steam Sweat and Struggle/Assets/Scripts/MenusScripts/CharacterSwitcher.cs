@@ -159,6 +159,11 @@ public class CharacterSwitcher : MonoBehaviour
         {
             Debug.Log("Test Selector");
             CharacterSwitcher currentPlayer = g.GetComponent<CharacterSwitcher>();
+            if(characters.ContainsKey(currentPlayer.characterSelected))
+            {
+                Debug.Log("Character selected twice");
+                return;
+            }
             if (currentPlayer.selected)
             {
                 characters.Add(currentPlayer.characterSelected,currentPlayer.inputDevice);

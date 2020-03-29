@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterVerifiy : MonoBehaviour
+public class SettingMenu : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,5 +14,10 @@ public class CharacterVerifiy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnCancel()
+    {
+        SceneManagerWithParameters.Load("menuPrincipal");
     }
 }
