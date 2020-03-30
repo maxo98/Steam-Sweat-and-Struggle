@@ -10,6 +10,10 @@ TagManager:
   - platforms
   - Characters
   - characterSelectionMenu
+  - characterIcon
+  - mapIcon
+  - Spot
+  - errorMsg
   layers:
   - Default
   - TransparentFX

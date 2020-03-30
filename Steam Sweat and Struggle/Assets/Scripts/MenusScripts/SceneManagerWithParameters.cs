@@ -1,33 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public static class SceneManagerWithParameters
 {
+    public struct Parameters
+    {
+        public string MapName { get; set; }
+        public Dictionary<string, InputDevice> CharactersSelected { get; set; }
+        public Dictionary<string, int> Scores { get; set; }
+    }
 
-    private static List<string> parameters;
+    private static Parameters parameters;
 
     public static void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    public static List<string> GetSceneParameters()
+    public static Parameters GetSceneParameters()
     {
         return parameters;
     }
 
-    public static void SetParam(string paramValue)
+    public static void SetMap(string mapName)
     {
-        if (parameters == null)
+        if (parameters.MapName == null && parameters.CharactersSelected == null)
         {
-            parameters = new List<string>();
+            parameters = new Parameters();
         }
-        if (parameters.Contains(paramValue))
+        parameters.MapName = mapName;
+    }
+
+    public static void SetCharacters(Dictionary<string, InputDevice> charactersSelected)
+    {
+        parameters.CharactersSelected = charactersSelected;
+        parameters.Scores = new Dictionary<string, int>();
+        foreach(string s in charactersSelected.Keys)
         {
-            parameters.Remove(paramValue);
+            parameters.Scores.Add(s, 0);
         }
-        parameters.Add(paramValue);
     }
 
 }

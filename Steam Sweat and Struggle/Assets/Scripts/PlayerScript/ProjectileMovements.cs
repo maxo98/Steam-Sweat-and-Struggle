@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileMovements : MonoBehaviour
 {
 	[SerializeField]
-	private float speed = 500;
+	private float speed;
 
 	[SerializeField]
 	private float directionAngle;
@@ -21,6 +21,7 @@ public class ProjectileMovements : MonoBehaviour
 
 		//we use cos(angle) and sin(angle) to normalize speed in every direction
 		body.AddForce(new Vector2(transform.right.x * speed * Mathf.Cos(directionAngle), transform.up.y * speed * Mathf.Sin(directionAngle)), ForceMode2D.Impulse);
+		transform.Rotate(0,0, (180 / Mathf.PI) * directionAngle);
 	}
 
     // Update is called once per frame
@@ -34,14 +35,17 @@ public class ProjectileMovements : MonoBehaviour
 	{
 		directionAngle = direction;
 	}
-
+	public void SetSpeed(float spd)
+	{
+		speed = spd;
+	}
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "platforms" || other.gameObject.tag == "Characters")
 		{
 			if (other.gameObject.tag == "Characters") {
 				//Character dies
-				Destroy(other.gameObject);
+				other.gameObject.SendMessage("OnDie");
 			}
 			Destroy(gameObject);
 		}

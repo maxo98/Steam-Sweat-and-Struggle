@@ -7,39 +7,30 @@ public class PlayerController : MonoBehaviour
 {
 
     //speed and jumpSpeed 
-    [SerializeField]
+    
     private float speed = 50.0f;
-    [SerializeField]
-    private float wallJumpForce = 20.0f;
-    [SerializeField]
-    private float jumpForce = 110.0f;
-    [SerializeField]
+    private float wallJumpForce = 50.0f;
+    private float jumpForce = 100.0f;
     private float fallSpeed = -70.0f;
-    [SerializeField]
-    private float fastFallSpeed = -140.0f;
-    [SerializeField]
-    private float dashSpeed = 500;
+    private float fastFallSpeed = -100.0f;
+    private float dashSpeed = 200.0f;
 
     //jump condition
-    [SerializeField]
-    private bool isGrounded = false;
-    [SerializeField]
+    
+    public bool isGrounded {get; set; } = false;
+    
     private bool isOnLeftWall = false;
-    [SerializeField]
+    
     private bool isOnRightWall = false;
     private float lastTimeGrounded;
     private float lastTimeOnWall;
-    [SerializeField]
     private float fallMultiplier = 20.0f;
-    [SerializeField]
     private float lowJumpMultiplier = 40f;
-    [SerializeField]
     private float rememberOnWallFor = 0.5f;
-    [SerializeField]
-    private float rememberGroundedFor = 0.5f;
+    private float rememberGroundedFor = 0f;
 
     //hitbox components
-    private Rigidbody2D body;
+    public Rigidbody2D body {get; set;}
     [SerializeField]
     private float groundCheckerRadius = 1f;
     [SerializeField]
@@ -52,32 +43,33 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform rightWallChecker;
     [SerializeField]
-    private float wallCheckerRadius = 2f;
+    private float wallCheckerRadius = 1f;
 
 	//projectile & dash components
 	[SerializeField]
 	private GameObject projectilePrefab;
-	[SerializeField]
 	private float offsetProjectileX = 5.0f;
-	[SerializeField]
 	private float offsetProjectileY = 6.5f;
-	[SerializeField]
-	private float fireRate = 0.2f;
-	[SerializeField]
+    public float projectileSpeed {get; set;} = 100f;
+	public int nbShots {get; set;} = 5;
+	public int nbRemainingShots {get; set;} = 5;
+	public float reload {get; set;} = 3f;
+	public float cooldown {get; set;} = 0.2f;
 	private float nextFire;
-	//[SerializeField]
-	private float dashRate = 2f;
-	//[SerializeField]
+	private float dashRate = 1f;
 	private float nextDash;
-	private float dashDistance = 15f;
+	private int dashDistance = 8;
 
 	//where the character is looking
 	private float gazeDirectionAngle;
 	private int gazeDirectionY = 0;
-	private int gazeDirectionX = 1;
+	private int gazeDirectionX = 0;
 
-	bool dashing = false;
-    bool lastJumped = false;
+	private int dashing = 0;
+    private bool lastJumped = false;
+    private bool jumping = false;
+
+    private Vector2 movements = new Vector2(0,0);
 
     // Start is called before the first frame update
     void Start()
@@ -85,11 +77,16 @@ public class PlayerController : MonoBehaviour
         //get the components
         body = GetComponent<Rigidbody2D>();
         nextFire = Time.time;
+        InitCharacterSpecs();
     }
 
+    protected virtual void InitCharacterSpecs() {
+
+    }
     // Update is called once per frame
     void Update()
     {
+		Move();
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
@@ -97,78 +94,93 @@ public class PlayerController : MonoBehaviour
     
     }
 
-    //movement methode
-    void OnMove(InputValue value)
-    {
-        Vector2 movements = value.Get<Vector2>();
+	protected virtual void Move() {
+		if (dashing>0) {
+			--dashing;
+		} else {
+		    //moving the character on the X and Y axis
+		    var fSpd = (movements.y < 0) ? fastFallSpeed : fallSpeed;
+		    body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+		}
+	}
 
-        //moving the character on the X axis
-        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
-        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
-
-        //player gaze by default
-        if (gazeDirectionX == 0 && gazeDirectionY == 0)
-        {
-            if (movements.x < -0.1)
-                gazeDirectionX = -1;
-            else if (movements.x > 0.1)
-                gazeDirectionX = 1;
-            else if (gazeDirectionX == 0)
-                gazeDirectionX = 1;
-        }
-
-        SetGazeAngle();
+    protected virtual void OnSkill() {
 
     }
 
-    void OnJump()
+    //movement method
+    protected virtual void OnMove(InputValue value)
     {
+        Debug.Log("Moving");
+        movements = value.Get<Vector2>();
+    }
+
+    protected virtual void OnJump()
+    {
+        Debug.Log("Jumping");
         if (!lastJumped)
         {
+            
             if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
+                jumping = true;
             }
             else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
 
                 body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
             else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
                 body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
         }
         lastJumped = true;
     }
 
-    void OnLook(InputValue value)
+    void OnStopJump()
     {
+        jumping = false;
+    }
+
+    protected virtual void OnLook(InputValue value)
+    {
+        Debug.Log("Looking");
         Vector2 gaze = value.Get<Vector2>();
 
-		if (gaze.x < -0.5)
+		if (gaze.x < -0.3)
 			gazeDirectionX = -1;
-		else if (gaze.x > 0.5)
+		else if (gaze.x > 0.3)
 			gazeDirectionX = 1;
         else
             gazeDirectionX = 0;
 
-		if (gaze.y > 0.5)
-			gazeDirectionY = -1;
-		else if (gaze.y < -0.5)
+		if (gaze.y > 0.3)
 			gazeDirectionY = 1;
+		else if (gaze.y < -0.3)
+			gazeDirectionY = -1;
         else
             gazeDirectionY = 0;
-
-		SetGazeAngle();
     }
 
-    void OnFire()
+    protected virtual void OnFire()
     {
+        Debug.Log("Firing");
         if (Time.time > nextFire)
         {
+			AdjustGazeDirection();
+			SetGazeAngle();
             //update the time when the player will be able to shoot
-            nextFire = Time.time + fireRate;
+            --nbShots;
+            if (nbShots<=0) {
+                nextFire = Time.time + reload;
+                nbShots = nbRemainingShots;
+            } else {
+                nextFire = Time.time + cooldown;
+            }
             //instanciate the projectile
             GameObject projectile = Instantiate(projectilePrefab,
                             new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
@@ -176,11 +188,13 @@ public class PlayerController : MonoBehaviour
             projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
             ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
             scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
+            scriptProjectile.SetSpeed(projectileSpeed);
         }
     }
 
-    void OnDash()
+    protected virtual void OnDash()
     {
+        Debug.Log("Dashing");
         if (Time.time > nextDash) 
         {
             //update the time when the player will be able to dash
@@ -188,14 +202,9 @@ public class PlayerController : MonoBehaviour
             body.velocity = (new Vector2(0, 0));
 
             //we use cos(angle) and sin(angle) to normalize speed in every direction
-            //body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
-
-            //transform.position = Vector2.Lerp(
-            //				new Vector2(transform.position.x, transform.position.y),
-            //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
-            //				dashSpeed * Time.deltaTime);
-
+			AdjustGazeDirection();
             body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+			dashing = dashDistance;
         }
     }
 
@@ -207,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4)
+        if (body.velocity.y > -4 && !jumping)
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         } else {
@@ -216,6 +225,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
+	private void AdjustGazeDirection() {
+		if (gazeDirectionX == 0 && gazeDirectionY == 0) {
+			if (movements.x < 0)
+			    gazeDirectionX = -1;
+			else
+				gazeDirectionX = 1;
+		}
+	}
     private void CheckIfGrounded()
     {
         Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
@@ -273,7 +290,7 @@ public class PlayerController : MonoBehaviour
 			case 0:
 				switch (gazeDirectionX)
 				{
-					case 1:
+					case 1: case 0:
 						gazeDirectionAngle = 0;
 						break;
 					case -1:
@@ -313,4 +330,10 @@ public class PlayerController : MonoBehaviour
 				break;
 		}
 	}
+    protected virtual void OnDie() {
+        Debug.Log("YOU DIED");
+        gameObject.GetComponent<Teleportation>().GetMapData().SendMessage("OnDeath", gameObject);
+
+
+    }
 }

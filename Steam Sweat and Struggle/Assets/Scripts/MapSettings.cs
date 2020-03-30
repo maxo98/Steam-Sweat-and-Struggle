@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MapSettings : MonoBehaviour
 {
@@ -10,20 +13,66 @@ public class MapSettings : MonoBehaviour
     public float Right { get; set; }
 
     private GameObject[] objects;
+    private Dictionary<string, GameObject> player = new Dictionary<string, GameObject>();
 
 
     // Start is called before the first frame update
     void Start()
     {
         MapSizeChecker();
-        InstantiatePlayers();
+    }
 
+    private void OnEnable()
+    {
+        Dictionary<string, InputDevice> characters = SceneManagerWithParameters.GetSceneParameters().CharactersSelected;
+        int i = 0;
+        List<GameObject> list_spots_unrandomized = new List<GameObject>(GameObject.FindGameObjectsWithTag("Spot"));
+        List<GameObject> list_spots = new List<GameObject>();
+        System.Random rand = new System.Random();
+        //Randomize list
+        while (list_spots_unrandomized.Count>0) {
+            int x = rand.Next(list_spots_unrandomized.Count);
+            list_spots.Add(list_spots_unrandomized[x]);
+            list_spots_unrandomized.RemoveAt(x);
+        }
+        foreach(string s in characters.Keys)
+        {
+            PlayerInput playerInput = PlayerInput.Instantiate(prefab: (GameObject) Resources.Load("Prefab/characters/Character"+s), pairWithDevice: characters[s]);
+            player.Add(s,playerInput.gameObject);
+            playerInput.gameObject.GetComponent<Teleportation>().SetMapData(gameObject);
+            playerInput.gameObject.transform.position = list_spots[i].transform.position;
+            ++i;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    protected void OnDeath(object obj)
+    {
+        GameObject gameObject = (GameObject) obj;
+        string name = "";
+        foreach(string s in player.Keys)
+        {
+            if(player[s] == gameObject)
+            {
+                name = s;
+            } 
+        }
+        player.Remove(name);
+        Destroy(gameObject);
+        if (player.Count == 1)
+        {
+            SceneManagerWithParameters.GetSceneParameters().Scores[player.Keys.First()] += 1;
+            foreach(string s in SceneManagerWithParameters.GetSceneParameters().Scores.Keys)
+            {
+                Debug.Log(s + " Score : " + SceneManagerWithParameters.GetSceneParameters().Scores[s]);
+            }
+            SceneManagerWithParameters.Load(gameObject.scene.name);
+        }
     }
 
     void MapSizeChecker()
@@ -52,8 +101,4 @@ public class MapSettings : MonoBehaviour
         }
     }
 
-    void InstantiatePlayers()
-    {
-
-    }
 }
