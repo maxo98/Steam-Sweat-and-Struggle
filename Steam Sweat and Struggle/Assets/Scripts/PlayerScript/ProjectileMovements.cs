@@ -21,6 +21,7 @@ public class ProjectileMovements : MonoBehaviour
 
 		//we use cos(angle) and sin(angle) to normalize speed in every direction
 		body.AddForce(new Vector2(transform.right.x * speed * Mathf.Cos(directionAngle), transform.up.y * speed * Mathf.Sin(directionAngle)), ForceMode2D.Impulse);
+		transform.Rotate(0,0, (180 / Mathf.PI) * directionAngle);
 	}
 
     // Update is called once per frame
