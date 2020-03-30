@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,7 @@ public class MapSettings : MonoBehaviour
     public float Right { get; set; }
 
     private GameObject[] objects;
-    private List<GameObject> player = new List<GameObject>();
+    private Dictionary<string, GameObject> player = new Dictionary<string, GameObject>();
 
 
     // Start is called before the first frame update
@@ -37,7 +38,7 @@ public class MapSettings : MonoBehaviour
         foreach(string s in characters.Keys)
         {
             PlayerInput playerInput = PlayerInput.Instantiate(prefab: (GameObject) Resources.Load("Prefab/characters/Character"+s), pairWithDevice: characters[s]);
-            player.Add(playerInput.gameObject);
+            player.Add(s,playerInput.gameObject);
             playerInput.gameObject.GetComponent<Teleportation>().SetMapData(gameObject);
             playerInput.gameObject.transform.position = list_spots[i].transform.position;
             ++i;
@@ -48,6 +49,30 @@ public class MapSettings : MonoBehaviour
     void Update()
     {
         
+    }
+
+    protected void OnDeath(object obj)
+    {
+        GameObject gameObject = (GameObject) obj;
+        string name = "";
+        foreach(string s in player.Keys)
+        {
+            if(player[s] == gameObject)
+            {
+                name = s;
+            } 
+        }
+        player.Remove(name);
+        Destroy(gameObject);
+        if (player.Count == 1)
+        {
+            SceneManagerWithParameters.GetSceneParameters().Scores[player.Keys.First()] += 1;
+            foreach(string s in SceneManagerWithParameters.GetSceneParameters().Scores.Keys)
+            {
+                Debug.Log(s + " Score : " + SceneManagerWithParameters.GetSceneParameters().Scores[s]);
+            }
+            SceneManagerWithParameters.Load(gameObject.scene.name);
+        }
     }
 
     void MapSizeChecker()

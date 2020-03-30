@@ -10,6 +10,7 @@ public static class SceneManagerWithParameters
     {
         public string MapName { get; set; }
         public Dictionary<string, InputDevice> CharactersSelected { get; set; }
+        public Dictionary<string, int> Scores { get; set; }
     }
 
     private static Parameters parameters;
@@ -36,6 +37,11 @@ public static class SceneManagerWithParameters
     public static void SetCharacters(Dictionary<string, InputDevice> charactersSelected)
     {
         parameters.CharactersSelected = charactersSelected;
+        parameters.Scores = new Dictionary<string, int>();
+        foreach(string s in charactersSelected.Keys)
+        {
+            parameters.Scores.Add(s, 0);
+        }
     }
 
 }

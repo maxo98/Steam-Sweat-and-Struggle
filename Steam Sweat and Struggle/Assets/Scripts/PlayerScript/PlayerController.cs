@@ -332,6 +332,8 @@ public class PlayerController : MonoBehaviour
 	}
     protected virtual void OnDie() {
         Debug.Log("YOU DIED");
-        Destroy(gameObject);
+        gameObject.GetComponent<Teleportation>().GetMapData().SendMessage("OnDeath", gameObject);
+
+
     }
 }
