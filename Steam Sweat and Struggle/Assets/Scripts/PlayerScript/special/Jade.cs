@@ -21,7 +21,7 @@ public class Jade : PlayerController
         if (!hasUsedMine && isGrounded) {
             hasUsedMine = true;
             GameObject projectile = Instantiate(minePrefab,
-                            new Vector3(transform.position.x, transform.position.y-2.5f, 0),
+                            new Vector3(transform.position.x, transform.position.y-2.2f, 0),
                             minePrefab.transform.rotation);
         }
     }
