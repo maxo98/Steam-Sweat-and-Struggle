@@ -103,17 +103,17 @@ TextureImporter:
       parentId: 3
     - name: bone_6
       position: {x: 769.7862, y: 328.16162, z: -1}
-      rotation: {x: 0, y: 0, z: -0.5717834, w: 0.8204046}
+      rotation: {x: 0, y: 0, z: -0.57178336, w: 0.82040465}
       length: 169.70148
       parentId: -1
     - name: bone_7
-      position: {x: 169.70148, y: 0.000023891484, z: -1}
-      rotation: {x: 0, y: 0, z: -0.36350176, w: 0.93159354}
+      position: {x: 169.70146, y: -0.000010387135, z: -1}
+      rotation: {x: 0, y: 0, z: -0.36350182, w: 0.9315935}
       length: 56.83628
       parentId: 5
     - name: bone_8
       position: {x: 56.836277, y: 0.000019994248, z: -1}
-      rotation: {x: 0, y: 0, z: -0.3567286, w: 0.9342081}
+      rotation: {x: 0, y: 0, z: -0.35672864, w: 0.9342081}
       length: 53.23289
       parentId: 6
     - name: bone_9
@@ -128,17 +128,17 @@ TextureImporter:
       parentId: 8
     - name: bone_11
       position: {x: 267.41907, y: 937.1852, z: -1}
-      rotation: {x: 0, y: 0, z: 0.9170269, w: 0.39882553}
-      length: 124.67945
+      rotation: {x: 0, y: 0, z: 0.91702676, w: 0.3988257}
+      length: 124.6794
       parentId: -1
     - name: bone_12
-      position: {x: 124.67937, y: -0.0000731975, z: -1}
-      rotation: {x: 0, y: 0, z: -0.25252694, w: 0.9675899}
-      length: 71.606606
+      position: {x: 124.67937, y: -0.000032147043, z: -1}
+      rotation: {x: 0, y: 0, z: -0.2525265, w: 0.96759}
+      length: 71.60662
       parentId: 10
     - name: bone_13
-      position: {x: 71.6066, y: 0.000041296888, z: -1}
-      rotation: {x: 0, y: 0, z: 0.574943, w: 0.8181935}
+      position: {x: 71.60664, y: 0.000017118691, z: -1}
+      rotation: {x: 0, y: 0, z: 0.5749428, w: 0.8181937}
       length: 73.06006
       parentId: 11
     - name: bone_14
@@ -173,12 +173,12 @@ TextureImporter:
       parentId: 17
     - name: bone_20
       position: {x: 491.55212, y: 920.182, z: -1}
-      rotation: {x: 0, y: 0, z: 0.8112425, w: 0.5847098}
-      length: 83.097374
+      rotation: {x: 0, y: 0, z: 0.81124234, w: 0.58471006}
+      length: 83.097435
       parentId: -1
     - name: bone_21
-      position: {x: 83.09743, y: -0.000044030014, z: 0}
-      rotation: {x: 0, y: 0, z: -0.33725893, w: 0.941412}
+      position: {x: 83.097435, y: 0.00005145767, z: 0}
+      rotation: {x: 0, y: 0, z: -0.33725867, w: 0.94141203}
       length: 120.855156
       parentId: 19
     spriteID: 046288a4a0aeb544bb398331817e9c9f

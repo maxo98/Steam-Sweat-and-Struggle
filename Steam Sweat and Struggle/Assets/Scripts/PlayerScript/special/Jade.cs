@@ -11,14 +11,14 @@ public class Jade : PlayerController
 
     protected override void InitCharacterSpecs() {
         
-        nbShots = nbRemainingShots = 6;
-        reload = 2.0f;
-        cooldown = 0.5f;
+        NbShots = NbRemainingShots = 6;
+        Reload = 2.0f;
+        Cooldown = 0.5f;
         projectileSpeed = 200f;
     }
 
     protected override void OnSkill() {
-        if (!hasUsedMine && isGrounded) {
+        if (!hasUsedMine && IsGrounded) {
             hasUsedMine = true;
             GameObject projectile = Instantiate(minePrefab,
                             new Vector3(transform.position.x, transform.position.y-2.2f, 0),

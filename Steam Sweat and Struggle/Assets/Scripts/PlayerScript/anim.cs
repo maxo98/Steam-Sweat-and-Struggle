@@ -27,16 +27,16 @@ public class anim : MonoBehaviour
             animator.SetBool("isRunning", false);
         else
             animator.SetBool("isRunning", true);
-        animator.SetFloat("look", control.GetGazeMemory());
-        animator.SetInteger("fireGaze", control.GetGazeDirectionX());
+        animator.SetFloat("look", control.GazeMemory);
+        animator.SetInteger("fireGaze", control.GazeDirectionX);
         animator.SetFloat("speed", System.Math.Abs(body.velocity.x));
-        animator.SetBool("isGrounded", control.GetIsGrounded());
-        animator.SetBool("isDashing", control.GetDashing());
-        animator.SetBool("isFiring", control.GetFiring());
-        Debug.Log(control.GetIsOnLeftWall() + "Left wall");
-        Debug.Log(control.GetIsGrounded() + "Grounded");
-        animator.SetBool("isOnLeftWall", control.GetIsOnLeftWall());
-        animator.SetBool("isOnRightWall", control.GetIsOnRightWall());
+        animator.SetBool("isGrounded", control.IsGrounded);
+        animator.SetBool("isDashing", control.IsDashing);
+        animator.SetBool("isFiring", control.IsFiring);
+        Debug.Log(control.IsOnLeftWall + "Left wall");
+        Debug.Log(control.IsGrounded + "Grounded");
+        animator.SetBool("isOnLeftWall", control.IsOnLeftWall);
+        animator.SetBool("isOnRightWall", control.IsOnRightWall);
         if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Saut"))
             animator.SetBool("isJumping", true);
         else

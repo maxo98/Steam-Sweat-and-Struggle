@@ -12,9 +12,9 @@ public class Joseph : PlayerController
 
     protected override void InitCharacterSpecs() {
         
-        nbShots = nbRemainingShots = 4;
-        reload = 3.0f;
-        cooldown = 1.0f;
+        NbShots = NbRemainingShots = 4;
+        Reload = 3.0f;
+        Cooldown = 1.0f;
         projectileSpeed = 100f;
         timeInvicible = Time.time;
 

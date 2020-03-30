@@ -17,11 +17,11 @@ public class PlayerController : MonoBehaviour
 
     //jump condition
     
-    public bool isGrounded {get; set; } = false;
+    public bool IsGrounded {get; set; } = false;
     
-    public bool isOnLeftWall {get; set;} = false;
+    public bool IsOnLeftWall {get; set;} = false;
     
-    public bool isOnRightWall {get; set;} = false;
+    public bool IsOnRightWall {get; set;} = false;
     private float lastTimeGrounded;
     private float lastTimeOnWall;
     private float fallMultiplier = 20.0f;
@@ -51,10 +51,10 @@ public class PlayerController : MonoBehaviour
 	private float offsetProjectileX = 5.0f;
 	private float offsetProjectileY = 6.5f;
     public float projectileSpeed {get; set;} = 100f;
-	public int nbShots {get; set;} = 5;
-	public int nbRemainingShots {get; set;} = 5;
-	public float reload {get; set;} = 3f;
-	public float cooldown {get; set;} = 0.2f;
+	public int NbShots {get; set;} = 5;
+	public int NbRemainingShots {get; set;} = 5;
+	public float Reload {get; set;} = 3f;
+	public float Cooldown {get; set;} = 0.2f;
 	private float nextFire;
 	private float dashRate = 1f;
 	private float nextDash;
@@ -71,12 +71,12 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 movements = new Vector2(0,0);
 
-    public int gazeMemory {get; set;} = 1;
+    public int GazeMemory {get; set;} = 1;
 
     private int timerFiring = 0;
-    public bool firing {get; set;} = false;
+    public bool IsFiring {get; set;} = false;
     private int timerDashing = 0;
-    public bool isDashing {get; set;} = false;
+    public bool IsDashing {get; set;} = false;
 
 
     // Start is called before the first frame update
@@ -105,17 +105,17 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void actionChecker() {
         if (movements.x < -0.1)
-            gazeMemory = -1;
+            GazeMemory = -1;
         else if (movements.x > 0.1)
-            gazeMemory = 1;
+            GazeMemory = 1;
 
         if (timerDashing == 0)
-            dashing = false;
+            IsDashing = false;
         else
             --timerDashing;
 
         if (timerFiring == 0)
-            firing = false;
+            IsFiring = false;
         else
             --timerFiring;
     }
@@ -147,18 +147,18 @@ public class PlayerController : MonoBehaviour
         if (!lastJumped)
         {
             
-            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+            if (IsGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 jumping = true;
             }
-            else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            else if (IsOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
 
                 body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
                 jumping = true;
             }
-            else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            else if (IsOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
                 body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
                 jumping = true;
@@ -178,18 +178,18 @@ public class PlayerController : MonoBehaviour
         Vector2 gaze = value.Get<Vector2>();
 
         if (gaze.x < -0.3)
-            gazeDirectionX = -1;
+            GazeDirectionX = -1;
         else if (gaze.x > 0.3)
-            gazeDirectionX = 1;
+            GazeDirectionX = 1;
         else
-            gazeDirectionX = 0;
+            GazeDirectionX = 0;
 
         if (gaze.y > 0.3)
-            gazeDirectionY = 1;
+            GazeDirectionY = 1;
         else if (gaze.y < -0.3)
-            gazeDirectionY = -1;
+            GazeDirectionY = -1;
         else
-            gazeDirectionY = 0;
+            GazeDirectionY = 0;
     }
 
     protected virtual void OnFire()
@@ -200,22 +200,22 @@ public class PlayerController : MonoBehaviour
 			AdjustGazeDirection();
 			SetGazeAngle();
             //update the time when the player will be able to shoot
-            --nbShots;
-            if (nbShots<=0) {
-                nextFire = Time.time + reload;
-                nbShots = nbRemainingShots;
+            --NbShots;
+            if (NbShots<=0) {
+                nextFire = Time.time + Reload;
+                NbShots = NbRemainingShots;
             } else {
-                nextFire = Time.time + cooldown;
+                nextFire = Time.time + Cooldown;
             }
-            firing = true;
+            IsFiring = true;
             timerFiring = 15;
             
-            if (gazeDirectionX == 0)
-                gazeDirectionX = gazeMemory;
+            if (GazeDirectionX == 0)
+                GazeDirectionX = GazeMemory;
 
             //instanciate the projectile
             GameObject projectile = Instantiate(projectilePrefab,
-                            new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
+                            new Vector3(transform.position.x + GazeDirectionX * offsetProjectileX, transform.position.y + GazeDirectionY * offsetProjectileY, 0),
                             projectilePrefab.transform.rotation);
             projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
             ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
@@ -235,9 +235,9 @@ public class PlayerController : MonoBehaviour
 
             //we use cos(angle) and sin(angle) to normalize speed in every direction
 			AdjustGazeDirection();
-            body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+            body.velocity = new Vector2(GazeDirectionX * dashSpeed, GazeDirectionY * dashSpeed);
 			dashing = dashDistance;
-            isDashing = true;
+            IsDashing = true;
             timerDashing = 5;
         }
     }
@@ -262,11 +262,11 @@ public class PlayerController : MonoBehaviour
     }
 
 	private void AdjustGazeDirection() {
-		if (gazeDirectionX == 0 && gazeDirectionY == 0) {
+		if (GazeDirectionX == 0 && GazeDirectionY == 0) {
 			if (movements.x < 0)
-			    gazeDirectionX = -1;
+			    GazeDirectionX = -1;
 			else
-				gazeDirectionX = 1;
+				GazeDirectionX = 1;
 		}
 	}
     private void CheckIfGrounded()
@@ -275,15 +275,15 @@ public class PlayerController : MonoBehaviour
 
         if (collider != null)
         {
-            isGrounded = true;
+            IsGrounded = true;
         }
         else
         {
-            if (isGrounded)
+            if (IsGrounded)
             {
                 lastTimeGrounded = Time.time;
             }
-            isGrounded = false;
+            IsGrounded = false;
         }
     }
 
@@ -292,39 +292,39 @@ public class PlayerController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(leftWallChecker.position, wallCheckerRadius, groundLayer);
         if (collider != null)
         {
-            isOnLeftWall = true;
+            IsOnLeftWall = true;
         }
         else
         {
-            if (isOnLeftWall)
+            if (IsOnLeftWall)
             {
                 lastTimeOnWall = Time.time;
             }
-            isOnLeftWall = false;
+            IsOnLeftWall = false;
         }
 
         collider = Physics2D.OverlapCircle(rightWallChecker.position, wallCheckerRadius, groundLayer);
         if (collider != null)
         {
-            isOnRightWall = true;
+            IsOnRightWall = true;
         }
         else
         {
-            if (isOnRightWall)
+            if (IsOnRightWall)
             {
                 lastTimeOnWall = Time.time;
             }
-            isOnRightWall = false;
+            IsOnRightWall = false;
         }
     }
 
     //sets the character's gaze direction angle in radians
     public void SetGazeAngle()
     {
-        switch (gazeDirectionY)
+        switch (GazeDirectionY)
         {
 			case 0:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
 					case 1: case 0:
 						gazeDirectionAngle = 0;
@@ -335,7 +335,7 @@ public class PlayerController : MonoBehaviour
 				}
 				break;
 			case 1:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
 					case 1:
 						gazeDirectionAngle = Mathf.PI / 4;
@@ -349,7 +349,7 @@ public class PlayerController : MonoBehaviour
 				}
 				break;
 			case -1:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
 					case 1:
 						gazeDirectionAngle = 7 * Mathf.PI / 4;
