@@ -11,6 +11,7 @@ public static class SceneManagerWithParameters
         public string MapName { get; set; }
         public Dictionary<string, InputDevice> CharactersSelected { get; set; }
         public Dictionary<string, int> Scores { get; set; }
+        public int GamesToWin { get; set; }
     }
 
     private static Parameters parameters;
@@ -42,6 +43,11 @@ public static class SceneManagerWithParameters
         {
             parameters.Scores.Add(s, 0);
         }
+    }
+
+    public static void SetGamesToWin(int gameToWin)
+    {
+        parameters.GamesToWin = gameToWin;
     }
 
 }

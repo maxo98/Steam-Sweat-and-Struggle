@@ -71,7 +71,7 @@ public class MapSettings : MonoBehaviour
             {
                 Debug.Log(s + " Score : " + SceneManagerWithParameters.GetSceneParameters().Scores[s]);
             }
-            SceneManagerWithParameters.Load(gameObject.scene.name);
+            SceneManagerWithParameters.Load("menuScore");
         }
     }
 
