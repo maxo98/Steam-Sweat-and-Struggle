@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 		Move();
-        actionChecker();
+        ActionChecker();
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    protected virtual void actionChecker() {
+    protected virtual void ActionChecker() {
         if (movements.x < -0.1)
             GazeMemory = -1;
         else if (movements.x > 0.1)
@@ -190,6 +190,8 @@ public class PlayerController : MonoBehaviour
             GazeDirectionY = -1;
         else
             GazeDirectionY = 0;
+
+        SetGazeAngle();
     }
 
     protected virtual void OnFire()
