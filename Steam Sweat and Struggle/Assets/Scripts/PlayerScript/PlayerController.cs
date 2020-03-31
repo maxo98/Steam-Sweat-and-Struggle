@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviour
 	//projectile & dash components
 	[SerializeField]
 	private GameObject projectilePrefab;
-	private float offsetProjectileX = 5.0f;
-	private float offsetProjectileY = 6.5f;
+	public float offsetProjectileX {get; set;} = 5.0f;
+	public float offsetProjectileY {get; set;} = 6.5f;
     public float projectileSpeed {get; set;} = 100f;
 	public int NbShots {get; set;} = 5;
 	public int NbRemainingShots {get; set;} = 5;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 	private int dashDistance = 8;
 
 	//where the character is looking
-	private float gazeDirectionAngle;
+	public float gazeDirectionAngle { get; set; }
 	public int GazeDirectionY { get; set; } = 0;
 	public int GazeDirectionX { get; set; } = 0;
 
@@ -210,7 +210,7 @@ public class PlayerController : MonoBehaviour
             IsFiring = true;
             timerFiring = 15;
             
-            if (GazeDirectionX == 0)
+            if (GazeDirectionX == 0 && GazeDirectionY == 0)
                 GazeDirectionX = GazeMemory;
 
             //instanciate the projectile
@@ -261,7 +261,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-	private void AdjustGazeDirection() {
+	protected void AdjustGazeDirection() {
 		if (GazeDirectionX == 0 && GazeDirectionY == 0) {
 			if (movements.x < 0)
 			    GazeDirectionX = -1;
@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //sets the character's gaze direction angle in radians
-    public void SetGazeAngle()
+    protected void SetGazeAngle()
     {
         switch (GazeDirectionY)
         {
