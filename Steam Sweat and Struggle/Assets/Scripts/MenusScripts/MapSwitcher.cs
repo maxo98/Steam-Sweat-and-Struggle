@@ -79,6 +79,8 @@ public class MapSwitcher : MonoBehaviour
         if (selected)
         {
             SceneManagerWithParameters.SetMap(mapselected);
+            SceneManagerWithParameters.SetGamesToWin(5);
+            
             SceneManagerWithParameters.Load("menuPerso");
         }
     }

@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maps/Map2.unity
     guid: 82c2743547fa45c4abb7bdf5ad2a4b71
+  - enabled: 1
+    path: Assets/Scenes/Menus/menuScore.unity
+    guid: 42d4dd581c9a72542a3a7e675e343905
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f4a2ca205db1f3ed296998aae4f310ec,
       type: 2}
