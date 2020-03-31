@@ -90,27 +90,27 @@ TextureImporter:
     bones:
     - name: BrasD
       position: {x: 488.16473, y: 2246.82, z: -1}
-      rotation: {x: 0, y: 0, z: 0.9122395, w: 0.40965745}
-      length: 154.19655
+      rotation: {x: 0, y: 0, z: 0.91223925, w: 0.40965784}
+      length: 154.19652
       parentId: -1
     - name: MainD
-      position: {x: 154.19644, y: -0.00012247995, z: -1}
-      rotation: {x: 0, y: 0, z: -0.1382444, w: 0.99039817}
-      length: 72.37233
+      position: {x: 154.19644, y: -0.000069689224, z: -1}
+      rotation: {x: 0, y: 0, z: -0.13824375, w: 0.9903982}
+      length: 72.372345
       parentId: 0
     - name: ArmeD
-      position: {x: 72.37225, y: 0.000046294448, z: -1}
-      rotation: {x: 0, y: 0, z: 0.41666234, w: 0.9090614}
+      position: {x: 72.37234, y: 0.000008619034, z: -1}
+      rotation: {x: 0, y: 0, z: 0.4166622, w: 0.9090615}
       length: 107.86997
       parentId: 1
     - name: Cou
       position: {x: 914.09076, y: 2060.7925, z: 0}
-      rotation: {x: 0, y: 0, z: 0.7587471, w: 0.6513854}
+      rotation: {x: 0, y: 0, z: 0.75874674, w: 0.6513857}
       length: 70.634224
       parentId: -1
     - name: Tete
-      position: {x: 70.634155, y: -0.000045037363, z: 0}
-      rotation: {x: 0, y: 0, z: -0.31150478, w: 0.9502446}
+      position: {x: 70.63451, y: 0.0002575854, z: 0}
+      rotation: {x: 0, y: 0, z: -0.3115044, w: 0.9502448}
       length: 182.61171
       parentId: 3
     - name: BicepsG
@@ -130,12 +130,12 @@ TextureImporter:
       parentId: 6
     - name: CuisseG
       position: {x: 1889.3318, y: 2137.0745, z: -2}
-      rotation: {x: 0, y: 0, z: -0.6036339, w: 0.79726166}
-      length: 221.19179
+      rotation: {x: 0, y: 0, z: -0.6036341, w: 0.79726154}
+      length: 221.19171
       parentId: -1
     - name: GenouG
-      position: {x: 221.1918, y: -0.00007290393, z: -2}
-      rotation: {x: 0, y: 0, z: 0.29617217, w: 0.9551346}
+      position: {x: 221.19185, y: 0.0000010960139, z: -2}
+      rotation: {x: 0, y: 0, z: 0.29617244, w: 0.9551346}
       length: 105.814095
       parentId: 8
     - name: Torse
@@ -156,7 +156,7 @@ TextureImporter:
     - name: GrasG
       position: {x: 2339.8457, y: 1676.1824, z: 2}
       rotation: {x: 0, y: 0, z: -0.5304745, w: 0.8477009}
-      length: 180.13786
+      length: 180.13788
       parentId: -1
     - name: MainG
       position: {x: 180.1379, y: 0.00010644896, z: 2}
@@ -186,7 +186,7 @@ TextureImporter:
     - name: MolletD
       position: {x: 1474.5835, y: 1679.0366, z: -3}
       rotation: {x: 0, y: 0, z: -0.56745255, w: 0.8234061}
-      length: 232.01997
+      length: 232.01996
       parentId: -1
     - name: TalonD
       position: {x: 232.02002, y: -0.00003002007, z: -3}
@@ -195,32 +195,32 @@ TextureImporter:
       parentId: 19
     - name: PiedD
       position: {x: 68.874886, y: 0.000018574632, z: -3}
-      rotation: {x: 0, y: 0, z: -0.46492046, w: 0.8853525}
+      rotation: {x: 0, y: 0, z: -0.4649205, w: 0.8853525}
       length: 133.25037
       parentId: 20
     - name: Surface
       position: {x: 543.9658, y: 2022.1202, z: 5}
       rotation: {x: 0, y: 0, z: -0.94919956, w: 0.31467485}
-      length: 380.12332
+      length: 380.12326
       parentId: -1
     - name: Surface
-      position: {x: 380.12323, y: 0.000024386922, z: 5}
-      rotation: {x: 0, y: 0, z: 0.40845367, w: 0.9127791}
-      length: 524.6681
+      position: {x: 380.1232, y: 0.000051732728, z: 5}
+      rotation: {x: 0, y: 0, z: 0.4084537, w: 0.9127791}
+      length: 524.66815
       parentId: 22
     - name: Surface3
-      position: {x: 524.66815, y: -0.000059636484, z: 5}
+      position: {x: 524.6682, y: -0.00014436441, z: 5}
       rotation: {x: 0, y: 0, z: 0.32314783, w: 0.94634855}
       length: 409.8746
       parentId: 23
     - name: Surface4
       position: {x: -80.845955, y: 370.527, z: 0}
-      rotation: {x: 0, y: 0, z: 0.45921937, w: 0.8883229}
-      length: 525.84784
+      rotation: {x: 0, y: 0, z: 0.4592194, w: 0.8883229}
+      length: 525.8478
       parentId: 22
     - name: Surface5
-      position: {x: 525.8479, y: 0.0000749199, z: 5}
-      rotation: {x: 0, y: 0, z: -0.3372389, w: 0.9414192}
+      position: {x: 525.84784, y: 0.00005277194, z: 5}
+      rotation: {x: 0, y: 0, z: -0.3372389, w: 0.9414191}
       length: 418.78442
       parentId: 25
     - name: ProfondT1
@@ -230,18 +230,18 @@ TextureImporter:
       parentId: -1
     - name: ProfondT2
       position: {x: 491.18445, y: 0.000060220464, z: -10}
-      rotation: {x: 0, y: 0, z: 0.48247358, w: 0.8759106}
-      length: 476.54068
+      rotation: {x: 0, y: 0, z: 0.48247334, w: 0.87591064}
+      length: 476.54065
       parentId: 27
     - name: ProfondT3
-      position: {x: 476.54065, y: -0.0001596429, z: -10}
-      rotation: {x: 0, y: 0, z: 0.391186, w: 0.9203117}
+      position: {x: 476.54062, y: 0.00006362009, z: -10}
+      rotation: {x: 0, y: 0, z: 0.39118624, w: 0.9203116}
       length: 392.72897
       parentId: 28
     - name: ProfondT4
       position: {x: -156.08687, y: 425.9514, z: -10}
       rotation: {x: 0, y: 0, z: 0.5030347, w: 0.8642662}
-      length: 435.25555
+      length: 435.25552
       parentId: 27
     - name: ProfondT5
       position: {x: 435.25555, y: 0.0000012248993, z: -10}
@@ -250,42 +250,42 @@ TextureImporter:
       parentId: 30
     - name: SurfaceT1
       position: {x: 1053.6512, y: 999.07104, z: -10}
-      rotation: {x: 0, y: 0, z: -0.9536586, w: 0.300891}
-      length: 346.90164
+      rotation: {x: 0, y: 0, z: -0.95365846, w: 0.30089125}
+      length: 346.90167
       parentId: -1
     - name: SurfaceT2
-      position: {x: 346.90155, y: 0.00014629369, z: -10}
-      rotation: {x: 0, y: 0, z: 0.43101224, w: 0.90234613}
-      length: 426.0067
+      position: {x: 346.9017, y: -0.000056260982, z: -10}
+      rotation: {x: 0, y: 0, z: 0.43101203, w: 0.9023462}
+      length: 426.00677
       parentId: 32
     - name: SurfaceT3
-      position: {x: 426.00674, y: -0.00007295186, z: -10}
-      rotation: {x: 0, y: 0, z: 0.38993844, w: 0.920841}
+      position: {x: 426.00677, y: -0.00010603295, z: -10}
+      rotation: {x: 0, y: 0, z: 0.38993838, w: 0.920841}
       length: 361.13455
       parentId: 33
     - name: SurfaceT4
       position: {x: -107.027435, y: 334.49655, z: -10}
       rotation: {x: 0, y: 0, z: 0.48975897, w: 0.8718579}
-      length: 419.16214
+      length: 419.16217
       parentId: 32
     - name: SurfaceT5
-      position: {x: 419.16217, y: 0.000036061163, z: -10}
+      position: {x: 419.16214, y: 0.000017284528, z: -10}
       rotation: {x: 0, y: 0, z: -0.34717175, w: 0.93780166}
       length: 293.93042
       parentId: 35
     - name: Profondeur1
       position: {x: 315.4711, y: 806.69684, z: -5}
       rotation: {x: 0, y: 0, z: -0.89442724, w: 0.44721356}
-      length: 290.79858
+      length: 290.79868
       parentId: -1
     - name: Profondeur2
-      position: {x: 290.79865, y: 0.0000079120055, z: -5}
-      rotation: {x: 0, y: 0, z: 0.3162275, w: 0.9486834}
-      length: 301.98288
+      position: {x: 290.7987, y: 0.000007912018, z: -5}
+      rotation: {x: 0, y: 0, z: 0.31622756, w: 0.9486834}
+      length: 301.9829
       parentId: 37
     - name: Profondeur3
-      position: {x: 301.9829, y: 0.00002550658, z: -5}
-      rotation: {x: 0, y: 0, z: 0.33566284, w: 0.9419822}
+      position: {x: 301.98288, y: -0.000015110058, z: -5}
+      rotation: {x: 0, y: 0, z: 0.3356628, w: 0.94198227}
       length: 282.98468
       parentId: 38
     - name: Profondeur4
@@ -2944,8 +2944,8 @@ TextureImporter:
       boneIndex[1]: 2
       boneIndex[2]: 0
       boneIndex[3]: 0
-    - weight[0]: 0.569041
-      weight[1]: 0.41971302
+    - weight[0]: 0.5690411
+      weight[1]: 0.41971305
       weight[2]: 0.0112459045
       weight[3]: 0
       boneIndex[0]: 1
@@ -3185,8 +3185,8 @@ TextureImporter:
       boneIndex[2]: 1
       boneIndex[3]: 0
     - weight[0]: 0.73484445
-      weight[1]: 0.20969835
-      weight[2]: 0.055457223
+      weight[1]: 0.20969832
+      weight[2]: 0.055457216
       weight[3]: 0
       boneIndex[0]: 0
       boneIndex[1]: 2
