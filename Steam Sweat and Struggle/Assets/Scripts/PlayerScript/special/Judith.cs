@@ -9,6 +9,8 @@ public class Judith : PlayerController
 	private GameObject laserPrefab;
     private bool hasUsedLaser = false;
 
+    private float laserSpeed = 50f;
+
     protected override void InitCharacterSpecs() {
         
         NbShots = NbRemainingShots = 6;
@@ -34,7 +36,7 @@ public class Judith : PlayerController
             projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
             LaserAction scriptProjectile = projectile.GetComponent<LaserAction>();
             scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
-            scriptProjectile.SetSpeed(projectileSpeed);
+            scriptProjectile.SetSpeed(laserSpeed);
         }
     }
 

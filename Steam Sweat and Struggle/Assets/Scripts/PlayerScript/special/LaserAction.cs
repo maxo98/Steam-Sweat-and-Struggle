@@ -48,11 +48,13 @@ public class LaserAction : MonoBehaviour
 				other.gameObject.SendMessage("OnDie");
 				Destroy(gameObject);
 			} else {
-				var delta = Mathf.PI;
+				/*var delta = Mathf.PI;
 				//we use cos(angle) and sin(angle) to normalize speed in every direction
-				body.AddForce(new Vector2(transform.right.x * speed * Mathf.Cos(directionAngle+delta), transform.up.y * speed * Mathf.Sin(directionAngle)), ForceMode2D.Impulse);
+				Vector2 velocity = body.velocity;
+				velocity = new Vector2(-velocity.x, -velocity.y);
+				body.velocity = velocity;
 				transform.Rotate(0,0, (180 / Mathf.PI) * delta);
-				directionAngle+=delta;
+				directionAngle+=delta;*/
 			}
 		}
 	}

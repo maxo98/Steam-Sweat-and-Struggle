@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
 	public int NbShots {get; set;} = 5;
 	public int NbRemainingShots {get; set;} = 5;
 	public float Reload {get; set;} = 3f;
+
+    private bool reloading = false;
 	public float Cooldown {get; set;} = 0.2f;
 	private float nextFire;
 	private float dashRate = 1f;
@@ -79,6 +81,10 @@ public class PlayerController : MonoBehaviour
     public bool IsDashing {get; set;} = false;
 
 
+	//progress bar for reload
+	[SerializeField]
+	private GameObject reloadProgress;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -100,7 +106,16 @@ public class PlayerController : MonoBehaviour
         CheckIfOnWall();
         BetterJump();
         ResetJump();
+        SetBarNbShots();
+    }
 
+    protected void SetBarNbShots() {
+        if (reloading && Time.time>nextFire) {
+            reloading = false;
+            NbShots += NbRemainingShots;
+        }
+        Debug.Log(NbShots);
+        reloadProgress.SendMessage("SetProgress", ((float)NbShots)/NbRemainingShots);
     }
 
     protected virtual void ActionChecker() {
@@ -197,7 +212,7 @@ public class PlayerController : MonoBehaviour
     protected virtual void OnFire()
     {
         Debug.Log("Firing");
-        if (Time.time > nextFire)
+        if (Time.time > nextFire && NbShots>0)
         {
 			AdjustGazeDirection();
 			SetGazeAngle();
@@ -205,7 +220,7 @@ public class PlayerController : MonoBehaviour
             --NbShots;
             if (NbShots<=0) {
                 nextFire = Time.time + Reload;
-                NbShots = NbRemainingShots;
+                reloading = true;
             } else {
                 nextFire = Time.time + Cooldown;
             }

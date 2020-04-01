@@ -203,6 +203,7 @@ MonoBehaviour:
   wallCheckerRadius: 1
   projectilePrefab: {fileID: 1925421383955953965, guid: 25623c5b95e1c3a1caa23e8748bf138d,
     type: 3}
+  reloadProgress: {fileID: 7939570640336083893}
   laserPrefab: {fileID: 1925421383955953965, guid: 578c824ecd65d2cff9dffc4a6b8e7fc0,
     type: 3}
 --- !u!1 &1404388540775442038
@@ -1485,6 +1486,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 9958728506ea3704fba352ab13dc1802,
         type: 3}
+    - target: {fileID: 8697218512193615572, guid: 5d58530a48bc61d46b0df9bc42b18326,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3924522323553395700, guid: 5d58530a48bc61d46b0df9bc42b18326, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5d58530a48bc61d46b0df9bc42b18326, type: 3}
@@ -1509,6 +1515,12 @@ Transform:
 --- !u!4 &6966541940560669481 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8001431455282722245, guid: 5d58530a48bc61d46b0df9bc42b18326,
+    type: 3}
+  m_PrefabInstance: {fileID: 1127284741422833388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7939570640336083893 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7028973402025330009, guid: 5d58530a48bc61d46b0df9bc42b18326,
     type: 3}
   m_PrefabInstance: {fileID: 1127284741422833388}
   m_PrefabAsset: {fileID: 0}
