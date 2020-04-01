@@ -20,6 +20,8 @@ TagManager:
   - score4
   - emptyPoints
   - wins
+  - victory
+  - number
   layers:
   - Default
   - TransparentFX
