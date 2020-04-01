@@ -55,6 +55,9 @@ public class MapSwitcher : MonoBehaviour
 
             mapselected = maps[currentMap].name;
             selected = true;
+
+            SceneManagerWithParameters.SetMap(mapselected);
+            SceneManagerWithParameters.Load("menuPerso");
         }
     }
 
@@ -71,17 +74,6 @@ public class MapSwitcher : MonoBehaviour
         else
         {
             SceneManagerWithParameters.Load("menuPrincipal");
-        }
-    }
-
-    void OnStart()
-    {
-        if (selected)
-        {
-            SceneManagerWithParameters.SetMap(mapselected);
-            SceneManagerWithParameters.SetGamesToWin(5);
-            
-            SceneManagerWithParameters.Load("menuPerso");
         }
     }
 

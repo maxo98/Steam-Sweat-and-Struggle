@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class ScoresDisplay : MonoBehaviour
 {
-    Dictionary<string, int> scores;
-    string[] scoreIcon = { "score1", "score2", "score3", "score4" };
+    private Dictionary<string, int> scores;
+    private string[] scoreIcon = { "score1", "score2", "score3", "score4" };
+    private bool winner = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.LogError("nombre de game a gagner : " + SceneManagerWithParameters.GetSceneParameters().GamesToWin);
     }
 
     private void OnEnable()
@@ -20,11 +21,16 @@ public class ScoresDisplay : MonoBehaviour
         scores = SceneManagerWithParameters.GetSceneParameters().Scores;
         foreach(string s in scores.Keys)
         {
+            if(scores[s] == SceneManagerWithParameters.GetSceneParameters().GamesToWin)
+            {
+                winner = true;
+            }
+
             GameObject g = GameObject.FindGameObjectWithTag(scoreIcon[i++]);
             Sprite sprite = (Sprite)Resources.Load("Graphic/MenusGraphics/menuScore/icon" + s, typeof(Sprite));
             if(g == null)
             {
-                Debug.LogError("Pas de g loaded");
+                Debug.LogError("Pas d'image loaded");
             }
             g.GetComponent<Image>().sprite = sprite;
             Image[] points = g.GetComponentsInChildren<Image>();
@@ -41,13 +47,20 @@ public class ScoresDisplay : MonoBehaviour
                         img.gameObject.SetActive(true);
                         w++;
                     }
+
                     else if (img.gameObject.tag == "wins" && j < scores[s])
                     {
                         img.gameObject.SetActive(true);
                         points[c - 1].gameObject.SetActive(false);
                         j++;
                     }
+
                     else if (img.gameObject.tag.Equals("emptyPoints") || img.gameObject.tag.Equals("wins"))
+                    {
+                        img.gameObject.SetActive(false);
+                    }
+                    
+                    if(scores[s] < SceneManagerWithParameters.GetSceneParameters().GamesToWin && img.gameObject.tag.Equals("victory"))
                     {
                         img.gameObject.SetActive(false);
                     }
@@ -64,8 +77,24 @@ public class ScoresDisplay : MonoBehaviour
 
     void OnSubmit()
     {
-        SceneManagerWithParameters.Load(SceneManagerWithParameters.GetSceneParameters().MapName);
+        if (!winner)
+        {
+            SceneManagerWithParameters.Load(SceneManagerWithParameters.GetSceneParameters().MapName);
+        }
+        else
+        {
+            SceneManagerWithParameters.Load("menuPrincipal");
+        }
     }
+
+    private void OnCancel()
+    {
+        if (!winner)
+        {
+            SceneManagerWithParameters.Load("MenuPrincipal");
+        }
+    }
+
 
     // Update is called once per frame
     void Update()

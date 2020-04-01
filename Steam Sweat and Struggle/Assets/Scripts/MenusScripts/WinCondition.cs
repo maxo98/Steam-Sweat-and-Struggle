@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterName : MonoBehaviour
+public class WinCondition : MonoBehaviour
 {
-    public string Name { get; set; }
+    public CharacterName[] Numbers { get; set; }
     // Start is called before the first frame update
     void Start()
     {
-        Name = name;
+        Numbers = GetComponentsInChildren<CharacterName>();
     }
 
     // Update is called once per frame

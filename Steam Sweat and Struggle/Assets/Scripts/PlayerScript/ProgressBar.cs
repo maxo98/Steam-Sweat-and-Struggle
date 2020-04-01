@@ -25,7 +25,6 @@ public class ProgressBar : MonoBehaviour
     protected void SetProgress(object v)
     {
         float value = (float) v;
-        Debug.Log(value);
         if (value<0.01f) {
             progress.SetActive(false);
         } else {

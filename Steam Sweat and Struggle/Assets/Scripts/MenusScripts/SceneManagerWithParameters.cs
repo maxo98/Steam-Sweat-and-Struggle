@@ -28,7 +28,7 @@ public static class SceneManagerWithParameters
 
     public static void SetMap(string mapName)
     {
-        if (parameters.MapName == null && parameters.CharactersSelected == null)
+        if (parameters.MapName == null && parameters.CharactersSelected == null && parameters.GamesToWin == null)
         {
             parameters = new Parameters();
         }
@@ -47,6 +47,10 @@ public static class SceneManagerWithParameters
 
     public static void SetGamesToWin(int gameToWin)
     {
+        if (parameters.MapName == null && parameters.CharactersSelected == null && parameters.GamesToWin == null)
+        {
+            parameters = new Parameters();
+        }
         parameters.GamesToWin = gameToWin;
     }
 

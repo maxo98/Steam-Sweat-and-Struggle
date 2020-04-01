@@ -114,7 +114,6 @@ public class PlayerController : MonoBehaviour
             reloading = false;
             NbShots += NbRemainingShots;
         }
-        Debug.Log(NbShots);
         reloadProgress.SendMessage("SetProgress", ((float)NbShots)/NbRemainingShots);
     }
 
