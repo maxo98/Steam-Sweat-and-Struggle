@@ -11,6 +11,11 @@ public class ScoresDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(SceneManagerWithParameters.GetSceneParameters().GamesToWin == 0)
+        {
+            SceneManagerWithParameters.SetGamesToWin(3);
+        }
+
         Debug.LogError("nombre de game a gagner : " + SceneManagerWithParameters.GetSceneParameters().GamesToWin);
     }
 

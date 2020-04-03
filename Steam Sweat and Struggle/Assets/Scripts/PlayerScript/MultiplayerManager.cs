@@ -23,6 +23,11 @@ public class MultiplayerManager : MonoBehaviour
 
         playerInputManager = GetComponent<PlayerInputManager>();
 
+        
+    }
+
+    private void OnEnable()
+    {
         // Listening must be enabled explicitly
         ++InputUser.listenForUnpairedDeviceActivity;
 
@@ -53,6 +58,11 @@ public class MultiplayerManager : MonoBehaviour
                 characterSwitch.SetParent(playerInputManager.playerCount, gameObject, characters, errorMsg);
             }
         };
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     // Update is called once per frame
