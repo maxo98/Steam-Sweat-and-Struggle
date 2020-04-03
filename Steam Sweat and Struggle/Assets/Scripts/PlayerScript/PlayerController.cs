@@ -237,6 +237,7 @@ public class PlayerController : MonoBehaviour
             ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
             scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
             scriptProjectile.SetSpeed(projectileSpeed);
+            gameObject.GetComponent<AudioSource>().Play();
         }
     }
 
