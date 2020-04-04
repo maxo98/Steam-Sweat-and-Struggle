@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
 	private GameObject reloadProgress;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
 		Move();
         ActionChecker();

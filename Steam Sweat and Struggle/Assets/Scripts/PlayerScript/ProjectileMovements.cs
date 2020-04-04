@@ -5,6 +5,9 @@ using UnityEngine;
 public class ProjectileMovements : MonoBehaviour
 {
 	[SerializeField]
+	private float parentSpeedFactor = 1.0f;
+
+	[SerializeField]
 	private float speed;
 
 	[SerializeField]
@@ -13,9 +16,12 @@ public class ProjectileMovements : MonoBehaviour
 	private Rigidbody2D body;
 	private Collider2D collider2d;
 
+	private MapSettings settings;
+
 	// Start is called before the first frame update
 	void Start()
     {
+		settings = GetComponent<Teleportation>().GetMapData().GetComponent<MapSettings>();
 		body = GetComponent<Rigidbody2D>();
 		collider2d = GetComponent<Collider2D>();
 
@@ -28,7 +34,13 @@ public class ProjectileMovements : MonoBehaviour
     void Update()
     {
 		
-		
+		if (parentSpeedFactor!=settings.GetShotSpeed()) {
+			float newSpeed = settings.GetShotSpeed();
+			Vector2 velocity = body.velocity;
+			body.velocity = new Vector2(velocity.x*newSpeed/parentSpeedFactor, velocity.y*newSpeed/parentSpeedFactor);
+			body.gravityScale = body.gravityScale*newSpeed/parentSpeedFactor;
+			parentSpeedFactor = newSpeed;
+		}
 	}
 
 	public void SetDirectionAngle(float direction)

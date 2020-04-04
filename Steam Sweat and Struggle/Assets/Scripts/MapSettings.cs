@@ -12,9 +12,17 @@ public class MapSettings : MonoBehaviour
     public float Left { get; set; }
     public float Right { get; set; }
 
+    private float shotSpeed = 1.0f;
+
     private GameObject[] objects;
     private Dictionary<string, GameObject> player = new Dictionary<string, GameObject>();
 
+    public void SetShotSpeed(object v) {
+        shotSpeed = (float) v;
+    }
+    public float GetShotSpeed() {
+        return shotSpeed;
+    }
 
     // Start is called before the first frame update
     void Start()
