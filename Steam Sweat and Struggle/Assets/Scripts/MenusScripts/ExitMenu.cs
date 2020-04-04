@@ -30,11 +30,11 @@ public class ExitMenu : MonoBehaviour
 
     void OnSubmit()
     {
-        if(yesImage.color == Color.green)
+        if(yesImage.color == Color.grey)
         {
             Application.Quit();
         }
-        if(noImage.color == Color.green)
+        if(noImage.color == Color.grey)
         {
             SceneManagerWithParameters.Load("menuPrincipal");
         }
@@ -47,7 +47,7 @@ public class ExitMenu : MonoBehaviour
 
     void OnLeft()
     {
-        if (noImage.color == Color.green)
+        if (noImage.color == Color.grey)
         {
             UnFocus(noImage);
             Focus(yesImage);
@@ -56,7 +56,7 @@ public class ExitMenu : MonoBehaviour
 
     void OnRight()
     {
-        if (yesImage.color == Color.green)
+        if (yesImage.color == Color.grey)
         {
             UnFocus(yesImage);
             Focus(noImage);
@@ -65,7 +65,7 @@ public class ExitMenu : MonoBehaviour
 
     private void Focus(Image image)
     {
-        image.color = Color.green;
+        image.color = Color.grey;
     }
 
     private void UnFocus(Image image)

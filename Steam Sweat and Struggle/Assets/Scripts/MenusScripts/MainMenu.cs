@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
 
     private void Focus(Image image)
     {
-        image.color = Color.green;
+        image.color = Color.grey;
     }
 
     private void UnFocus(Image image)
@@ -48,15 +48,15 @@ public class MainMenu : MonoBehaviour
 
     void OnSubmit()
     {
-        if (versusImage.color == Color.green)
+        if (versusImage.color == Color.grey)
         {
             SceneManagerWithParameters.Load("menuMap");
         }
-        if (optionImage.color == Color.green)
+        if (optionImage.color == Color.grey)
         {
             SceneManagerWithParameters.Load("menuOption");
         }
-        if (quitImage.color == Color.green)
+        if (quitImage.color == Color.grey)
         {
             SceneManagerWithParameters.Load("menuQuit");
         }
@@ -69,12 +69,12 @@ public class MainMenu : MonoBehaviour
 
     void OnLeft()
     {
-        if (optionImage.color == Color.green)
+        if (optionImage.color == Color.grey)
         {
             UnFocus(optionImage);
             Focus(versusImage);
         }
-        if (quitImage.color == Color.green)
+        if (quitImage.color == Color.grey)
         {
             UnFocus(quitImage);
             Focus(onlineImage);
@@ -83,12 +83,12 @@ public class MainMenu : MonoBehaviour
 
     void OnRight()
     {
-        if (versusImage.color == Color.green)
+        if (versusImage.color == Color.grey)
         {
             UnFocus(versusImage);
             Focus(optionImage);
         }
-        if (onlineImage.color == Color.green)
+        if (onlineImage.color == Color.grey)
         {
             UnFocus(onlineImage);
             Focus(quitImage);
@@ -97,12 +97,12 @@ public class MainMenu : MonoBehaviour
 
     void OnUp()
     {
-        if (onlineImage.color == Color.green)
+        if (onlineImage.color == Color.grey)
         {
             UnFocus(onlineImage);
             Focus(versusImage);
         }
-        if (quitImage.color == Color.green)
+        if (quitImage.color == Color.grey)
         {
             UnFocus(quitImage);
             Focus(optionImage);
@@ -111,12 +111,12 @@ public class MainMenu : MonoBehaviour
 
     void OnDown()
     {
-        if (versusImage.color == Color.green)
+        if (versusImage.color == Color.grey)
         {
             UnFocus(versusImage);
             Focus(onlineImage);
         }
-        if (optionImage.color == Color.green)
+        if (optionImage.color == Color.grey)
         {
             UnFocus(optionImage);
             Focus(quitImage);
