@@ -24,5 +24,9 @@ public class DontDestroyMenu : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        else if (SceneManager.GetActiveScene().name == "Map2")
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
