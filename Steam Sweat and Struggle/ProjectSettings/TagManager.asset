@@ -9,6 +9,19 @@ TagManager:
   - Positions
   - platforms
   - Characters
+  - characterSelectionMenu
+  - characterIcon
+  - mapIcon
+  - Spot
+  - errorMsg
+  - score1
+  - score2
+  - score3
+  - score4
+  - emptyPoints
+  - wins
+  - victory
+  - number
   layers:
   - Default
   - TransparentFX

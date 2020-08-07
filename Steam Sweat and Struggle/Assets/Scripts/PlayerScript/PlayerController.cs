@@ -7,39 +7,30 @@ public class PlayerController : MonoBehaviour
 {
 
     //speed and jumpSpeed 
-    [SerializeField]
+    
     private float speed = 50.0f;
-    [SerializeField]
-    private float wallJumpForce = 20.0f;
-    [SerializeField]
-    private float jumpForce = 110.0f;
-    [SerializeField]
+    private float wallJumpForce = 50.0f;
+    private float jumpForce = 100.0f;
     private float fallSpeed = -70.0f;
-    [SerializeField]
-    private float fastFallSpeed = -140.0f;
-    [SerializeField]
-    private float dashSpeed = 500;
+    private float fastFallSpeed = -100.0f;
+    private float dashSpeed = 200.0f;
 
     //jump condition
-    [SerializeField]
-    private bool isGrounded = false;
-    [SerializeField]
-    private bool isOnLeftWall = false;
-    [SerializeField]
-    private bool isOnRightWall = false;
+    
+    public bool IsGrounded {get; set; } = false;
+    
+    public bool IsOnLeftWall {get; set;} = false;
+    
+    public bool IsOnRightWall {get; set;} = false;
     private float lastTimeGrounded;
     private float lastTimeOnWall;
-    [SerializeField]
     private float fallMultiplier = 20.0f;
-    [SerializeField]
     private float lowJumpMultiplier = 40f;
-    [SerializeField]
     private float rememberOnWallFor = 0.5f;
-    [SerializeField]
-    private float rememberGroundedFor = 0.5f;
+    private float rememberGroundedFor = 0f;
 
     //hitbox components
-    private Rigidbody2D body;
+    public Rigidbody2D body {get; set;}
     [SerializeField]
     private float groundCheckerRadius = 1f;
     [SerializeField]
@@ -52,185 +43,264 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform rightWallChecker;
     [SerializeField]
-    private float wallCheckerRadius = 2f;
+    private float wallCheckerRadius = 1f;
 
 	//projectile & dash components
 	[SerializeField]
 	private GameObject projectilePrefab;
-	[SerializeField]
-	private float offsetProjectileX = 5.0f;
-	[SerializeField]
-	private float offsetProjectileY = 6.5f;
-	[SerializeField]
-	private float fireRate = 0.2f;
-	[SerializeField]
+	public float offsetProjectileX {get; set;} = 5.0f;
+	public float offsetProjectileY {get; set;} = 6.5f;
+    public float projectileSpeed {get; set;} = 100f;
+	public int NbShots {get; set;} = 5;
+	public int NbRemainingShots {get; set;} = 5;
+	public float Reload {get; set;} = 3f;
+
+    private bool reloading = false;
+	public float Cooldown {get; set;} = 0.2f;
 	private float nextFire;
-	//[SerializeField]
-	private float dashRate = 2f;
-	//[SerializeField]
+	private float dashRate = 1f;
 	private float nextDash;
-	private float dashDistance = 15f;
+	private int dashDistance = 8;
 
 	//where the character is looking
-	private float gazeDirectionAngle;
-	private int gazeDirectionY = 0;
-	private int gazeDirectionX = 1;
+	public float gazeDirectionAngle { get; set; }
+	public int GazeDirectionY { get; set; } = 0;
+	public int GazeDirectionX { get; set; } = 0;
 
-	bool dashing = false;
-    bool lastJumped = false;
+	private int dashing = 0;
+    private bool lastJumped = false;
+    private bool jumping = false;
+
+    private Vector2 movements = new Vector2(0,0);
+
+    public int GazeMemory {get; set;} = 1;
+
+    private int timerFiring = 0;
+    public bool IsFiring {get; set;} = false;
+    private int timerDashing = 0;
+    public bool IsDashing {get; set;} = false;
+
+
+	//progress bar for reload
+	[SerializeField]
+	private GameObject reloadProgress;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         //get the components
         body = GetComponent<Rigidbody2D>();
         nextFire = Time.time;
+        InitCharacterSpecs();
     }
 
+    protected virtual void InitCharacterSpecs() {
+
+    }
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
+		Move();
+        ActionChecker();
         CheckIfGrounded();
         CheckIfOnWall();
         BetterJump();
         ResetJump();
-    
+        SetBarNbShots();
     }
 
-    //movement methode
-    void OnMove(InputValue value)
-    {
-        Vector2 movements = value.Get<Vector2>();
-
-        //moving the character on the X axis
-        float fSpd = (movements.x < 0) ? fastFallSpeed : fallSpeed;
-        body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
-
-        //player gaze by default
-        if (gazeDirectionX == 0 && gazeDirectionY == 0)
-        {
-            if (movements.x < -0.1)
-                gazeDirectionX = -1;
-            else if (movements.x > 0.1)
-                gazeDirectionX = 1;
-            else if (gazeDirectionX == 0)
-                gazeDirectionX = 1;
+    protected void SetBarNbShots() {
+        if (reloading && Time.time>nextFire) {
+            reloading = false;
+            NbShots += NbRemainingShots;
         }
+        reloadProgress.SendMessage("SetProgress", ((float)NbShots)/NbRemainingShots);
+    }
 
-        SetGazeAngle();
+    protected virtual void ActionChecker() {
+        if (movements.x < -0.1)
+            GazeMemory = -1;
+        else if (movements.x > 0.1)
+            GazeMemory = 1;
+
+        if (timerDashing == 0)
+            IsDashing = false;
+        else
+            --timerDashing;
+
+        if (timerFiring == 0)
+            IsFiring = false;
+        else
+            --timerFiring;
+    }
+
+	protected virtual void Move() {
+		if (dashing>0) {
+			--dashing;
+		} else {
+		    //moving the character on the X and Y axis
+		    var fSpd = (movements.y < 0) ? fastFallSpeed : fallSpeed;
+		    body.velocity = new Vector2(body.velocity.x * 3 / 4 + (movements.x * speed) * 1 / 4, Mathf.Max(body.velocity.y, fSpd));
+		}
+	}
+
+    protected virtual void OnSkill() {
 
     }
 
-    void OnJump()
+    //movement method
+    protected virtual void OnMove(InputValue value)
     {
+        Debug.Log("Moving");
+        movements = value.Get<Vector2>();
+    }
+
+    protected virtual void OnJump()
+    {
+        Debug.Log("Jumping");
         if (!lastJumped)
         {
-            if (isGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
+            
+            if (IsGrounded && Time.time - lastTimeGrounded >= rememberGroundedFor)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
+                jumping = true;
             }
-            else if (isOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            else if (IsOnLeftWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
 
                 body.velocity = new Vector2(wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
-            else if (isOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
+            else if (IsOnRightWall && Time.time - lastTimeOnWall >= rememberOnWallFor)
             {
                 body.velocity = new Vector2(-wallJumpForce * 5, jumpForce);
+                jumping = true;
             }
         }
         lastJumped = true;
     }
 
-    void OnLook(InputValue value)
+    void OnStopJump()
     {
-        Vector2 gaze = value.Get<Vector2>();
-
-		if (gaze.x < -0.5)
-			gazeDirectionX = -1;
-		else if (gaze.x > 0.5)
-			gazeDirectionX = 1;
-        else
-            gazeDirectionX = 0;
-
-		if (gaze.y > 0.5)
-			gazeDirectionY = -1;
-		else if (gaze.y < -0.5)
-			gazeDirectionY = 1;
-        else
-            gazeDirectionY = 0;
-
-		SetGazeAngle();
+        jumping = false;
     }
 
-    void OnFire()
+    protected virtual void OnLook(InputValue value)
     {
-        if (Time.time > nextFire)
+        Debug.Log("Looking");
+        Vector2 gaze = value.Get<Vector2>();
+
+        if (gaze.x < -0.3)
+            GazeDirectionX = -1;
+        else if (gaze.x > 0.3)
+            GazeDirectionX = 1;
+        else
+            GazeDirectionX = 0;
+
+        if (gaze.y > 0.3)
+            GazeDirectionY = 1;
+        else if (gaze.y < -0.3)
+            GazeDirectionY = -1;
+        else
+            GazeDirectionY = 0;
+
+        SetGazeAngle();
+    }
+
+    protected virtual void OnFire()
+    {
+        Debug.Log("Firing");
+        if (Time.time > nextFire && NbShots>0)
         {
+			AdjustGazeDirection();
+			SetGazeAngle();
             //update the time when the player will be able to shoot
-            nextFire = Time.time + fireRate;
+            --NbShots;
+            if (NbShots<=0) {
+                nextFire = Time.time + Reload;
+                reloading = true;
+            } else {
+                nextFire = Time.time + Cooldown;
+            }
+            IsFiring = true;
+            timerFiring = 15;
+            
+            if (GazeDirectionX == 0 && GazeDirectionY == 0)
+                GazeDirectionX = GazeMemory;
+
             //instanciate the projectile
             GameObject projectile = Instantiate(projectilePrefab,
-                            new Vector3(transform.position.x + gazeDirectionX * offsetProjectileX, transform.position.y + gazeDirectionY * offsetProjectileY, 0),
+                            new Vector3(transform.position.x + GazeDirectionX * offsetProjectileX, transform.position.y + GazeDirectionY * offsetProjectileY, 0),
                             projectilePrefab.transform.rotation);
             projectile.GetComponent<Teleportation>().SetMapData(gameObject.GetComponent<Teleportation>().GetMapData());
             ProjectileMovements scriptProjectile = projectile.GetComponent<ProjectileMovements>();
             scriptProjectile.SetDirectionAngle(gazeDirectionAngle);
+            scriptProjectile.SetSpeed(projectileSpeed);
+            gameObject.GetComponent<AudioSource>().Play();
         }
     }
 
-    void OnDash()
+    protected virtual void OnDash()
     {
-        if (Time.time > nextDash) 
+        Debug.Log("Dashing");
+        if (Time.time > nextDash)
         {
             //update the time when the player will be able to dash
             nextDash = Time.time + dashRate;
             body.velocity = (new Vector2(0, 0));
 
             //we use cos(angle) and sin(angle) to normalize speed in every direction
-            //body.AddForce(new Vector2(transform.right.x * dashSpeed * Mathf.Cos(gazeDirectionAngle), transform.up.y * dashSpeed/2 * Mathf.Sin(gazeDirectionAngle)), ForceMode2D.Impulse);
-
-            //transform.position = Vector2.Lerp(
-            //				new Vector2(transform.position.x, transform.position.y),
-            //				new Vector2(transform.position.x + gazeDirectionX * dashDistance, transform.position.y + gazeDirectionY * dashDistance),
-            //				dashSpeed * Time.deltaTime);
-
-            body.velocity = new Vector2(gazeDirectionX * dashSpeed, gazeDirectionY * dashSpeed);
+			AdjustGazeDirection();
+            body.velocity = new Vector2(GazeDirectionX * dashSpeed, GazeDirectionY * dashSpeed);
+			dashing = dashDistance;
+            IsDashing = true;
+            timerDashing = 5;
         }
     }
 
     //Jump methode
     private void ResetJump()
-    {           
-        lastJumped = false;   
+    {
+        lastJumped = false;
     }
 
     private void BetterJump()
     {
-        if (body.velocity.y > -4)
+        if (body.velocity.y > -4 && !jumping)
         {
             body.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
-        } else {
+        }
+        else
+        {
             body.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
         }
 
     }
 
+	protected void AdjustGazeDirection() {
+		if (GazeDirectionX == 0 && GazeDirectionY == 0) {
+			if (movements.x < 0)
+			    GazeDirectionX = -1;
+			else
+				GazeDirectionX = 1;
+		}
+	}
     private void CheckIfGrounded()
     {
         Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
 
         if (collider != null)
         {
-            isGrounded = true;
+            IsGrounded = true;
         }
         else
         {
-            if (isGrounded)
+            if (IsGrounded)
             {
                 lastTimeGrounded = Time.time;
             }
-            isGrounded = false;
+            IsGrounded = false;
         }
     }
 
@@ -239,41 +309,41 @@ public class PlayerController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(leftWallChecker.position, wallCheckerRadius, groundLayer);
         if (collider != null)
         {
-            isOnLeftWall = true;
+            IsOnLeftWall = true;
         }
         else
         {
-            if (isOnLeftWall)
+            if (IsOnLeftWall)
             {
                 lastTimeOnWall = Time.time;
             }
-            isOnLeftWall = false;
+            IsOnLeftWall = false;
         }
-        
+
         collider = Physics2D.OverlapCircle(rightWallChecker.position, wallCheckerRadius, groundLayer);
         if (collider != null)
         {
-            isOnRightWall = true;
+            IsOnRightWall = true;
         }
         else
         {
-            if (isOnRightWall)
+            if (IsOnRightWall)
             {
                 lastTimeOnWall = Time.time;
             }
-            isOnRightWall = false;
+            IsOnRightWall = false;
         }
     }
 
-	//sets the character's gaze direction angle in radians
-	public void SetGazeAngle()
-	{
-		switch (gazeDirectionY)
+    //sets the character's gaze direction angle in radians
+    protected void SetGazeAngle()
+    {
+        switch (GazeDirectionY)
         {
 			case 0:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
-					case 1:
+					case 1: case 0:
 						gazeDirectionAngle = 0;
 						break;
 					case -1:
@@ -282,7 +352,7 @@ public class PlayerController : MonoBehaviour
 				}
 				break;
 			case 1:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
 					case 1:
 						gazeDirectionAngle = Mathf.PI / 4;
@@ -296,7 +366,7 @@ public class PlayerController : MonoBehaviour
 				}
 				break;
 			case -1:
-				switch (gazeDirectionX)
+				switch (GazeDirectionX)
 				{
 					case 1:
 						gazeDirectionAngle = 7 * Mathf.PI / 4;
@@ -313,4 +383,10 @@ public class PlayerController : MonoBehaviour
 				break;
 		}
 	}
+    protected virtual void OnDie() {
+        Debug.Log("YOU DIED");
+        gameObject.GetComponent<Teleportation>().GetMapData().SendMessage("OnDeath", gameObject);
+
+
+    }
 }
